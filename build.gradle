@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'com.fixterminal'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+application {
+
+    mainClassName = 'com.fixterminal.app.FixTerminalServerApplication'
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket:2.6.3'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
+
+    compileOnly("org.springframework.boot:spring-boot-devtools:2.6.3")
+
+}
+
+test {
+    useJUnitPlatform()
+}

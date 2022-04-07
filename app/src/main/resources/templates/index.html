@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>FIX Terminal</title>
+    <meta http-equiv="refresh" content="5" >
+
+    <!--    <link rel="stylesheet" th:href="@{webjars/bootstrap/4.2.1/css/bootstrap.min.css}"/>-->
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+
+</head>
+<body>
+<p><a href="/about">About FIX Terminal</a></p>
+<span th:text="' heart : ' + ${heartBB}"></span>
+
+<br>
+<p> - SERVER OPTIONS - </p>
+<p><a href="/logs" target="_blank">Start and login / logs</a></p>
+<p><a href="/logout" target="_blank">Logout / logs</a></p>
+<p><a href="/settings" target="_blank">Settings</a></p>
+<br>
+<p> - MONITORS OPTIONS - </p>
+<p><a href="/sell">Monitor EURUSD</a></p>
+
+</body>
+</html>
