@@ -1,4 +1,4 @@
-package com.fixterminal.app.terminal.app;
+package com.fixterminal.app.terminal.adapters;
 
 public interface RxFixTerminalMainPort {
     boolean isWorking();

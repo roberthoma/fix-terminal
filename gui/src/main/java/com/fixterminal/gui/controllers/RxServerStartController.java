@@ -1,6 +1,6 @@
 package com.fixterminal.gui.controllers;
 
-import com.fixterminal.app.terminal.business.RxFixTerminal;
+import com.fixterminal.app.terminal.adapters.RxFixTerminalMainPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,8 @@ public class RxServerStartController {
     private static final Logger log = LoggerFactory.getLogger(RxServerStartController.class);
 
     @Autowired
-    //RxFixTerminalMainPort terminal;
-    RxFixTerminal terminal;
+    RxFixTerminalMainPort terminal;
+    //RxFixTerminal terminal;
 
     private RxServerStartController(){
       log.info("Init : RxServerStartController");

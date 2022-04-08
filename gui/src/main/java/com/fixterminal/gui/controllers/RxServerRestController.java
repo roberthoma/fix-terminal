@@ -1,8 +1,6 @@
 package com.fixterminal.gui.controllers;
 
-import com.fixterminal.app.terminal.business.RxFixTerminal;
-import com.fixterminal.app.terminal.business.RxQuickFixApplication;
-import com.fixterminal.app.terminal.business.services.RxFixTerminalPrompter;
+import com.fixterminal.app.terminal.adapters.RxFixTerminalMainPort;
 import com.fixterminal.shared.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,10 +20,10 @@ public class RxServerRestController {
     }
 
     @Autowired
-    private RxFixTerminal terminal;
+    private RxFixTerminalMainPort terminal;
 
-    @Autowired
-    private RxFixTerminalPrompter servPrompter;
+//    @Autowired
+//    private RxFixTerminalPrompter servPrompter;
 
 
     @Autowired
@@ -49,8 +47,8 @@ public class RxServerRestController {
 
         StreamingResponseBody responseBody = response -> {
                 try {
-                    response.write((servPrompter.getLog() +"\n").getBytes());
-                    //  response.write((terminal.getSessionSettings() +"\n").getBytes());
+                    //response.write((servPrompter.getLog() +"\n").getBytes());
+                      response.write((terminal.getSessionSettings() +"\n").getBytes());
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -76,8 +74,8 @@ public class RxServerRestController {
 
         StreamingResponseBody responseBody = response -> {
             try {
-                response.write((servPrompter.getLog() +"\n").getBytes());
-               // response.write((terminal.getSessionSettings() +"\n").getBytes());
+               // response.write((servPrompter.getLog() +"\n").getBytes());
+                response.write((terminal.getSessionSettings() +"\n").getBytes());
 
             } catch (Exception e) {
                 e.printStackTrace();
