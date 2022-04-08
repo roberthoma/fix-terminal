@@ -23,9 +23,9 @@ dependencies {
     compileOnly("org.springframework.boot:spring-boot-devtools:2.6.3")
 
 
-    implementation project(':shared')
+//    implementation project(':shared')
     implementation project(':gui')
-    implementation project(':terminal:business')
+   // implementation project(':terminal:business')
 
 
 }
