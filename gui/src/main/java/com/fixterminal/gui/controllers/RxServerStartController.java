@@ -1,5 +1,6 @@
 package com.fixterminal.gui.controllers;
 
+import com.fixterminal.app.terminal.adapters.RxFixTerminalMainAdapter;
 import com.fixterminal.app.terminal.adapters.RxFixTerminalMainPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
