@@ -1,16 +1,17 @@
 rootProject.name = 'fix-terminal'
+include 'app'
 include 'shared'
 include 'terminal:adapters'
-include 'app:ports'
-findProject(':app:ports')?.name = 'ports'
 
 
-include 'terminal:business'
 include 'terminal:adapters'
 findProject(':terminal:adapters')?.name = 'adapters'
 
+include 'terminal:business'
 findProject(':terminal:business')?.name = 'business'
+
 include 'terminal:ports'
 findProject(':terminal:ports')?.name = 'ports'
+
 include 'gui'
 
