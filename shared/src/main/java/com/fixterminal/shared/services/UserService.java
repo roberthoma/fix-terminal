@@ -1,4 +1,4 @@
-package com.fixterminal.app.services;
+package com.fixterminal.shared.services;
 
 import lombok.Getter;
 import org.springframework.stereotype.Service;

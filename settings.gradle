@@ -10,4 +10,5 @@ include 'terminal:business'
 findProject(':terminal:business')?.name = 'business'
 include 'terminal:ports'
 findProject(':terminal:ports')?.name = 'ports'
+include 'gui'
 

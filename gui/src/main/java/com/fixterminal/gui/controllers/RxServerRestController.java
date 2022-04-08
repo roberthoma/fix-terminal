@@ -1,9 +1,11 @@
-package com.fixterminal.app.config;
+package com.fixterminal.gui.controllers;
 
-import com.fixterminal.app.services.UserService;
 import com.fixterminal.app.terminal.business.RxFixTerminal;
-import com.fixterminal.app.terminal.business.services.RxFixHeartPrompter;
+import com.fixterminal.app.terminal.business.RxQuickFixApplication;
 import com.fixterminal.app.terminal.business.services.RxFixTerminalPrompter;
+import com.fixterminal.shared.services.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @RestController
-
 public class RxServerRestController {
+    private static final Logger log = LoggerFactory.getLogger(RxServerRestController.class);
+
+    private RxServerRestController(){
+      log.info("Init : RxServerRestController");
+    }
 
     @Autowired
     private RxFixTerminal terminal;

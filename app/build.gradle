@@ -24,6 +24,7 @@ dependencies {
 
 
     implementation project(':shared')
+    implementation project(':gui')
     implementation project(':terminal:business')
 
 
