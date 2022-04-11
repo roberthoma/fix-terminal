@@ -1,19 +1,39 @@
 plugins {
+    id 'org.springframework.boot' version '2.6.3'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
-    id 'application'
 }
 
-group 'com.fixterminal'
-version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
-application {
+subprojects {
 
-    mainClassName = 'com.fixterminal.app.FixTerminalServerApplication'
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'io.spring.dependency-management'
+
+    group = 'com.fixterminal'
+    version = '0.0.1'
+    sourceCompatibility = '8'
+
+    repositories {
+        mavenCentral()
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom('org.springframework.boot:spring-boot-dependencies:2.4.1')
+        }
+    }
 }
+
 
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
@@ -27,6 +47,10 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
 
     compileOnly("org.springframework.boot:spring-boot-devtools:2.6.3")
+
+    implementation 'io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-gradle-plugin:2.6.3'
+    implementation 'com.bmuschko:gradle-cargo-plugin:2.5'
 
 }
 

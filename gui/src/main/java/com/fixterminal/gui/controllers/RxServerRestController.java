@@ -1,6 +1,7 @@
 package com.fixterminal.gui.controllers;
 
-import com.fixterminal.app.terminal.adapters.RxFixTerminalMainPort;
+import com.fixterminal.monitors_adapters.RxMonitorsDeskPort;
+import com.fixterminal.terminal.adapters.RxFixTerminalMainPort;
 import com.fixterminal.shared.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,20 +16,21 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 public class RxServerRestController {
     private static final Logger log = LoggerFactory.getLogger(RxServerRestController.class);
 
-    private RxServerRestController(){
-      log.info("Init : RxServerRestController");
-    }
 
     @Autowired
     private RxFixTerminalMainPort terminal;
 
-//    @Autowired
-    //private RxM  monitorsDesk;
-
-
+    @Autowired
+    private RxMonitorsDeskPort monitorsDesk;
 
     @Autowired
     UserService userService;
+
+    private RxServerRestController(){
+        log.info("Init : RxServerRestController");
+    }
+
+
 
 
     @GetMapping(value="/logs")
@@ -112,9 +114,7 @@ public class RxServerRestController {
 
         StreamingResponseBody responseBody = response -> {
             try {
-                response.write(("Jakieś monitory i instrume\n").getBytes());
-//                response.write((monitorsDesk. +"\n").getBytes());
-
+               response.write((monitorsDesk.getInstrumentsList() +"\n").getBytes());
             } catch (Exception e) {
                 e.printStackTrace();
             }

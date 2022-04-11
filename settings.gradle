@@ -1,20 +1,8 @@
 rootProject.name = 'fix-terminal'
-include 'app'
-include 'shared'
-include 'gui'
-
-
-//Monitor modules
-//include 'monitors'
-
-include 'monitors:business'
-findProject(':monitors:business')?.name = 'business'
-
-include 'monitors:ports'
-findProject(':monitors:ports')?.name = 'ports'
-
-include 'monitors:adapters'
-findProject(':monitors:adapters')?.name = 'adapters'
+include ':application'
+include ':shared'
+include ':gui'
+include ':monitors_adapters'
 
 //Terminal Modules
 include 'terminal:adapters'
@@ -26,5 +14,5 @@ findProject(':terminal:business')?.name = 'business'
 include 'terminal:ports'
 findProject(':terminal:ports')?.name = 'ports'
 
-
+include 'monitors'
 
