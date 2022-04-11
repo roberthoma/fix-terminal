@@ -3,6 +3,10 @@ package com.fixterminal.app.terminal.business;
 
 import com.fixterminal.app.terminal.business.services.RxFixHeartPrompter;
 import com.fixterminal.app.terminal.business.services.RxFixTerminalPrompter;
+import com.fixterminal.shared.market.RxExecuteReport;
+import com.fixterminal.shared.market.RxMarketDataVO;
+import com.fixterminal.shared.positions.RxPosition;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,10 @@ import quickfix.SessionID;
 import quickfix.field.MsgType;
 import quickfix.field.SenderSubID;
 import quickfix.field.TargetCompID;
+
+import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 @Component
 public class RxQuickFixMessageDispatcher {
@@ -32,14 +40,14 @@ public class RxQuickFixMessageDispatcher {
     //TMP
     int hertBB = 0;
 
-//    @Setter
-//    Consumer<RxPosition> positionReportConsumer;
-//
-//    @Setter
-//    Consumer<RxExecuteReport> executionReportConsumer;
-//
-//    @Setter
-//    BiConsumer<Boolean,List<RxMarketDataVO>> marketDataConsumer;
+    @Setter
+    Consumer<RxPosition> positionReportConsumer;
+
+    @Setter
+    Consumer<RxExecuteReport> executionReportConsumer;
+
+    @Setter
+    BiConsumer<Boolean, List<RxMarketDataVO>> marketDataConsumer;
 
 
 

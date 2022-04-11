@@ -16,7 +16,6 @@ public class RxServerStartController {
 
     @Autowired
     RxFixTerminalMainPort terminal;
-    //RxFixTerminal terminal;
 
     private RxServerStartController(){
       log.info("Init : RxServerStartController");

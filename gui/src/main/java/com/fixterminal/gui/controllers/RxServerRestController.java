@@ -22,6 +22,10 @@ public class RxServerRestController {
     @Autowired
     private RxFixTerminalMainPort terminal;
 
+//    @Autowired
+    //private RxM  monitorsDesk;
+
+
 
     @Autowired
     UserService userService;
@@ -101,5 +105,23 @@ public class RxServerRestController {
                 .body(responseBody);
     }
 
+
+    @GetMapping(value="/monitors")
+    public ResponseEntity<StreamingResponseBody> monitors() {
+
+
+        StreamingResponseBody responseBody = response -> {
+            try {
+                response.write(("Jakieś monitory i instrume\n").getBytes());
+//                response.write((monitorsDesk. +"\n").getBytes());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+        return ResponseEntity.ok()
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(responseBody);
+    }
 
 }
