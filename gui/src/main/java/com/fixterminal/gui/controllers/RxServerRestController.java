@@ -70,8 +70,7 @@ public class RxServerRestController {
 
         StreamingResponseBody responseBody = response -> {
             try {
-               // response.write((servPrompter.getLog() +"\n").getBytes());
-                response.write((terminal.getSessionSettings() +"\n").getBytes());
+                response.write((terminal.getLog() +"\n").getBytes());
 
             } catch (Exception e) {
                 e.printStackTrace();
