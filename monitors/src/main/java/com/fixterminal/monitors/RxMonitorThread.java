@@ -106,13 +106,13 @@ public class RxMonitorThread extends Thread  {
 
 
     public RxMonitorThread(RxInstrument instrument){
-        log.info("Init : Monitor of  : "+instrument.getName());
+        log.info("Init : Monitor of  : "+instrument.getSymbol());
         this.instrument  = instrument;
 
     }
 
     public void run(){
-        System.out.println("> Start MONITOR "+instrument.getName());
+        System.out.println("> Start MONITOR "+instrument.getSymbol());
         //x    RxFixTerminal.getInstance().sendMarketDataRequest(instrument);
 
         //Kalkulacja czasu otwartej pozycji jeżeli tego nie zrobił żaden nachodzący komunikat :)

@@ -16,4 +16,18 @@ import org.springframework.context.annotation.Configuration;
         "com.fixterminal.gui"
 })
 public class ApplicationConfiguration {
+
+
+//    @Bean
+//    public RxDicBrokers init() {//throws ParserConfigurationException, IOException, SAXException {
+//        try {
+//
+//            return InitDictionary.initDicBrokers();
+//        }
+//        catch (Exception e){
+//            System.out.println(e);
+//        }
+//        return new RxDicBrokers();
+//    }
+
 }

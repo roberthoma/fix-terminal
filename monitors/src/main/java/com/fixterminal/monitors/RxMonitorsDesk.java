@@ -1,10 +1,10 @@
 package com.fixterminal.monitors;
 
-import com.fixterminal.terminal.adapters.RxQuickFixMessageDispatcherPort;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import com.fixterminal.shared.market.RxExecuteReport;
 import com.fixterminal.shared.market.RxMarketDataVO;
 import com.fixterminal.shared.positions.RxPosition;
+import com.fixterminal.terminal.adapters.RxQuickFixMessageDispatcherPort;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -63,7 +63,7 @@ else {
             RxMonitorThread monitor = new RxMonitorThread(instrument);
             monitor.start();
             monitorsMap.put(monitor.getInstrument() ,monitor);
-            System.out.println("> MONITOR  "+instrument.getName()+" is activated");
+            System.out.println("> MONITOR  "+instrument.getSymbol()+" is activated");
         }
     }
 
@@ -89,7 +89,7 @@ else {
         }
         else {
             System.out.println("ERROR> No set MONITOR for "
-                    + instrument.getName()+
+                    + instrument.getSymbol()+
                     "  [FIX symbol] = "+instrument.getFixSymbol()
             );
         }

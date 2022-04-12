@@ -1,6 +1,10 @@
 package com.fixterminal.shared.dictionaries.instruments;
 
+import com.fixterminal.shared.dictionaries.brokers.RxBroker;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class RxDicInstruments {
@@ -22,5 +26,15 @@ public class RxDicInstruments {
 
         return null;
     }
+
+    public List<RxInstrument> toList(){
+        List<RxInstrument>  instrumentList = new ArrayList<>();
+
+        instrumentMap.forEach((s, rxInstrument) -> instrumentList.add(rxInstrument));
+        //s, rxBroker) ->  brokersList.add( rxBroker));
+
+        return instrumentList;
+    }
+
 
 }

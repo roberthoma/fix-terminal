@@ -1,6 +1,8 @@
 package com.fixterminal.gui.controllers;
 
 import com.fixterminal.monitors_adapters.RxMonitorsDeskPort;
+import com.fixterminal.shared.dictionaries.RxDictionaries;
+import com.fixterminal.shared.dictionaries.brokers.RxDicBrokers;
 import com.fixterminal.terminal.adapters.RxFixTerminalMainPort;
 import com.fixterminal.shared.services.UserService;
 import org.slf4j.Logger;
@@ -22,6 +24,12 @@ public class RxServerRestController {
 
     @Autowired
     private RxMonitorsDeskPort monitorsDesk;
+
+//    @Autowired
+//    RxDicBrokers brokers;
+
+    @Autowired
+    RxDictionaries dictionaries;
 
     @Autowired
     UserService userService;
@@ -123,5 +131,34 @@ public class RxServerRestController {
                 .contentType(MediaType.TEXT_PLAIN)
                 .body(responseBody);
     }
+
+    @GetMapping(value="/dic-brokers")
+    public ResponseEntity<StreamingResponseBody> dicBrokersList() {
+        StreamingResponseBody responseBody = response -> {
+            try {
+                response.write((dictionaries.getDicBrokers().toList() +"\n").getBytes());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+        return ResponseEntity.ok()
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(responseBody);
+    }
+
+    @GetMapping(value="/dic-instruments")
+    public ResponseEntity<StreamingResponseBody> dicInstumentsList() {
+        StreamingResponseBody responseBody = response -> {
+            try {
+                response.write((dictionaries.getDicInstruments().toList() +"\n").getBytes());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+        return ResponseEntity.ok()
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(responseBody);
+    }
+
 
 }

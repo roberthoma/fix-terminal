@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 public class RxInstrument {
 
-    private String   name;
+    private String   symbol;
     private String   fixSymbol;
     private RxBroker broker;
     private int      pipPosition;
@@ -16,8 +16,8 @@ public class RxInstrument {
 
     }
 
-    public RxInstrument(String name, String fixSymbol, RxBroker broker, int pipPosition) {
-        this.name = name;
+    public RxInstrument(String symbol, String fixSymbol, RxBroker broker, int pipPosition) {
+        this.symbol = symbol;
         this.fixSymbol = fixSymbol;
         this.broker = broker;
         this.pipPosition = pipPosition;
