@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<brokers>
+	<broker id="1">
+		<symbol>ICMARKETS</symbol>
+		<name>ICMARKETS</name>
+		<description>IC Markets is one of the most renowned Forex CFD provider.</description>
+	</broker>
+	<broker id="2">
+		<symbol>FXCM</symbol>
+		<name>FXCM</name>
+		<description>FXCM is a leading provider of online foreign exchange (FX) trading.</description>
+	</broker>
+</brokers>

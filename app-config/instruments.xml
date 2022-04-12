@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<instruments>
+	<instrument>
+		<symbol>EUR/USD</symbol>
+		<broker>ICMARKETS</broker>
+		<fixsymbol>1</fixsymbol>
+		<precision>5</precision>
+		<pip_position>4</pip_position>
+		<description>EUR vs US Dolar</description>
+	</instrument>
+	<instrument>
+		<symbol>USD/JPG</symbol>
+		<broker>ICMARKETS</broker>
+		<fixsymbol>4</fixsymbol>
+		<precision>3</precision>
+		<pip_position>2</pip_position>
+		<description>US Dolar vs Japanese Yen</description>
+	</instrument>
+</instruments>
+
