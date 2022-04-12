@@ -1,11 +1,13 @@
-package com.fixterminal.terminal.business;
+package com.fixterminal.terminal.business.application;
 
 
-import com.fixterminal.terminal.business.services.RxFixHeartPrompter;
-import com.fixterminal.terminal.business.services.RxFixTerminalPrompter;
+import com.fixterminal.shared.dictionaries.instruments.RxDicInstruments;
+import com.fixterminal.terminal.business.propmters.RxFixHeartPrompter;
+import com.fixterminal.terminal.business.propmters.RxFixTerminalPrompter;
 import com.fixterminal.shared.market.RxExecuteReport;
 import com.fixterminal.shared.market.RxMarketDataVO;
 import com.fixterminal.shared.positions.RxPosition;
+import com.fixterminal.terminal.business.request_senders.RxRequestMessageSender;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +34,7 @@ public class RxQuickFixMessageDispatcher {
 
     @Autowired
     RxFixHeartPrompter heartPrompter;
+
 
     public RxQuickFixMessageDispatcher() {
         log.info("Init : RxQuickFixMessageDispatcher");

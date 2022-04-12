@@ -1,6 +1,8 @@
-package com.fixterminal.terminal.business;
+package com.fixterminal.terminal.business.application;
 
-import com.fixterminal.terminal.business.services.RxFixTerminalPrompter;
+import com.fixterminal.shared.dictionaries.instruments.RxDicInstruments;
+import com.fixterminal.terminal.business.propmters.RxFixTerminalPrompter;
+import com.fixterminal.terminal.business.request_senders.RxRequestMessageSender;
 import lombok.Getter;
 import lombok.Setter;
 import org.slf4j.Logger;
@@ -28,6 +30,7 @@ public class RxQuickFixApplication implements Application {
 
     @Autowired
     RxQuickFixMessageDispatcher messageDispatcher;
+
 
    @Autowired
    RxFixTerminalPrompter printInfoConsumer;

@@ -1,8 +1,7 @@
 package com.fixterminal.terminal.adapters;
 
-import com.fixterminal.terminal.business.RxFixTerminal;
-import com.fixterminal.terminal.business.RxQuickFixApplication;
-import com.fixterminal.terminal.business.services.RxFixTerminalPrompter;
+import com.fixterminal.terminal.business.application.RxFixTerminal;
+import com.fixterminal.terminal.business.propmters.RxFixTerminalPrompter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,0 +1,6 @@
+https://www.quickfixj.org/usermanual/2.3.0/usage/configuration.html
+
+
+FIX 4.4: Fields by Tag – FIX Dictionary
+-------
+https://www.onixs.biz/fix-dictionary/4.4/fields_by_tag.html

@@ -1,8 +1,8 @@
-package com.fixterminal.terminal.business;
+package com.fixterminal.terminal.business.application;
 
 
 
-import com.fixterminal.terminal.business.services.RxFixTerminalPrompter;
+import com.fixterminal.terminal.business.propmters.RxFixTerminalPrompter;
 import lombok.Getter;
 import lombok.Setter;
 import org.quickfixj.jmx.JmxExporter;
@@ -109,8 +109,8 @@ public class RxQuickFixTerminal  {
             //            if (RxTickToolCmdLineApp.isModeDebug) {
 //          // logFactory = new ScreenLogFactory(false, false, true, false);
             // logFactory = new ScreenLogFactory(false, true, true, true);
-            // logFactory = new ScreenLogFactory(true, true, true, false);
-              logFactory = new ScreenLogFactory(false, false, false, true);
+             logFactory = new ScreenLogFactory(true, true, true, false);
+         //     logFactory = new ScreenLogFactory(false, false, false, true);
             // logFactory = new ScreenLogFactory(false, false, false, true);
             //                    }
             //                  else {

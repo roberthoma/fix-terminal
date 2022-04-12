@@ -44,16 +44,16 @@ else {
         monitorsMap = new HashMap<>();
 
        msgDispatcher.setMarketDataConsumer(this::marketDataDispatcher);
-//
-//
-//        msgDispatcher.setPositionReportConsumer(position
-//                -> positionDispatcher(position)
-//        );
-//
-//
-//        msgDispatcher.setExecutionReportConsumer(rxExecuteReport ->
-//                executionReportDispatcher(rxExecuteReport));
-//
+
+
+        msgDispatcher.setPositionReportConsumer(position
+                -> positionDispatcher(position)
+        );
+
+
+        msgDispatcher.setExecutionReportConsumer(rxExecuteReport ->
+                executionReportDispatcher(rxExecuteReport));
+
 
     }
 

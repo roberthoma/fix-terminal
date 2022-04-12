@@ -1,6 +1,6 @@
 package com.fixterminal.terminal.adapters;
 
-import com.fixterminal.terminal.business.RxQuickFixMessageDispatcher;
+import com.fixterminal.terminal.business.application.RxQuickFixMessageDispatcher;
 import com.fixterminal.shared.market.RxExecuteReport;
 import com.fixterminal.shared.market.RxMarketDataVO;
 import com.fixterminal.shared.positions.RxPosition;

@@ -1,7 +1,7 @@
-package com.fixterminal.terminal.business;
+package com.fixterminal.terminal.business.application;
 
-import com.fixterminal.terminal.business.services.RxFixHeartPrompter;
-import com.fixterminal.terminal.business.services.RxFixTerminalPrompter;
+import com.fixterminal.terminal.business.propmters.RxFixHeartPrompter;
+import com.fixterminal.terminal.business.propmters.RxFixTerminalPrompter;
 import org.quickfixj.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

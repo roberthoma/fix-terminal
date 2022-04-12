@@ -47,8 +47,13 @@ public class RxServerRestController {
         try {
             if (!terminal.isWorking()) {
                 terminal.start();
+                //TODO obsługa błędów logowania
                 userService.readFromFile();
                 terminal.logon(userService.getUser(), userService.getPassword());
+
+
+
+
             }
 
         }

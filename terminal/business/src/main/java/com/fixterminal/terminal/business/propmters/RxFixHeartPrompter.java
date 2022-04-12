@@ -1,4 +1,4 @@
-package com.fixterminal.terminal.business.services;
+package com.fixterminal.terminal.business.propmters;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
