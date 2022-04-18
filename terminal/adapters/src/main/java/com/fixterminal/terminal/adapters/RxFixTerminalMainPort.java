@@ -17,5 +17,6 @@ public interface RxFixTerminalMainPort {
 
     String getLog();
 
+    boolean isUserLogged();
 
 }

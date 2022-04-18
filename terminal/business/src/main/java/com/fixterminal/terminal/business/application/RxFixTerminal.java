@@ -109,6 +109,11 @@ public class RxFixTerminal   {
 //    }
 //
 
+
+public boolean isLoggedOn(){
+    return  rxQuickFixTerminal.isLoggedOn();
+}
+
     //TODO ta funkcja nie jest wystarczająca
 //    public boolean isUserLogon() {
 //        RxQuickFixTerminal quickFixTerminal  = RxQuickFixTerminal.getInstance();

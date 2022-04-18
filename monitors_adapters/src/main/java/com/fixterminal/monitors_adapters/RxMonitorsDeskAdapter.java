@@ -1,5 +1,6 @@
 package com.fixterminal.monitors_adapters;
 
+import com.fixterminal.monitors.RxMonitorSessionController;
 import com.fixterminal.monitors.RxMonitorsDesk;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import org.slf4j.Logger;
@@ -14,11 +15,15 @@ import java.util.List;
 public class RxMonitorsDeskAdapter implements RxMonitorsDeskPort {
     private static final Logger log = LoggerFactory.getLogger(RxMonitorsDeskAdapter.class);
 
-    @Autowired
     RxMonitorsDesk rxMonitorsDesk;
-
-    public RxMonitorsDeskAdapter() {
+    RxMonitorSessionController connectionController;
+    @Autowired
+    public RxMonitorsDeskAdapter(RxMonitorsDesk rxMonitorsDesk,
+                                 RxMonitorSessionController connectionController
+    ) {
         log.info("Init : RxMonitorsDeskAdapter ");
+        this.rxMonitorsDesk = rxMonitorsDesk;
+        this.connectionController = connectionController;
     }
     @Override
     public List<RxInstrument> getInstrumentsList() {
@@ -33,4 +38,12 @@ public class RxMonitorsDeskAdapter implements RxMonitorsDeskPort {
        return null;
 
     }
+
+    @Override
+    public void startConnectionController(){
+        connectionController.start();
+    }
+
+
+
 }

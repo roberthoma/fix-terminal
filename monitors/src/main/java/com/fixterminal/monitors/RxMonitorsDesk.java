@@ -30,7 +30,7 @@ public class RxMonitorsDesk
     private Map<RxInstrument, RxMonitorThread>  monitorsMap;
 
     @Autowired
-    public RxMonitorsDesk(RxQuickFixMessageDispatcherPort msgDispatcher)  {
+    public RxMonitorsDesk(RxQuickFixMessageDispatcherPort msgDispatcher)  {  // TODO pytanie czy przenieść to do FIXTerminala adaptera
        this.msgDispatcher = msgDispatcher;
 
 

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface RxMonitorsDeskPort {
     List<RxInstrument> getInstrumentsList();
+
+    void startConnectionController();
 }

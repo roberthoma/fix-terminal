@@ -41,18 +41,17 @@ public class RxServerRestController {
 
 
 
-    @GetMapping(value="/logs")
+    @GetMapping(value="/start")
     public ResponseEntity<StreamingResponseBody> streamData() {
 
         try {
             if (!terminal.isWorking()) {
                 terminal.start();
+                monitorsDesk.startConnectionController();
+
                 //TODO obsługa błędów logowania
                 userService.readFromFile();
                 terminal.logon(userService.getUser(), userService.getPassword());
-
-
-
 
             }
 

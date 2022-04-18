@@ -33,39 +33,27 @@ public class RxQuickFixTerminal  {
     private Initiator initiator ;
 
 
-    @Getter
-    @Setter
-    SessionID tradeSessionsId;
+//    @Getter
+//    @Setter
+//    SessionID tradeSessionsId;
+//
+//    @Getter
+//    @Setter
+//    SessionID quoteSessionsId;
 
-    @Getter
-    @Setter
-    SessionID quoteSessionsId;
-
-    //@Getter
-//    @Autowired
-  //  private RxQuickFixMessageDispatcher msgDispatcher;
 
     private boolean initiatorStarted = false;
     @Getter
-    private boolean isUserLogon      = false;
-    private String  configPath;
-    private String  configFileName;
 
     @Autowired
     RxFixTerminalPrompter printInfoConsumer;
-
 
 
     public RxQuickFixTerminal(){
         log.info("Init : RxQuickFixTerminal");
     }
 
-//    public void setConfigPath(String configPath){
-//        this.configPath = configPath;
-//    }
-//    public void setConfigFileName(String configFileName){
-//        this.configFileName = configFileName;
-//    }
+
     public String getSessionSettings(){
         if (settings != null) {
             return settings.toString();
@@ -73,9 +61,6 @@ public class RxQuickFixTerminal  {
         return "Terminal not started";
     }
 
-//    private void readSessionSettings() throws ConfigError, IOException {
-//        readSessionSettings();
-//    }
 
     private void readSessionSettings() throws ConfigError, IOException {
         log.info("ReadSessionSettings");
@@ -153,7 +138,7 @@ public class RxQuickFixTerminal  {
                 initiator.start();
                 printInfoConsumer.accept("> Initiator ["+username+"] started.");
                 initiatorStarted = true;
-                isUserLogon      = true;
+            //    isUserLogon      = true;
 
             } catch (Exception e) {
                 log.error("Logon failed", e);
@@ -163,7 +148,7 @@ public class RxQuickFixTerminal  {
                 printInfoConsumer.accept("> Session  ["+sessionId.toString()+"] on.");
                 Session.lookupSession(sessionId).logon();
             }
-            isUserLogon = true;
+    //        isUserLogon = true;
         }
     }
 
@@ -173,13 +158,39 @@ public class RxQuickFixTerminal  {
             printInfoConsumer.accept("> QuickFix : user requested : logout");
         }
 
-        isUserLogon = false;
         initiator.stop();
-        initiatorStarted = false;
-
     }
 
     public List<SessionID> getSessions(){
         return initiator.getSessions();
     }
+
+    public boolean isLoggedOn(){
+      return initiator.isLoggedOn();
+    }
+
+    private quickfix.SessionID getSessionIdByTargetSubID(String sessionSubId){
+        for (quickfix.SessionID sessionId : initiator.getSessions()
+        )
+        {
+            if (sessionId.getTargetSubID().compareTo(sessionSubId )==0){
+                return sessionId;
+            }
+        }
+        return null;
+
+
+    }
+
+    public  quickfix.SessionID getQuoteSessionsId() {
+        return  getSessionIdByTargetSubID("QUOTE");
+    }
+
+    public quickfix.SessionID getTradeSessionsId() {
+        return  getSessionIdByTargetSubID("TRADE");
+    }
+
+
+
+
 }

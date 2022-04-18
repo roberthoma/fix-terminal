@@ -63,4 +63,10 @@ public class RxFixTerminalMainAdapter implements RxFixTerminalMainPort {
         return terminalPrompter.getLog();
     }
 
+    @Override
+    public boolean isUserLogged(){
+      return terminal.isLoggedOn();
+
+    }
+
 }
