@@ -1,6 +1,6 @@
-package com.fixterminal.application.config;
+package com.fixterminal.config;
 
-import com.fixterminal.application.FixTerminalServerApplication;
+import com.fixterminal.FixTerminalServerApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Configuration;

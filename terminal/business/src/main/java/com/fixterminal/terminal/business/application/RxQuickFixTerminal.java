@@ -32,16 +32,6 @@ public class RxQuickFixTerminal  {
     private JmxExporter exporter;
     private Initiator initiator ;
 
-
-//    @Getter
-//    @Setter
-//    SessionID tradeSessionsId;
-//
-//    @Getter
-//    @Setter
-//    SessionID quoteSessionsId;
-
-
     private boolean initiatorStarted = false;
     @Getter
 
@@ -138,7 +128,6 @@ public class RxQuickFixTerminal  {
                 initiator.start();
                 printInfoConsumer.accept("> Initiator ["+username+"] started.");
                 initiatorStarted = true;
-            //    isUserLogon      = true;
 
             } catch (Exception e) {
                 log.error("Logon failed", e);
@@ -148,7 +137,6 @@ public class RxQuickFixTerminal  {
                 printInfoConsumer.accept("> Session  ["+sessionId.toString()+"] on.");
                 Session.lookupSession(sessionId).logon();
             }
-    //        isUserLogon = true;
         }
     }
 
@@ -170,16 +158,13 @@ public class RxQuickFixTerminal  {
     }
 
     private quickfix.SessionID getSessionIdByTargetSubID(String sessionSubId){
-        for (quickfix.SessionID sessionId : initiator.getSessions()
-        )
+        for (quickfix.SessionID sessionId : initiator.getSessions())
         {
             if (sessionId.getTargetSubID().compareTo(sessionSubId )==0){
                 return sessionId;
             }
         }
-        return null;
-
-
+        return null; //TODO throw exception : for exp  SESSIONS Target NO found
     }
 
     public  quickfix.SessionID getQuoteSessionsId() {

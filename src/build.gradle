@@ -1,0 +1,8 @@
+dependencies {
+    implementation project(':gui')
+    implementation project(':shared')
+}
+
+test {
+    useJUnitPlatform()
+}
