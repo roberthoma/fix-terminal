@@ -27,6 +27,27 @@ subprojects {
     test {
         useJUnitPlatform()
     }
+    dependencies {
+        testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+        testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+        compileOnly 'org.projectlombok:lombok:1.18.22'
+        annotationProcessor 'org.projectlombok:lombok:1.18.22'
+
+        implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.6.3'
+        implementation 'org.springframework.boot:spring-boot-starter-websocket:2.6.3'
+        implementation 'org.springframework.boot:spring-boot-starter-web:2.6.3'
+        testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.3'
+
+        compileOnly("org.springframework.boot:spring-boot-devtools:2.6.3")
+
+        implementation 'io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE'
+        implementation 'org.springframework.boot:spring-boot-gradle-plugin:2.6.3'
+        implementation 'com.bmuschko:gradle-cargo-plugin:2.5'
+
+        implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+
+
+    }
 
     dependencyManagement {
         imports {
@@ -56,9 +77,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-gradle-plugin:2.6.3'
     implementation 'com.bmuschko:gradle-cargo-plugin:2.5'
 
+    implementation 'org.quickfixj:quickfixj-core:2.3.1'
+    implementation 'org.quickfixj:quickfixj-all:2.3.1'
+
+// https://mvnrepository.com/artifact/org.apache.commons/commons-math3
+    implementation group: 'org.apache.commons', name: 'commons-math3', version: '3.6.1'
+
     implementation project(':gui')
     implementation project(':shared')
-
 }
 
 test {

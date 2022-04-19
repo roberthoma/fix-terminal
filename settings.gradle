@@ -1,18 +1,3 @@
 rootProject.name = 'fix-terminal'
-include ':application'
 include ':shared'
 include ':gui'
-include ':monitors_adapters'
-
-//Terminal Modules
-include 'terminal:adapters'
-findProject(':terminal:adapters')?.name = 'adapters'
-
-include 'terminal:business'
-findProject(':terminal:business')?.name = 'business'
-
-include 'terminal:ports'
-findProject(':terminal:ports')?.name = 'ports'
-
-include 'monitors'
-
