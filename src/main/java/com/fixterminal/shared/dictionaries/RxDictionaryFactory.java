@@ -38,7 +38,7 @@ public static RxDicBrokers initDicBrokers() throws ParserConfigurationException,
     for (int i = 0; i < nList.getLength(); i++) {
         Node node = nList.item(i);
         if (node.getNodeType() == Node.ELEMENT_NODE) {
-            //Print each student's detail
+
             Element element = (Element) node;
 
             brokers.add(new RxBroker(Double.parseDouble( element.getAttribute("id")),
@@ -70,7 +70,6 @@ public static RxDicBrokers initDicBrokers() throws ParserConfigurationException,
       for (int i = 0; i < nList.getLength(); i++) {
           Node node = nList.item(i);
           if (node.getNodeType() == Node.ELEMENT_NODE) {
-              //Print each student's detail
               Element element = (Element) node;
 
               RxInstrument instrument = new RxInstrument();

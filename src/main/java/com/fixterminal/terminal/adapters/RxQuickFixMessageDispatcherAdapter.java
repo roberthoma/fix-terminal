@@ -1,6 +1,7 @@
 package com.fixterminal.terminal.adapters;
 
-import com.fixterminal.terminal.domain.application.RxQuickFixMessageDispatcher;
+import com.fixterminal.market.ports.RxQuickFixMessageDispatcherPort;
+import com.fixterminal.terminal.business.application.RxQuickFixMessageDispatcher;
 import com.fixterminal.shared.market.RxExecuteReport;
 import com.fixterminal.shared.market.RxMarketDataVO;
 import com.fixterminal.shared.positions.RxPosition;
@@ -14,7 +15,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 @Component
-public class RxQuickFixMessageDispatcherAdapter implements RxQuickFixMessageDispatcherPort{
+public class RxQuickFixMessageDispatcherAdapter implements RxQuickFixMessageDispatcherPort {
     private static final Logger log = LoggerFactory.getLogger(RxQuickFixMessageDispatcherAdapter.class);
 
      RxQuickFixMessageDispatcher messageDispatcher;

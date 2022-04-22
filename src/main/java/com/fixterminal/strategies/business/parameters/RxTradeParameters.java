@@ -27,7 +27,7 @@ public class RxTradeParameters {
 
 
 
-    //    Breakeven params
+    //TODO     Breakeven params fo config file
     private boolean AUTO_BREAKEVEN = false; //: ON/OFF
     private double  BREAKEVEN_ACTIVATE_DIST  = 0.0002 ; //pips
     private double  BREAKEVEN_PROFIT         = 0.00006; // Poprawić na pips

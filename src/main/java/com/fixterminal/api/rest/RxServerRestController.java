@@ -1,9 +1,11 @@
 package com.fixterminal.api.rest;
 
-import com.fixterminal.market.adapters.RxMonitorsDeskPort;
+import com.fixterminal.api.ports.RxMonitorsDeskApiPort;
+import com.fixterminal.api.ports.RxStrategiesPort;
+import com.fixterminal.services.terminal.RxMainServerService;
 import com.fixterminal.shared.dictionaries.RxDictionaries;
-import com.fixterminal.shared.services.UserService;
-import com.fixterminal.terminal.adapters.RxFixTerminalMainPort;
+import com.fixterminal.services.user.UserService;
+import com.fixterminal.gui.ports.RxFixTerminalMainGuiPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,19 +21,8 @@ public class RxServerRestController {
 
 
     @Autowired
-    private RxFixTerminalMainPort terminal;
+    RxMainServerService mainService;
 
-    @Autowired
-    private RxMonitorsDeskPort monitorsDesk;
-
-//    @Autowired
-//    RxDicBrokers brokers;
-
-    @Autowired
-    RxDictionaries dictionaries;
-
-    @Autowired
-    UserService userService;
 
     private RxServerRestController(){
         log.info("Init : RxServerRestController");
@@ -44,16 +35,7 @@ public class RxServerRestController {
     public ResponseEntity<StreamingResponseBody> streamData() {
 
         try {
-            if (!terminal.isWorking()) {
-                terminal.start();
-                monitorsDesk.startConnectionController();
-
-                //TODO obsługa błędów logowania
-                userService.readFromFile();
-                terminal.logon(userService.getUser(), userService.getPassword());
-
-            }
-
+            mainService.serverStart();
         }
         catch (Exception e){
             System.out.println(e);
@@ -61,7 +43,7 @@ public class RxServerRestController {
 
         StreamingResponseBody responseBody = response -> {
                 try {
-                    response.write((terminal.getLog() +"\n").getBytes());
+                    response.write((mainService.getTerminalog() +"\n").getBytes());
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -78,7 +60,7 @@ public class RxServerRestController {
     public ResponseEntity<StreamingResponseBody> logout() {
 
         try {
-                terminal.logout();
+            mainService.terminalLogout();
 
         }
         catch (Exception e){
@@ -87,7 +69,7 @@ public class RxServerRestController {
 
         StreamingResponseBody responseBody = response -> {
             try {
-                response.write((terminal.getLog() +"\n").getBytes());
+                response.write((mainService.getTerminalog() +"\n").getBytes());
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -107,7 +89,8 @@ public class RxServerRestController {
 
         StreamingResponseBody responseBody = response -> {
             try {
-                response.write((terminal.getSessionSettings() +"\n").getBytes());
+                response.write((mainService.getTerminal()
+                                           .getSessionSettings() +"\n").getBytes());
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -125,7 +108,8 @@ public class RxServerRestController {
 
         StreamingResponseBody responseBody = response -> {
             try {
-               response.write((monitorsDesk.getInstrumentsList() +"\n").getBytes());
+               response.write((mainService.getMonitorsDesk()
+                                          .getInstrumentsList() +"\n").getBytes());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -139,7 +123,8 @@ public class RxServerRestController {
     public ResponseEntity<StreamingResponseBody> dicBrokersList() {
         StreamingResponseBody responseBody = response -> {
             try {
-                response.write((dictionaries.getDicBrokers().toList() +"\n").getBytes());
+                response.write((mainService.getDictionaries()
+                                           .getDicBrokers().toList() +"\n").getBytes());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -153,7 +138,8 @@ public class RxServerRestController {
     public ResponseEntity<StreamingResponseBody> dicInstumentsList() {
         StreamingResponseBody responseBody = response -> {
             try {
-                response.write((dictionaries.getDicInstruments().toList() +"\n").getBytes());
+                response.write((mainService.getDictionaries()
+                                           .getDicInstruments().toList() +"\n").getBytes());
             } catch (Exception e) {
                 e.printStackTrace();
             }

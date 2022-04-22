@@ -1,7 +1,8 @@
 package com.fixterminal.terminal.adapters;
 
+import com.fixterminal.market.ports.RxRequestMessageSenderPort;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
-import com.fixterminal.terminal.domain.senders.RxRequestMessageSender;
+import com.fixterminal.terminal.business.senders.RxRequestMessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

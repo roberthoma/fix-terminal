@@ -1,0 +1,1 @@
+//TODO Prezentacja statystyk np odliczanie czasu od ceny która się zatrzymała na jakiś ustalony czas
