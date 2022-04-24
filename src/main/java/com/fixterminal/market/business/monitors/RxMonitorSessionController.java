@@ -59,13 +59,15 @@ public class RxMonitorSessionController extends Thread {
           log.info("SESSION_CTRL : USER LOGGED");
         }
 
-
-        for (RxInstrument instrument : dicInstruments.getDefaultList())
+        //TODO Monitorowanie tylko tych wskazanych które będą tradowane.
+        //for (RxInstrument instrument : dicInstruments.getDefaultList())
+        for (RxInstrument instrument : dicInstruments.toList())
            {
             rxRequestMessageSender.sendMarketDataRequest(instrument);
             monitorsDesk.initMonitor(instrument);
         }
 
+       // TODO For developing loop controlled connections etc
 
     } catch (InterruptedException e) {
         e.printStackTrace();

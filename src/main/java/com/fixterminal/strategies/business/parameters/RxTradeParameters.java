@@ -1,5 +1,6 @@
 package com.fixterminal.strategies.business.parameters;
 
+import com.fixterminal.shared.enumerators.RxOnOff;
 import com.fixterminal.shared.enumerators.RxOrderTimeInForce;
 import com.fixterminal.shared.enumerators.RxOrderType;
 import lombok.Getter;
@@ -14,8 +15,9 @@ import lombok.Setter;
 //
 //
 //Ponadto parametry zapisywane pod konkretny instrumen
+// marametry mogą być manippulowane przez menagera i manulanie przez tradera(osobe fizyczną)
 
-
+//TODO przygotować klase abstrakcyjną i utrzymywać parametry w mapie itd
 @Setter
 @Getter
 public class RxTradeParameters {
@@ -25,17 +27,13 @@ public class RxTradeParameters {
     private RxOrderTimeInForce tif;
     private Double price;
 
-
-
-    //TODO     Breakeven params fo config file
-    private boolean AUTO_BREAKEVEN = false; //: ON/OFF
-    private double  BREAKEVEN_ACTIVATE_DIST  = 0.0002 ; //pips
-    private double  BREAKEVEN_PROFIT         = 0.00006; // Poprawić na pips
-
-    private double  STOP_LOSS_DISTANCE       = 0.0005;
-
-    private double  QUANTITY                 = 1000;
-    private double  MOVE_DISTANCE            = 1000;
+    // Parameters configurable from file
+    private RxOnOff AUTO_BREAKEVEN;
+    private double  BREAKEVEN_ACTIVATE_DIST;
+    private double  BREAKEVEN_PROFIT;
+    private double  STOP_LOSS_DISTANCE;
+    private double  QUANTITY;
+    private double  MOVE_DISTANCE;
 
 
 
@@ -66,5 +64,15 @@ public class RxTradeParameters {
 
    }
 
+    @Override
+    public String toString() {
+        String paramsList;
 
+        paramsList = " AUTO_BREAKEVEN = "+ AUTO_BREAKEVEN.toString() + "\n"+
+                     " BREAKEVEN_ACTIVATE_DIST = "+ Double.valueOf(BREAKEVEN_ACTIVATE_DIST).toString();
+
+
+
+        return paramsList;
+    }
 }

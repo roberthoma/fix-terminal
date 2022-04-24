@@ -35,9 +35,11 @@ public class RxDicInstruments {
     }
 
 
-    public List<RxInstrument> getDefaultList() {
+    public List<RxInstrument> getMonitoredList() {
         List<RxInstrument>  instrumentList = new ArrayList<>();
         instrumentList.add( instrumentMap.get("1"));  //TODO tymczasowa lista .. narazie EURUSD
         return instrumentList;
     }
+
+
 }

@@ -51,6 +51,7 @@ public class RxMainServerService {
             terminal.start();
             monitorsDesk.startConnectionController();
 
+            //TODO Inicjacja parametrów tradigu ..
             strategies.start();
 
             //TODO obsługa błędów logowania

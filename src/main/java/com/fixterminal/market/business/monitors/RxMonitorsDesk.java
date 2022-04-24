@@ -29,7 +29,9 @@ public final class RxMonitorsDesk
     private final Map<RxInstrument, RxMarketMonitor>  monitorsMap;
 
     @Autowired
-    public RxMonitorsDesk(RxQuickFixMessageDispatcherPort msgDispatcher)  {  // TODO pytanie czy przenieść to do FIXTerminala adaptera
+    public RxMonitorsDesk(RxQuickFixMessageDispatcherPort msgDispatcher)  {
+    // TODO pytanie czy przenieść to do FIXTerminala adaptera
+
         log.info("Init : RxMonitorsDesk ");
        this.msgDispatcher = msgDispatcher;
 
@@ -63,10 +65,10 @@ public final class RxMonitorsDesk
         }
     }
 
-    public RxMarketMonitor getMonitor(RxInstrument instrument) {
-        initMonitor(instrument);
-        return  monitorsMap.get(instrument);
-    }
+//    public RxMarketMonitor getMonitor(RxInstrument instrument) {
+//        initMonitor(instrument);
+//        return  monitorsMap.get(instrument);
+//    }
 
     private void marketDataDispatcher(Boolean isFullRefresh,
                                       List<RxMarketDataVO> marketDataVOList  )

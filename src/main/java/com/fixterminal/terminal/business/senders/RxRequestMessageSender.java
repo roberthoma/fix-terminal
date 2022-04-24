@@ -79,7 +79,7 @@ public class RxRequestMessageSender {
 //----------------------------------
 //Quote Request <R> message
 
-    public void sendQuoteRequestMessage() {
+    public void sendQuoteRequestMessage(RxInstrument instrument) {
         try {
             UUID uuid = UUID.randomUUID();
             quickfix.fix44.MarketDataRequest.NoMDEntryTypes group =
@@ -91,8 +91,7 @@ public class RxRequestMessageSender {
             message.setField(new QuoteReqID(randomUUIDString));
 
             message.setField(new NoRelatedSym(1));
-            group.setField(new Symbol("1")); // tymczasowo EDEK
-            // group1.setField(new Symbol("EUR/USD")); // tymczasowo EDEK
+            group.setField(new Symbol(instrument.getFixSymbol()));
             //group1.setField(new Symbol(symbolTextField.getText()));
             message.addGroup(group);
 
