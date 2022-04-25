@@ -140,7 +140,6 @@ public class RxMarketMonitor extends Thread  {
     public void marketDataConsume(Boolean isFullRefresh,
                                   List<RxMarketDataVO> marketDataVOList  )
     {
-        System.out.printf("ROHO MONITOR marketDataConsume >>>> :)");
         if(isFullRefresh){
             mdActualOfferBookMap.clear();
         }

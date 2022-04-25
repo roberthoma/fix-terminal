@@ -5,9 +5,14 @@ import com.fixterminal.api.ports.RxStrategiesPort;
 import com.fixterminal.gui.ports.RxFixTerminalMainGuiPort;
 import com.fixterminal.services.user.UserService;
 import com.fixterminal.shared.dictionaries.RxDictionaries;
+import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 
 @Slf4j
 @Service
@@ -46,10 +51,14 @@ public class RxMainServerService {
     }
 
 
-    public void serverStart() throws IllegalAccessException, InstantiationException {
+    public void serverStart() throws IllegalAccessException, InstantiationException, ParserConfigurationException, IOException, SAXException {
         if (!terminal.isWorking()) {
             terminal.start();
+
             monitorsDesk.startConnectionController();
+
+            monitorsDesk.startMonitors();
+
 
             //TODO Inicjacja parametrów tradigu ..
             strategies.start();
@@ -80,4 +89,11 @@ public class RxMainServerService {
     public RxMonitorsDeskApiPort getMonitorsDesk() {
       return monitorsDesk;
     }
+
+
+    public void setAutoTradingOff(){
+        strategies.setAutoTradingOff();
+
+    }
+
 }

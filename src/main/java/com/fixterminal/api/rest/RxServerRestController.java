@@ -1,19 +1,19 @@
 package com.fixterminal.api.rest;
 
-import com.fixterminal.api.ports.RxMonitorsDeskApiPort;
-import com.fixterminal.api.ports.RxStrategiesPort;
+import com.fixterminal.commands.base.RxCommandDispatcher;
+import com.fixterminal.commands.base.RxCommandsEnum;
 import com.fixterminal.services.terminal.RxMainServerService;
-import com.fixterminal.shared.dictionaries.RxDictionaries;
-import com.fixterminal.services.user.UserService;
-import com.fixterminal.gui.ports.RxFixTerminalMainGuiPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+
+import java.util.Map;
 
 @RestController
 public class RxServerRestController {
@@ -23,6 +23,8 @@ public class RxServerRestController {
     @Autowired
     RxMainServerService mainService;
 
+    @Autowired
+    RxCommandDispatcher cmdDispatcher;
 
     private RxServerRestController(){
         log.info("Init : RxServerRestController");
@@ -148,6 +150,36 @@ public class RxServerRestController {
                 .contentType(MediaType.TEXT_PLAIN)
                 .body(responseBody);
     }
+
+
+
+    @GetMapping(value="/command")
+    public ResponseEntity<StreamingResponseBody> command  (@RequestParam String cmd ,
+                                                           @RequestParam(required = false) Map<String, String> params) {
+
+        StreamingResponseBody responseBody = response -> {
+            try {
+                System.out.println("cmd = "+cmd);
+
+                if (!params.isEmpty()){
+                    params.forEach((s, s2) -> System.out.println("Par="+ s +" val="+s2));
+                }
+
+                RxCommandsEnum rxCmd =  cmdDispatcher.decodeCommand(cmd);
+                cmdDispatcher.dispose(rxCmd);
+
+
+                response.write(("WYNIK comendy cmd="+cmd +"\n").getBytes());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        };
+        return ResponseEntity.ok()
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(responseBody);
+    }
+
 
 
 }

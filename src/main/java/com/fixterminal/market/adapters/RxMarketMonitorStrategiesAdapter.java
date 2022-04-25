@@ -4,24 +4,21 @@ import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import com.fixterminal.shared.market.RxMarketDataCalcBaseVO;
 import com.fixterminal.shared.pending_orders.RxPendingOrder;
 import com.fixterminal.shared.positions.RxPosition;
-import com.fixterminal.strategies.ports.RxMarketMonitorTraderPort;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.fixterminal.strategies.ports.RxMarketMonitorStrategiesPort;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Consumer;
 
-@Component
-public class RxMarketMonitorTraderAdapter implements RxMarketMonitorTraderPort {
+@Slf4j
+public class RxMarketMonitorStrategiesAdapter implements RxMarketMonitorStrategiesPort {
 
+    public RxMarketMonitorStrategiesAdapter(RxInstrument instrument){
 
-
-//    @Autowired
-//    public RxMarketMonitorTraderAdapter(Rx){
-//      super();
-//    }
+    }
 
     @Override
-    public void setTradeControllerConsumer(Consumer<RxMarketMonitorTraderPort> m) {
+    public void setTradeControllerConsumer(Consumer<RxMarketMonitorStrategiesPort> m) {
 
     }
 

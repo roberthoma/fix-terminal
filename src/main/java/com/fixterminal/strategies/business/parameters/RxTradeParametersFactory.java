@@ -17,7 +17,7 @@ public class RxTradeParametersFactory {
       RxTradeParameters tradeParameters = new RxTradeParameters();
       Properties prop = new Properties();
 //
-      String fileName =  "config/eurusd_parameters.properties";
+      String fileName =  "config/eurusd.properties";
       InputStream is = null;
       try{
           is = new FileInputStream(fileName);
@@ -34,6 +34,7 @@ public class RxTradeParametersFactory {
       }
 
 
+      tradeParameters.setAUTO_TRADE(RxOnOff.valueOf(prop.getProperty("AUTO_TRADE", RxOnOff.OFF.toString())));
       tradeParameters.setAUTO_BREAKEVEN(RxOnOff.valueOf(prop.getProperty("AUTO_BREAKEVEN", RxOnOff.OFF.toString())));
       tradeParameters.setBREAKEVEN_ACTIVATE_DIST(Double.parseDouble(prop.getProperty("BREAKEVEN_ACTIVATE_DIST")));
 

@@ -1,6 +1,7 @@
 package com.fixterminal.strategies.business.parameters;
 
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
+import com.fixterminal.shared.enumerators.RxOnOff;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,13 @@ public class RxTradeParametersDesk {
    }
 
 
+   public void setAutoTradingOff() {
+      parametersMap.forEach((instrument, rxTradeParameters) -> rxTradeParameters.setAUTO_TRADE(RxOnOff.OFF));
+   }
 
+
+   public RxTradeParameters getTradeParameters(RxInstrument instrument){
+     return parametersMap.get(instrument);
+   }
 
 }

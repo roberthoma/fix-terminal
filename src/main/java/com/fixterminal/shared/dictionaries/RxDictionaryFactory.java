@@ -18,6 +18,7 @@ import java.io.IOException;
 
 //TODO Zrobić fabryke
 public class RxDictionaryFactory {
+    static int  n_pop = 0; // TODO do usuniecia
 
 
 public static RxDicBrokers initDicBrokers() throws ParserConfigurationException, IOException, SAXException {
@@ -53,7 +54,8 @@ public static RxDicBrokers initDicBrokers() throws ParserConfigurationException,
   }
 
   public static RxDicInstruments initDicInstruments() throws ParserConfigurationException, IOException, SAXException {
-
+        n_pop++;
+      System.out.println("POBRANIE n="+n_pop);
         RxDicInstruments instruments = new RxDicInstruments();
 
         DocumentBuilderFactory dBfactory = DocumentBuilderFactory.newInstance();

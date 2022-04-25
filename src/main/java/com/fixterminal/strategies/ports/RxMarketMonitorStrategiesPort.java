@@ -7,11 +7,11 @@ import com.fixterminal.shared.positions.RxPosition;
 
 import java.util.function.Consumer;
 
-public interface RxMarketMonitorTraderPort {
+public interface RxMarketMonitorStrategiesPort {
 
-  //  public RxMarketMonitorTraderPort(RxInstrument instrument);
+    //public RxMarketMonitorTraderPort(RxInstrument instrument);
 
-    void setTradeControllerConsumer(Consumer<RxMarketMonitorTraderPort> m);
+    void setTradeControllerConsumer(Consumer<RxMarketMonitorStrategiesPort> m);
 
     boolean isOpenPosition();
 

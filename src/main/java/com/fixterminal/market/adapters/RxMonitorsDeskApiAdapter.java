@@ -3,6 +3,7 @@ package com.fixterminal.market.adapters;
 import com.fixterminal.api.ports.RxMonitorsDeskApiPort;
 import com.fixterminal.market.business.monitors.RxMonitorSessionController;
 import com.fixterminal.market.business.monitors.RxMonitorsDesk;
+import com.fixterminal.shared.dictionaries.instruments.RxDicInstruments;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,13 +19,16 @@ public class RxMonitorsDeskApiAdapter implements RxMonitorsDeskApiPort {
 
     RxMonitorsDesk rxMonitorsDesk;
     RxMonitorSessionController connectionController;
+    RxDicInstruments instruments;
     @Autowired
     public RxMonitorsDeskApiAdapter(RxMonitorsDesk rxMonitorsDesk,
-                                    RxMonitorSessionController connectionController
+                                    RxMonitorSessionController connectionController,
+                                    RxDicInstruments instruments
     ) {
         log.info("Init : RxMonitorsDeskAdapter ");
-        this.rxMonitorsDesk = rxMonitorsDesk;
+        this.rxMonitorsDesk       = rxMonitorsDesk;
         this.connectionController = connectionController;
+        this.instruments          = instruments;
     }
     @Override
     public List<RxInstrument> getInstrumentsList() {
@@ -45,6 +49,14 @@ public class RxMonitorsDeskApiAdapter implements RxMonitorsDeskApiPort {
         connectionController.start();
     }
 
+    @Override
+    public void startMonitors() {
+        for (RxInstrument instrument : instruments.toMonitoringList())
+        {
+            rxMonitorsDesk.initMonitor(instrument);
+        }
+
+    }
 
 
 }

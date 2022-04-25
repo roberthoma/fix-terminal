@@ -28,6 +28,8 @@ public class RxTradeParameters {
     private Double price;
 
     // Parameters configurable from file
+
+    private RxOnOff AUTO_TRADE;
     private RxOnOff AUTO_BREAKEVEN;
     private double  BREAKEVEN_ACTIVATE_DIST;
     private double  BREAKEVEN_PROFIT;
@@ -68,8 +70,9 @@ public class RxTradeParameters {
     public String toString() {
         String paramsList;
 
-        paramsList = " AUTO_BREAKEVEN = "+ AUTO_BREAKEVEN.toString() + "\n"+
-                     " BREAKEVEN_ACTIVATE_DIST = "+ Double.valueOf(BREAKEVEN_ACTIVATE_DIST).toString();
+        paramsList = "AUTO_TRADE = "+ AUTO_TRADE.toString() + "\n"+
+                     "AUTO_BREAKEVEN = "+ AUTO_BREAKEVEN.toString() + "\n"+
+                     "BREAKEVEN_ACTIVATE_DIST = "+ Double.valueOf(BREAKEVEN_ACTIVATE_DIST).toString();
 
 
 

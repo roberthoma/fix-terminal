@@ -9,4 +9,6 @@ public interface RxMonitorsDeskApiPort {
     List<RxInstrument> getInstrumentsList();
 
     void startConnectionController();
+
+    void startMonitors();
 }

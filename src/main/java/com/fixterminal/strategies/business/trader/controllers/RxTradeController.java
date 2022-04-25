@@ -1,9 +1,10 @@
-package com.fixterminal.strategies.business.trader;
+package com.fixterminal.strategies.business.trader.controllers;
 
 
 import com.fixterminal.shared.pending_orders.RxPendingOrder;
 import com.fixterminal.shared.positions.RxPosition;
-import com.fixterminal.strategies.ports.RxMarketMonitorTraderPort;
+import com.fixterminal.strategies.business.trader.actions.RxTradeCommands;
+import com.fixterminal.strategies.ports.RxMarketMonitorStrategiesPort;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +50,7 @@ TP_VALUE : 2,30 eur
 //------------------------------------------------------------
 
 
-    RxMarketMonitorTraderPort monitor;
+    RxMarketMonitorStrategiesPort monitor;
 
     RxTradeCommands tradeCmd;
     boolean isBought = false; //tmp
@@ -57,14 +58,14 @@ TP_VALUE : 2,30 eur
  //   Parameters i przekazanie do  wyszyscich poleceni jako instancji
 
 
-    public RxTradeController(RxMarketMonitorTraderPort monitor){
+    public RxTradeController(RxMarketMonitorStrategiesPort monitor){
         log.info("Set autoTR inst ="+monitor.getInstrument()
                                                       .getFixSymbol());
 
         this.monitor = monitor;
         monitor.setTradeControllerConsumer(m -> tradeControlByMsg());
 
-        tradeCmd = new RxTradeCommands(monitor);
+//        tradeCmd = new RxTradeCommands(monitor);
 
 
     }

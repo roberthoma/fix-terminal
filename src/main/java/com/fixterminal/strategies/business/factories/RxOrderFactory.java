@@ -8,8 +8,10 @@ import com.fixterminal.shared.enumerators.RxPositionDirection;
 import com.fixterminal.shared.orders.RxOrderEntity;
 import com.fixterminal.shared.positions.RxPosition;
 import com.fixterminal.strategies.business.parameters.RxTradeParameters;
-import com.fixterminal.strategies.ports.RxMarketMonitorTraderPort;
+import com.fixterminal.strategies.ports.RxMarketMonitorStrategiesPort;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RxOrderFactory {
 
 
@@ -17,7 +19,7 @@ public class RxOrderFactory {
 
     public RxOrderEntity cancelLimitOrder(RxActionOnMarket marketAction,
                                           RxTradeParameters parameters,
-                                          RxMarketMonitorTraderPort monitor) {
+                                          RxMarketMonitorStrategiesPort monitor) {
         RxOrderEntity rxOrder = new RxOrderEntity();
 
 
@@ -30,7 +32,7 @@ public class RxOrderFactory {
 
     public RxOrderEntity createLimitOrder(RxActionOnMarket marketAction,
                                           RxTradeParameters parameters,
-                                          RxMarketMonitorTraderPort monitor) {
+                                          RxMarketMonitorStrategiesPort monitor) {
         RxOrderEntity rxOrder = new RxOrderEntity();
         double limitPrice;
 
@@ -58,7 +60,7 @@ public class RxOrderFactory {
 
         public RxOrderEntity createMarketOrder(RxActionOnMarket marketAction,
                                                RxTradeParameters parameters,
-                                               RxMarketMonitorTraderPort monitor) {
+                                               RxMarketMonitorStrategiesPort monitor) {
             RxOrderEntity rxOrder = new RxOrderEntity();
             RxOrderSide side;
             Double quantity;
@@ -112,7 +114,7 @@ public class RxOrderFactory {
 
     public RxOrderEntity createCancelPendingOrder(RxActionOnMarket cancelPendingOrder,
                                                   RxTradeParameters tradeParameters,
-                                                  RxMarketMonitorTraderPort  monitor)
+                                                  RxMarketMonitorStrategiesPort monitor)
     {
         RxOrderEntity rxOrder = new RxOrderEntity();
 

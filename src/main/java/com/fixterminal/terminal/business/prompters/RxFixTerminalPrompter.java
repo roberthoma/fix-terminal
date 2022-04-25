@@ -18,8 +18,10 @@ public class RxFixTerminalPrompter implements Consumer<String> {
 
     @Override
     public void accept(String s) {
-        log.info(s);
-        logBuffer.append(s).append("\n");
+        if (false){  //TODO paramtr wyłączający globalne logowanie
+            log.info(s);
+            logBuffer.append(s).append("\n");
+         }
     }
 
     public String getLog(){

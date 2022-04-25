@@ -42,4 +42,7 @@ public class RxDicInstruments {
     }
 
 
+    public List<RxInstrument> toMonitoringList() {
+      return toList();
+    }
 }

@@ -1,29 +1,45 @@
-package com.fixterminal.strategies.business.trader;
+package com.fixterminal.strategies.business.trader.actions;
 
-import com.fixterminal.strategies.ports.RxMarketMonitorTraderPort;
+import com.fixterminal.shared.enumerators.RxActionOnMarket;
+import com.fixterminal.strategies.business.factories.RxOrderFactory;
+import com.fixterminal.strategies.business.parameters.RxTradeParameters;
+import com.fixterminal.strategies.business.parameters.RxTradeParametersDesk;
+import com.fixterminal.strategies.ports.RxMarketMonitorStrategiesPort;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-
+@Slf4j
+@Component
 public class RxTradeCommands  {
 
     //RxTradeParameters  tradeParameters;
-    RxMarketMonitorTraderPort monitor;
+    RxOrderFactory orderFactory;
+    RxMarketMonitorStrategiesPort monitor;
 
-    public RxTradeCommands(RxMarketMonitorTraderPort monitor){
-        this.monitor = monitor;
+    RxTradeParametersDesk tradeParametersDesk;
+
+//    public RxTradeCommands(RxMarketMonitorStrategiesPort monitor)
+    public RxTradeCommands()
+   {
+      log.info("Init : RxTradeCommands");
+//        this.monitor = monitor;
+//        this.tradeParametersDesk = tradeParametersDesk;
       //  tradeParameters = new RxTradeParameters(); ????
     }
 
-//
 //    public String actionBuyMarket() throws Exception {
 //
-//        RxOrderEntity order = RxOrderFactory.getInstance()
-//                .createMarketOrder(RxActionOnMarket.BUY_MARKET,
+//        RxTradeParameters parameters =   tradeParametersDesk.getTradeParameters(
+//
+//        RxOrderEntity order =
+//        orderFactory.createMarketOrder(RxActionOnMarket.BUY_MARKET,
 //                                   tradeParameters,
 //                                   monitor);
 //        return RxFixTerminal.getInstance()
 //                  .sendNewOrderSingle(order);
 //    }
-//
+
 //    public void actionSellMarket() throws Exception {
 //
 //        RxOrderEntity order = RxOrderFactory.getInstance()

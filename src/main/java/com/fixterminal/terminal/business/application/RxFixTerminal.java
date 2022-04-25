@@ -80,34 +80,6 @@ public class RxFixTerminal   {
     }
 
 
-//    public String sendNewOrderSingle(RxOrderEntity rxOrder) throws Exception {
-//        quickfix.Message message =
-//                RxQFixNewOrderSingleFactory.create(rxOrder);
-//
-//        //TODO debug order
-//        System.out.println("NEW_ORDER_SINGLE>"+
-//                        RxMessageDecorator.decorate(message));
-//
-//
-//       // OrderMenager.  kontrola otwierania zlecenń jeżeli nie zwroyu exex raport.
-//
-//        try {
-//
-//
-//
-//            Session.sendToTarget(message,
-//                    RxQuickFixTerminal
-//                            .getInstance()
-//                            .getTradeSessionsId()
-//            );
-//            return rxOrder.getID();
-//        } catch (SessionNotFound e) {
-//            System.out.println(e);
-//            return null;
-//        }
-//
-//    }
-//
 
 
 public boolean isLoggedOn(){

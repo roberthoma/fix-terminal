@@ -7,7 +7,7 @@ import com.fixterminal.shared.enumerators.RxPositionDirection;
 import com.fixterminal.shared.orders.RxOrderEntity;
 import com.fixterminal.shared.positions.RxPosition;
 import com.fixterminal.strategies.business.parameters.RxTradeParameters;
-import com.fixterminal.strategies.ports.RxMarketMonitorTraderPort;
+import com.fixterminal.strategies.ports.RxMarketMonitorStrategiesPort;
 
 public class RxOrderStopFactory {
 
@@ -56,7 +56,7 @@ public class RxOrderStopFactory {
 
     public static  RxOrderEntity createStopOrder(RxActionOnMarket marketAction,
                                                  RxTradeParameters parameters,
-                                                 RxMarketMonitorTraderPort  monitor)
+                                                 RxMarketMonitorStrategiesPort monitor)
    {
         RxOrderEntity rxOrder;
         RxPosition position;
