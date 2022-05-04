@@ -1,15 +1,17 @@
 package com.fixterminal.market.business.monitors;
 
+import com.fixterminal.market.ports.RxMessageSenderPort;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import com.fixterminal.shared.market.RxExecuteReport;
 import com.fixterminal.shared.market.RxMarketDataVO;
 import com.fixterminal.shared.positions.RxPosition;
 import com.fixterminal.market.ports.RxQuickFixMessageDispatcherPort;
-import lombok.Getter;
+import com.fixterminal.terminal.business.senders.RxRequestMessageSender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,23 +19,29 @@ import java.util.Map;
 
 //TODO !!!>>> Jak narazie OBSŁUGA TYLKO JEDNEGO INSTRUMENTY
 
+//TODO inicjować monitory przed  logowaniem do rynku
+
 @Component
 @Slf4j
 public final class RxMonitorsDesk
 {
 
     RxQuickFixMessageDispatcherPort msgDispatcher;
+    RxMessageSenderPort messageSender;
 
 
-    @Getter
-    private final Map<RxInstrument, RxMarketMonitor>  monitorsMap;
+    //@Getter
+    private final Map<RxInstrument, RxMonitor>  monitorsMap;
 
     @Autowired
-    public RxMonitorsDesk(RxQuickFixMessageDispatcherPort msgDispatcher)  {
-    // TODO pytanie czy przenieść to do FIXTerminala adaptera
+    public RxMonitorsDesk(RxQuickFixMessageDispatcherPort msgDispatcher,
+                          RxMessageSenderPort messageSender
+                          )
+    {
 
         log.info("Init : RxMonitorsDesk ");
        this.msgDispatcher = msgDispatcher;
+       this.messageSender = messageSender;
 
        if (msgDispatcher == null){
            log.info("EXCEPTION >>>  RxMonitorsDesk :( msgDispatcher IS NULL");
@@ -41,16 +49,14 @@ public final class RxMonitorsDesk
 
        monitorsMap = new HashMap<>();
 
-       msgDispatcher.setMarketDataConsumer(this::marketDataDispatcher);
+        assert msgDispatcher != null;
+        msgDispatcher.setMarketDataConsumer(this::marketDataDispatcher);
 
 
-        msgDispatcher.setPositionReportConsumer(position
-                -> positionDispatcher(position)
-        );
+        msgDispatcher.setPositionReportConsumer(this::positionDispatcher);
 
 
-        msgDispatcher.setExecutionReportConsumer(rxExecuteReport ->
-                executionReportDispatcher(rxExecuteReport));
+        msgDispatcher.setExecutionReportConsumer(this::executionReportDispatcher);
 
 
     }
@@ -58,17 +64,12 @@ public final class RxMonitorsDesk
 
     public void initMonitor(RxInstrument instrument){
         if (!monitorsMap.containsKey(instrument)){
-            RxMarketMonitor monitor = new RxMarketMonitor(instrument);
+            RxMonitor monitor = new RxMonitor(instrument);
             monitor.start();
             monitorsMap.put(monitor.getInstrument() ,monitor);
             System.out.println("> MONITOR  "+instrument.getSymbol()+" is activated");
         }
     }
-
-//    public RxMarketMonitor getMonitor(RxInstrument instrument) {
-//        initMonitor(instrument);
-//        return  monitorsMap.get(instrument);
-//    }
 
     private void marketDataDispatcher(Boolean isFullRefresh,
                                       List<RxMarketDataVO> marketDataVOList  )
@@ -95,7 +96,7 @@ public final class RxMonitorsDesk
     }
 
     private void positionDispatcher(RxPosition position) {
-
+        System.out.println("ROHO positionDispatcher >"+position);
         if (position== null) {
             return;
         }
@@ -115,10 +116,22 @@ public final class RxMonitorsDesk
         monitorsMap.get(rxExecuteReport
                 .getInstrument()).executeReportConsume(rxExecuteReport);
 
+        messageSender.sendRequestForPositions();
+    }
+
+
+    public RxMonitor getMonitor(RxInstrument intrument){
+       //TODO obsługa błędów.
+       return  monitorsMap.get(intrument);
 
     }
 
 
+    public List<RxInstrument> getMonitoredInstrumentList() {
+        List<RxInstrument> instruments = new ArrayList<>();
+        monitorsMap.forEach((rxInstrument, rxMonitorThread) -> instruments.add(rxInstrument));
+        return instruments;
+    }
 }
 
 

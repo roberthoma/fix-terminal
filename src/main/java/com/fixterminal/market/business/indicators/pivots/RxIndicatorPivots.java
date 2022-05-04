@@ -26,9 +26,9 @@ public class RxIndicatorPivots {
     private void addPivot(RxPivot pivot){
         pivot.id = pivots.size() + 1;
         pivots.add(pivot);
-        System.out.println("Adding new "+ pivot.type +" pivot  : "+pivot.price+"  "+ pivot.dateTime+ "  "+
-                " all is = "+pivots.size()
-        );
+//TODO log        System.out.println("Adding new "+ pivot.type +" pivot  : "+pivot.price+"  "+ pivot.dateTime+ "  "+
+//                " all is = "+pivots.size()
+//        );
 
     }
 
@@ -44,7 +44,7 @@ public class RxIndicatorPivots {
         else {
             pivots.get(lastIdx).price = mdBaseVO.bidBestPrice;
         }
-        System.out.println("Replacing "+pivots.get(lastIdx).type + " pivot : price="+pivots.get(lastIdx).price);
+ //TODO log       System.out.println("Replacing "+pivots.get(lastIdx).type + " pivot : price="+pivots.get(lastIdx).price);
 
 
     }

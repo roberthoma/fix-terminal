@@ -1,8 +1,8 @@
 package com.fixterminal.api.rest;
 
-import com.fixterminal.commands.base.RxCommandDispatcher;
-import com.fixterminal.commands.base.RxCommandsEnum;
-import com.fixterminal.services.terminal.RxMainServerService;
+import com.fixterminal.app.commands.base.RxCommandDispatcher;
+import com.fixterminal.app.commands.base.RxCommandEnum;
+import com.fixterminal.app.services.RxMainServerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +45,7 @@ public class RxServerRestController {
 
         StreamingResponseBody responseBody = response -> {
                 try {
-                    response.write((mainService.getTerminalog() +"\n").getBytes());
+                    response.write((mainService.getTerminalLog() +"\n").getBytes());
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -71,7 +71,7 @@ public class RxServerRestController {
 
         StreamingResponseBody responseBody = response -> {
             try {
-                response.write((mainService.getTerminalog() +"\n").getBytes());
+                response.write((mainService.getTerminalLog() +"\n").getBytes());
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -110,8 +110,7 @@ public class RxServerRestController {
 
         StreamingResponseBody responseBody = response -> {
             try {
-               response.write((mainService.getMonitorsDesk()
-                                          .getInstrumentsList() +"\n").getBytes());
+               response.write((mainService.getInstrumentsList() +"\n").getBytes());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -152,6 +151,21 @@ public class RxServerRestController {
     }
 
 
+    @GetMapping(value="/about")
+    public ResponseEntity<StreamingResponseBody> getAbout() {
+        StreamingResponseBody responseBody = response -> {
+            try {
+                response.write((mainService.getDictionaries()
+                        .getDicInstruments().toList() +"\n").getBytes());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+        return ResponseEntity.ok()
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(responseBody);
+    }
+
 
     @GetMapping(value="/command")
     public ResponseEntity<StreamingResponseBody> command  (@RequestParam String cmd ,
@@ -165,7 +179,7 @@ public class RxServerRestController {
                     params.forEach((s, s2) -> System.out.println("Par="+ s +" val="+s2));
                 }
 
-                RxCommandsEnum rxCmd =  cmdDispatcher.decodeCommand(cmd);
+                RxCommandEnum rxCmd =  cmdDispatcher.decodeCommand(cmd);
                 cmdDispatcher.dispose(rxCmd);
 
 

@@ -6,8 +6,11 @@ import com.fixterminal.terminal.business.prompters.RxFixTerminalPrompter;
 import com.fixterminal.shared.market.RxExecuteReport;
 import com.fixterminal.shared.market.RxMarketDataVO;
 import com.fixterminal.shared.positions.RxPosition;
+import com.fixterminal.terminal.business.senders.RxRequestMessageSender;
 import com.fixterminal.terminal.business.services.RxMarketDataService;
+import com.fixterminal.terminal.business.services.RxMassageToExecutionReport;
 import com.fixterminal.terminal.business.services.RxMessageDecorator;
+import com.fixterminal.terminal.business.services.RxMessageToPositionService;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +39,12 @@ public class RxQuickFixMessageDispatcher {
     RxMarketDataService rxMarketDataService;
 
     @Autowired
+    RxMessageToPositionService messageToPositionService;
+
+    @Autowired
+    RxMassageToExecutionReport massageToExecutionReport;
+
+    @Autowired
     RxFixHeartPrompter heartPrompter;
 
 
@@ -61,15 +70,6 @@ public class RxQuickFixMessageDispatcher {
         heartPulseRunner = r;
     }
 
-//    public void setPositionReportConsumer (Consumer<RxPosition> consumer){
-//
-//        positionReportConsumer = consumer;
-//
-//    }
-
-//    public void setMarketDataConsumer(BiConsumer<Boolean, List<RxMarketDataVO>> marketDataConsumer){
-//        this.marketDataConsumer = marketDataConsumer;
-//    }
 
     public void dispose(Message message, SessionID sessionId) {
         try {
@@ -124,22 +124,22 @@ public class RxQuickFixMessageDispatcher {
 
                 case MsgType.EXECUTION_REPORT:
                     logPrompter.accept("EXECUTION_REPORT>"+RxMessageDecorator.decorate(message));
-//                      if(executionReportConsumer != null) {
-//                          executionReportConsumer.accept(
-//                                  RxMassegeToExecutionReport.toExecuteReport(message)
-//                          );
-//                      }
-//                      RxRequestMessageSender.getInstance().sendRequestForPositions();
+                      if(executionReportConsumer != null) {
+                          executionReportConsumer.accept(
+                                  massageToExecutionReport.toExecuteReport(message)
+                          );
+                      }
+               //     requestMessageSender.sendRequestForPositions();
                     break;
 
                 case MsgType.POSITION_REPORT:
 //
                     logPrompter.accept(("POSITION_REPORT>"+RxMessageDecorator.decorate(message)));
-//
-//                    if(  positionReportConsumer != null){
-//                        positionReportConsumer.accept(RxMessageToPositionService.toPosition(message));
-//
-//                    }
+
+                    if(  positionReportConsumer != null){
+                        positionReportConsumer.accept(messageToPositionService.toPosition(message));
+
+                    }
 //
 
                     break;

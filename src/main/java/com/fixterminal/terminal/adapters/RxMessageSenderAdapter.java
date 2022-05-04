@@ -26,6 +26,7 @@ public class RxMessageSenderAdapter implements RxMessageSenderPort {
        rxRequestMessageSender.sendMarketDataRequest(instrument);
    }
 
+    @Override
     public String sendNewOrderSingle(RxOrderEntity rxOrder) {
     try {
         return rxOrderMessageSender.sendNewOrderSingle(rxOrder);
@@ -34,6 +35,11 @@ public class RxMessageSenderAdapter implements RxMessageSenderPort {
         System.out.println(e);
      }
      return null;
+    }
+
+    @Override
+    public void sendRequestForPositions() {
+        rxRequestMessageSender.sendRequestForPositions();
     }
 
 }

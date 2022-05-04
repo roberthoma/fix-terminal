@@ -16,7 +16,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
-//TODO Zrobić fabryke
 public class RxDictionaryFactory {
     static int  n_pop = 0; // TODO do usuniecia
 

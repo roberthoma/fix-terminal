@@ -38,6 +38,7 @@ public class RxQuickFixMessageDispatcherAdapter implements RxQuickFixMessageDisp
 
     @Override
     public void setPositionReportConsumer(Consumer<RxPosition> positionConsumer) {
+        System.out.println("ROHO >>setPositionReportConsumer");
         messageDispatcher.setPositionReportConsumer(positionConsumer);
     }
 

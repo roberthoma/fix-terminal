@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Configuration;
         "com.fixterminal.terminal.adapters",
         "com.fixterminal.monitors_adapters",
         "com.fixterminal.monitors",
-//        "com.fixterminal.terminal.ports",
         "com.fixterminal.application",
         "com.fixterminal.gui"
 })

@@ -33,10 +33,4 @@ public class RxServerStartController {
         return "index";
     }
 
-    @GetMapping("/about")
-    public String getAbout(Model model){
-        model.addAttribute("fixEngineInfo", terminal.getFixEngineInfo());
-        return "about";
-    }
-
 }
