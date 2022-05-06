@@ -1,0 +1,62 @@
+/*-------------------------------------------------
+            BREAKEVEN PARAMS
+            ----------------
+AUTO_BRE_SET : ON/OFF
+ACTIVATE_BRE_DIST : 3pips
+BREAKEVEN_PROFIT : 0.5 pip
+
+---------------------*/
+/*==========================================================
+   PARAM FOR NEW ORDER
+
+
+
+QUANTITY : 0.01 lot
+or
+QUANTITY : 1000 eur
+
+SL_ON_OPEN : 2pips
+TP_ON_OPEN : 5pips
+
+AUTO_SL : ON/OFF
+
+ */
+
+/*==========================================================
+   INFO CALC
+ONE_PIP_VALUE : 0,71 eur
+SL_VALUE : 0,70 eur
+TP_VALUE : 2,30 eur
+ */
+
+
+//Traling STOP
+//------------------------------------------------------------
+
+
+        // w zależności czasowej
+        do {
+//            System.out.println("AUTO TRADIN");
+            try {
+                Thread.sleep(10000);
+                //TODO  controlling : communications  - > NO Concepts
+                // TODO  : positions time controller
+// TODO monitoramowa każdego przychodzącego zlecenia.
+// Zlecenia dziele na : bezpośrednie  na rynek i pośrednie administrowane przez kontroler tradingu
+// TODO Interaktywne komendy + / - wilkość  inkremetacja jakieś parametru
+//     przesunięcia sl
+// TODO ustawienie czasu otwartej pozycji
+
+
+                //System.out.println("TEST run from  RxTradeController ... ");
+
+
+
+//             >>>> Kontrola  i ustawienie stusu otwartych pozycji
+//             ustawieni SL tylko na poz OPEN
+//             -  kontrola break event
+//             - kontrola traling stopy w zalezności od profitu
+//
+//             - kontrola do zamknięcia w zalezności marketModel.status
+
+

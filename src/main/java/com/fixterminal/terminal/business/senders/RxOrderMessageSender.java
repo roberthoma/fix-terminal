@@ -36,12 +36,10 @@ public class RxOrderMessageSender {
 
         try {
 
-
-
             Session.sendToTarget(message,quickFixTerminal.getTradeSessionsId());
             return rxOrder.getID();
         } catch (SessionNotFound e) {
-            System.out.println(e);
+            e.printStackTrace();
             return null;
         }
 

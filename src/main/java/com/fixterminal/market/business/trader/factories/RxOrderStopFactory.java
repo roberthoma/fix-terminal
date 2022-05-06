@@ -8,12 +8,14 @@ import com.fixterminal.shared.enumerators.RxPositionDirection;
 import com.fixterminal.shared.orders.RxOrderEntity;
 import com.fixterminal.shared.positions.RxPosition;
 import com.fixterminal.market.business.parameters.RxTradeParameters;
+import org.springframework.stereotype.Service;
 
+@Service
 public class RxOrderStopFactory {
 
 
 
-    private static void setStopLossOrder(RxOrderEntity order,
+    private void setStopLossOrder(RxOrderEntity order,
                                          RxPosition position,
                                          RxTradeParameters parameters
 
@@ -28,7 +30,7 @@ public class RxOrderStopFactory {
 
     }
 
-   private static void setBreakEvenOrder(RxOrderEntity order,
+   private void setBreakEvenOrder(RxOrderEntity order,
                                          RxPosition position,
                                          RxTradeParameters parameters
 
@@ -43,7 +45,7 @@ public class RxOrderStopFactory {
 
    }
 
-    private static void setSide (RxOrderEntity order,RxPosition position){
+    private void setSide (RxOrderEntity order,RxPosition position){
 
         if(position.getDirection().equals(RxPositionDirection.LONG)){
             order.setSide(RxOrderSide.SELL);
@@ -54,7 +56,7 @@ public class RxOrderStopFactory {
     }
 
 
-    public static  RxOrderEntity createStopOrder(RxAction marketAction,
+    public  RxOrderEntity createStopOrder(RxAction marketAction,
                                                  RxTradeParameters parameters,
                                                  RxMonitor monitor)
    {

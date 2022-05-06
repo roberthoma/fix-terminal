@@ -33,6 +33,7 @@ public final class RxMonitorsDesk
     //@Getter
     private final Map<RxInstrument, RxMonitor>  monitorsMap;
 
+
     @Autowired
     public RxMonitorsDesk(RxQuickFixMessageDispatcherPort msgDispatcher,
                           RxMessageSenderPort messageSender
@@ -132,6 +133,12 @@ public final class RxMonitorsDesk
         monitorsMap.forEach((rxInstrument, rxMonitorThread) -> instruments.add(rxInstrument));
         return instruments;
     }
+public List<RxMonitor> getMonitorsList(){
+    List<RxMonitor> mlist = new ArrayList<>();
+    monitorsMap.forEach((instrument, rxMonitor) -> mlist.add(rxMonitor));
+    return mlist;
+}
+
 }
 
 

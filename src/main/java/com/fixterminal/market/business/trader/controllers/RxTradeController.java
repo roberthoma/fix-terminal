@@ -7,91 +7,41 @@ import com.fixterminal.shared.positions.RxPosition;
 import com.fixterminal.market.business.trader.actions.RxTradeActions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+@Component
+@Scope("prototype")
 public class RxTradeController extends Thread {
 
     private static final Logger log = LoggerFactory.getLogger(RxTradeController.class);
 
-
-
-/*-------------------------------------------------
-            BREAKEVEN PARAMS
-            ----------------
-AUTO_BRE_SET : ON/OFF
-ACTIVATE_BRE_DIST : 3pips
-BREAKEVEN_PROFIT : 0.5 pip
-
----------------------*/
-/*==========================================================
-   PARAM FOR NEW ORDER
-
-
-
-QUANTITY : 0.01 lot
-or
-QUANTITY : 1000 eur
-
-SL_ON_OPEN : 2pips
-TP_ON_OPEN : 5pips
-
-AUTO_SL : ON/OFF
-
- */
-
-/*==========================================================
-   INFO CALC
-ONE_PIP_VALUE : 0,71 eur
-SL_VALUE : 0,70 eur
-TP_VALUE : 2,30 eur
- */
-
-
-//Traling STOP
-//------------------------------------------------------------
-
-
     RxMonitor monitor;
 
-    RxTradeActions tradeCmd;
-    boolean isBought = false; //tmp
+    @Autowired
+    RxTradeActions actions;
 
- //   Parameters i przekazanie do  wyszyscich poleceni jako instancji
-
-
-    public RxTradeController(RxMonitor monitor){
-        log.info("Set autoTR inst ="+monitor.getInstrument()
-                                                      .getFixSymbol());
-
+    public void setMonitor(RxMonitor monitor){
         this.monitor = monitor;
         monitor.addForEachMsgConsumer(m -> tradeControlByEachMsg());
-
-//        tradeCmd = new RxTradeCommands(monitor);
-
-
     }
 
+    public void setTradeActions(RxTradeActions actions){
+     this.actions = actions;
+    }
+
+
     public void run(){
-
-        // w zależności czasowej
-        do {
-//            System.out.println("AUTO TRADIN");
-            try {
-                Thread.sleep(10000);
-                //TODO  controlling : communications  - > NO Concepts
-                // TODO  : positions time controller
-// TODO monitoramowa każdego przychodzącego zlecenia.
-// Zlecenia dziele na : bezpośrednie  na rynek i pośrednie administrowane przez kontroler tradingu
-// TODO Interaktywne komendy + / - wilkość  inkremetacja jakieś parametru
-//     przesunięcia sl
-// TODO ustawienie czasu otwartej pozycji
-
-
-                //System.out.println("TEST run from  RxTradeController ... ");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        while (true);
+        log.info("Start RxTradeController thread for : "+monitor.getInstrument().getSymbol());
+//        do {
+//            try {
+//                Thread.sleep(10000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        while (true);
     }
 
     private void tradeControlByEachMsg()  {
@@ -106,19 +56,10 @@ TP_VALUE : 2,30 eur
                position = monitor.getPosition();
                orderSL  = monitor.getStopLossOrder();
 
-//             >>>> Kontrola  i ustawienie stusu otwartych pozycji
-//             ustawieni SL tylko na poz OPEN
-//             -  kontrola break event
-//             - kontrola traling stopy w zalezności od profitu
-//
-//             - kontrola do zamknięcia w zalezności marketModel.status
-
-
-
 
                if (orderSL == null) {
                    System.out.println(" > Setting STOP_LOSS > ");
-                   //TMP ...       tradeCmd.actionSetStopLoss();
+                   actions.actionSetStopLoss();
                    //TODO Czasami wyprzedzam raport i tworzą się dwa zlecenia. SL :(
 
                } else {
@@ -128,7 +69,7 @@ TP_VALUE : 2,30 eur
                       System.out.println(">>> position.getQuantity()=" + position.getQuantity());
                       System.out.println(">>> orderSL.getQuantityOrdered()=" + orderSL.getQuantity());
 
-            //TMP ...          tradeCmd.updateStopLossQuantity(orderSL, position.getQuantity());
+                      actions.updateStopLossQuantity(orderSL, position.getQuantity());
                    }
 
                    if (position.getQuantity().compareTo(orderSL.getQuantity()) != 0) {
@@ -138,7 +79,7 @@ TP_VALUE : 2,30 eur
                }
             }
            catch (Exception e){
-               System.out.println(e);
+               e.printStackTrace();
            }
 
         }

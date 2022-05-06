@@ -3,6 +3,7 @@ package com.fixterminal.terminal.adapters;
 import com.fixterminal.market.ports.RxMessageSenderPort;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import com.fixterminal.shared.orders.RxOrderEntity;
+import com.fixterminal.shared.pending_orders.RxPendingOrder;
 import com.fixterminal.terminal.business.senders.RxOrderMessageSender;
 import com.fixterminal.terminal.business.senders.RxRequestMessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class RxMessageSenderAdapter implements RxMessageSenderPort {
         return rxOrderMessageSender.sendNewOrderSingle(rxOrder);
     }
     catch (Exception e){
-        System.out.println(e);
+        e.printStackTrace();
      }
      return null;
     }
@@ -40,6 +41,11 @@ public class RxMessageSenderAdapter implements RxMessageSenderPort {
     @Override
     public void sendRequestForPositions() {
         rxRequestMessageSender.sendRequestForPositions();
+    }
+
+    @Override
+    public void sendOrderReplaceRequest(RxPendingOrder orderSL) {
+        rxRequestMessageSender.sendOrderReplaceRequest(orderSL);
     }
 
 }

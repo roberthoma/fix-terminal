@@ -40,7 +40,7 @@ public class RxServerRestController {
             mainService.serverStart();
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
 
         StreamingResponseBody responseBody = response -> {
@@ -66,7 +66,7 @@ public class RxServerRestController {
 
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
         }
 
         StreamingResponseBody responseBody = response -> {
@@ -149,14 +149,12 @@ public class RxServerRestController {
                 .contentType(MediaType.TEXT_PLAIN)
                 .body(responseBody);
     }
-
-
+   //-----------------------------------------------------
     @GetMapping(value="/about")
     public ResponseEntity<StreamingResponseBody> getAbout() {
         StreamingResponseBody responseBody = response -> {
             try {
-                response.write((mainService.getDictionaries()
-                        .getDicInstruments().toList() +"\n").getBytes());
+                response.write((mainService.getAbout() +"\n").getBytes());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -165,7 +163,7 @@ public class RxServerRestController {
                 .contentType(MediaType.TEXT_PLAIN)
                 .body(responseBody);
     }
-
+    //-----------------------------------------------------
 
     @GetMapping(value="/command")
     public ResponseEntity<StreamingResponseBody> command  (@RequestParam String cmd ,
@@ -193,6 +191,9 @@ public class RxServerRestController {
                 .contentType(MediaType.TEXT_PLAIN)
                 .body(responseBody);
     }
+
+    //------------------------------------------------
+
 
 
 

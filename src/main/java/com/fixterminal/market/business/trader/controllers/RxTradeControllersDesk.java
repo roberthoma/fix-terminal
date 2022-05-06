@@ -1,7 +1,8 @@
 package com.fixterminal.market.business.trader.controllers;
 
+import com.fixterminal.market.business.monitors.RxMonitorsDesk;
+import com.fixterminal.market.business.trader.actions.RxTradeActions;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
-import com.fixterminal.market.business.parameters.RxTradeParametersDesk;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,23 +14,31 @@ import java.util.Map;
 @Slf4j
 public class RxTradeControllersDesk {
 
-    RxTradeParametersDesk rxTradeParametersDesk;
-    private Map<RxInstrument, RxTradeController> tradeControllersMap;
+
+    RxTradeActions tradeActions;
+
+    RxMonitorsDesk  rxMonitorsDesk;
+    private final Map<RxInstrument, RxTradeController> tradeControllersMap;
 
     @Autowired
-    public RxTradeControllersDesk(RxTradeParametersDesk rxTradeParametersDesk){
-      this.rxTradeParametersDesk = rxTradeParametersDesk;
+    public RxTradeControllersDesk(RxMonitorsDesk  rxMonitorsDesk,
+                                  RxTradeActions tradeActions){
       log.info("Init : " + this.getClass().getSimpleName());
-
-        tradeControllersMap = new HashMap<>();
-
-
+      this.rxMonitorsDesk = rxMonitorsDesk;
+      this.tradeActions = tradeActions;
+      tradeControllersMap = new HashMap<>();
     }
 
-
     public void start() {
-       //todo initcjacja controlerów dla
-       log.info(" INFO Z DESKO CONN...");
+
+        rxMonitorsDesk.getMonitorsList().forEach(rxMonitor -> {
+                    RxTradeController tradeController =  new RxTradeController();
+                    tradeController.setTradeActions(tradeActions);
+                    tradeController.setMonitor(rxMonitor);
+                    tradeController.start();
+                    tradeControllersMap.put(rxMonitor.getInstrument(), tradeController);
+                }
+        );
     }
 
 }

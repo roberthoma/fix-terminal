@@ -84,7 +84,7 @@ public class RxQuickFixTerminal  {
 //          // logFactory = new ScreenLogFactory(false, false, true, false);
             // logFactory = new ScreenLogFactory(false, true, true, true);
          //    logFactory = new ScreenLogFactory(true, true, true, false);
-         //     logFactory = new ScreenLogFactory(false, false, false, true);
+            //     logFactory = new ScreenLogFactory(false, false, false, true);
              logFactory = new ScreenLogFactory(false, false, false, true);
             //                    }
             //                  else {

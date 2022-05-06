@@ -28,18 +28,23 @@ public class RxMainServerService {
 
     RxUserService rxUserService;
 
+    RxAbout about;
+
     @Autowired
     public RxMainServerService(RxUserService rxUserService,
                                RxDictionaries dictionaries,
                                RxMarketServicePort marketService,
-                               RxFixTerminalMainGuiPort terminal ) {
+                               RxFixTerminalMainGuiPort terminal,
+                               RxAbout about
+                                )
+                                {
       log.info("Init : RxMainServerService");
 
         this.rxUserService = rxUserService;
         this.dictionaries = dictionaries;
         this.marketService = marketService;
         this.terminal = terminal;
-
+        this.about = about;
 
     }
 
@@ -86,5 +91,9 @@ public class RxMainServerService {
 
     public List<RxInstrument> getInstrumentsList() {
         return marketService.getInstrumentsList();
+    }
+
+    public List<String> getAbout() {
+        return about.getAbout();
     }
 }

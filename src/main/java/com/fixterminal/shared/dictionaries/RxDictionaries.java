@@ -21,7 +21,7 @@ public class RxDictionaries {
 //throws ParserConfigurationException, IOException, SAXException {
 //
      catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
             throw e;
         }
     }
@@ -35,7 +35,7 @@ public class RxDictionaries {
             return RxDictionaryFactory.initDicInstruments();
         }
         catch (Exception e){
-            System.out.println(e);
+            e.printStackTrace();
             throw  e;
         }
     }

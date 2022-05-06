@@ -1,16 +1,12 @@
 package com.fixterminal.market.business.monitors;
 
 import com.fixterminal.market.business.indicators.RxIndicators;
-import com.fixterminal.shared.market.RxExecuteReportService;
+import com.fixterminal.shared.market.*;
 import com.fixterminal.market.business.calculators.RxCalculatorMarketDataBase;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import com.fixterminal.shared.enumerators.RxExecType;
 import com.fixterminal.shared.enumerators.RxMDUpdateActionEnum;
 import com.fixterminal.shared.enumerators.RxOrderType;
-import com.fixterminal.shared.market.RxExecuteReport;
-import com.fixterminal.shared.market.RxMarketDataCalcBaseVO;
-import com.fixterminal.shared.market.RxMarketDataCalcStrategyVO;
-import com.fixterminal.shared.market.RxMarketDataVO;
 import com.fixterminal.shared.orders.RxOrdersMap;
 import com.fixterminal.shared.pending_orders.RxPendingOrder;
 import com.fixterminal.market.business.calculators.RxCalculatorPosition;
@@ -28,27 +24,19 @@ import java.util.function.Consumer;
 @Slf4j
 public class RxMonitor extends Thread  {
 
-    //@Autowired
-    //RxCalculatorMarketDataBase rxCalculatorMarketDataBase;
-
-    //RxCalculatorPosition RxCalculatorPosition;
-
-
-// i w ustalonych widełkach cenowych
-//    Position:
-//            0) 251687375 1000.0 SHORT 1.13249 11324.9 1132.49
-
-
-     List<Consumer<RxPosition >> positionConsumerList;
+     List<Consumer<RxPosition>> positionConsumerList;
      List<Consumer<RxMarketDataCalcBaseVO>> marketDataCalcVoConsumerList;
      List<Consumer<Map<String, RxPendingOrder>>> pendingOrdersConsumerList;
 
      List<Consumer<RxIndicators>> indicatorsConsumersList;
 
-     List<Consumer<RxMonitorData>> forEachMsgConsumerList;
+     List<Consumer<RxMonitorDataVO>> forEachMsgConsumerList;
 
-    @Getter
-    private RxPosition position ;
+     @Getter
+     private RxMonitorDataVO data = new RxMonitorDataVO();
+
+//    @Getter
+//    private RxPosition position ;
 
     @Getter
     private RxInstrument instrument;
@@ -58,21 +46,20 @@ public class RxMonitor extends Thread  {
 
 
     public boolean isOpenPosition(){
-        if (position != null) {
+        if (data.position != null) {
             return true;
         }
         return false;
     }
 
-    private RxOrdersMap ordersMap = new RxOrdersMap();
+  //  private RxOrdersMap ordersMap = new RxOrdersMap();
 
     //private RxPendingOrdersMap pendingOrdersMap = new RxPendingOrdersMap();
-    @Getter
-    private Map<String, RxPendingOrder>  pendingOrdersMap = new HashMap<>();
-
-    @Getter
-    private RxMarketDataCalcBaseVO marketDataCalcBaseVO = new RxMarketDataCalcBaseVO();
-    private RxMarketDataCalcStrategyVO mdStrategyVo = new RxMarketDataCalcStrategyVO();
+//    @Getter
+//    private Map<String, RxPendingOrder>  pendingOrdersMap = new HashMap<>();
+//    @Getter
+//    private RxMarketDataCalcBaseVO marketDataCalcBaseVO = new RxMarketDataCalcBaseVO();
+    //private RxMarketDataCalcStrategyVO mdStrategyVo = new RxMarketDataCalcStrategyVO();
 
 
     @Getter
@@ -111,21 +98,23 @@ public class RxMonitor extends Thread  {
     public void clearPosition(){
         //TODO send info to client
         //positions.clear();
-        this.position = null;
+        data.position = null;
     }
 
     public void clearPendingOrdersMap(){
         //TODO send info to client
-        pendingOrdersMap.clear();
+        data.pendingOrdersMap.clear();
     }
 
     private void consumers_accept(){
 
-       marketDataCalcVoConsumerList.forEach(c -> c.accept(marketDataCalcBaseVO));
+       marketDataCalcVoConsumerList.forEach(c -> c.accept(data.marketDataCalcBaseVO));
 
-       positionConsumerList.forEach(c -> c.accept(position));
+       positionConsumerList.forEach(c -> c.accept(data.position));
 
-       pendingOrdersConsumerList.forEach(c -> c.accept(pendingOrdersMap));
+       pendingOrdersConsumerList.forEach(c -> c.accept(data.pendingOrdersMap));
+
+       forEachMsgConsumerList.forEach(c -> c.accept(data));
 
     }
 
@@ -133,7 +122,7 @@ public class RxMonitor extends Thread  {
     public void positionReportConsume(RxPosition rxPosition) {
 
         if (rxPosition != null) {
-            this.position = rxPosition;
+            data.position = rxPosition;
         }
 
         consumers_accept();
@@ -146,18 +135,17 @@ public class RxMonitor extends Thread  {
             mdActualOfferBookMap.clear();
         }
 
-        marketDataVOList.forEach(rxMarketDataVO
-                -> refreshOfferBookMap(rxMarketDataVO));
+        marketDataVOList.forEach(this::refreshOfferBookMap);
 
-        marketDataCalcBaseVO.reset();
-        RxCalculatorMarketDataBase.calculatePrices(marketDataCalcBaseVO,mdActualOfferBookMap);
+        data.marketDataCalcBaseVO.reset();
+        RxCalculatorMarketDataBase.calculatePrices(data.marketDataCalcBaseVO,mdActualOfferBookMap);
 
-        if(position != null) {
-            RxCalculatorPosition.positionBalanceCalc(position, marketDataCalcBaseVO);
+        if(data.position != null) {
+            RxCalculatorPosition.positionBalanceCalc(data.position, data.marketDataCalcBaseVO);
         }
 
-        indicators.calculate(mdStrategyVo,
-                          marketDataCalcBaseVO,
+        indicators.calculate(data.mdStrategyVo,
+                             data.marketDataCalcBaseVO,
                           mdActualOfferBookMap);
 
 
@@ -178,13 +166,13 @@ public class RxMonitor extends Thread  {
                 || RxExecType.REPLACED.compareTo(rxExecuteReport.getExecType()) == 0
         ) {
             RxPendingOrder rxPendingOrder = RxExecuteReportService.castToPendingOrder(rxExecuteReport);
-            pendingOrdersMap.put(rxPendingOrder.getId(),rxPendingOrder);
+            data.pendingOrdersMap.put(rxPendingOrder.getId(),rxPendingOrder);
         }
         else if(RxExecType.CANCEL.compareTo(rxExecuteReport.getExecType()) == 0
                 ||RxExecType.TRADE.compareTo(rxExecuteReport.getExecType()) == 0
         )
         {
-            pendingOrdersMap.remove(rxExecuteReport.getOrderId());
+            data.pendingOrdersMap.remove(rxExecuteReport.getOrderId());
         }
         else {
             System.out.println(">> NOT IMPLEMENTED ExecType = >"+rxExecuteReport.getExecType()+"<");
@@ -196,8 +184,8 @@ public class RxMonitor extends Thread  {
     //TODO >>>>>>>>  ustalenie nr zleceń zaczynaących się od np SL-123nr
     //  lub TP-1234nr
     public RxPendingOrder getStopLossOrder(){
-        if (pendingOrdersMap.size() > 0){
-            for (RxPendingOrder ord : pendingOrdersMap.values()){
+        if (data.pendingOrdersMap.size() > 0){
+            for (RxPendingOrder ord : data.pendingOrdersMap.values()){
                 if (ord.getType().equals(RxOrderType.STOP)){
                     return ord;
                 }
@@ -209,8 +197,8 @@ public class RxMonitor extends Thread  {
     }
 
     public RxPendingOrder getTakeProfitOrder(){
-        if (pendingOrdersMap.size() > 0){
-            for (RxPendingOrder ord : pendingOrdersMap.values()){
+        if (data.pendingOrdersMap.size() > 0){
+            for (RxPendingOrder ord : data.pendingOrdersMap.values()){
                 if (ord.getType().equals(RxOrderType.LIMIT)){
                     return ord;
                 }
@@ -225,9 +213,16 @@ public class RxMonitor extends Thread  {
         marketDataCalcVoConsumerList.add(consumer);
     };
 
-    public void addForEachMsgConsumer(Consumer<RxMonitorData> consumer) {
+    public void addForEachMsgConsumer(Consumer<RxMonitorDataVO> consumer) {
         forEachMsgConsumerList.add(consumer);
     }
 
 
+    public RxPosition getPosition() {
+      return data.position;
+    }
+
+    public RxMarketDataCalcBaseVO getMarketDataCalcBaseVO() {
+      return data.marketDataCalcBaseVO;
+    }
 }
