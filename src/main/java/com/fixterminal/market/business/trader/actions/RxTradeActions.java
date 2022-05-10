@@ -3,6 +3,7 @@ package com.fixterminal.market.business.trader.actions;
 import com.fixterminal.market.business.monitors.RxMonitor;
 import com.fixterminal.market.business.monitors.RxMonitorsDesk;
 import com.fixterminal.market.business.parameters.RxTradeParametersDesk;
+import com.fixterminal.market.business.trader.factories.RxOrderStopCalculatorService;
 import com.fixterminal.market.business.trader.factories.RxOrderStopFactory;
 import com.fixterminal.market.ports.RxMessageSenderPort;
 import com.fixterminal.shared.dictionaries.instruments.RxDicInstruments;
@@ -12,6 +13,7 @@ import com.fixterminal.shared.orders.RxOrderEntity;
 import com.fixterminal.market.business.trader.factories.RxOrderFactory;
 import com.fixterminal.market.business.parameters.RxTradeParameters;
 import com.fixterminal.shared.pending_orders.RxPendingOrder;
+import com.fixterminal.shared.positions.RxPosition;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -134,6 +136,16 @@ public class RxTradeActions {
     }
 
 
+    public void updateStopLossToBreakevent(RxMonitor monitor, RxTradeParameters tradeParameters) {
+        RxPendingOrder orderSL;
+        RxPosition position;
+
+        position = monitor.getPosition();
+        orderSL  = monitor.getStopLossOrder();
+
+        orderSL.setPrice(RxOrderStopCalculatorService.breakEvenPriceCalc(position.getDirection(),position.getEntryPrice(),tradeParameters));
+        messageSender.sendOrderReplaceRequest(orderSL);
 
 
+    }
 }

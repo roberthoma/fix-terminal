@@ -18,6 +18,7 @@ public class RxPosition {
         Double  gross;
         Double  net;
         Double  pips;
+        Double  marketDistance;
 
         RxPositionStatus status;
 
@@ -32,10 +33,5 @@ public class RxPosition {
         public RxPosition(){
            this.status = RxPositionStatus.OPEN;
         }
-
-
-
-
-
 
 }

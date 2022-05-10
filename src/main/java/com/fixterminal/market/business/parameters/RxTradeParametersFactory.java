@@ -2,6 +2,8 @@ package com.fixterminal.market.business.parameters;
 
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import com.fixterminal.shared.enumerators.RxOnOff;
+import com.fixterminal.shared.enumerators.RxOrderType;
+import com.fixterminal.shared.parameters.RxParameterValue;
 import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
@@ -38,17 +40,17 @@ public class RxTradeParametersFactory {
       tradeParameters.setParameterValue(RxTradeParameter.AUTO_TRADE,
               RxOnOff.valueOf(prop.getProperty("AUTO_TRADE", RxOnOff.OFF.toString())));
 
-      tradeParameters.setParameterValue(RxTradeParameter.AUTO_TRADE,
+      tradeParameters.setParameterValue(RxTradeParameter.BREAKEVEN_ACTIVATE_DIST,
               Double.valueOf(  prop.getProperty("BREAKEVEN_ACTIVATE_DIST")));
 
+      tradeParameters.setParameterValue(RxTradeParameter.STOP_LOSS_DISTANCE,
+              Double.valueOf(  prop.getProperty("STOP_LOSS_DISTANCE")));
 
+      tradeParameters.setParameterValue(RxTradeParameter.QUANTITY,
+              Double.valueOf(  prop.getProperty("QUANTITY")));
 
-//      BREAKEVEN_ACTIVATE_DIST=0.0002
-//      BREAKEVEN_PROFIT=0.00006
-//      STOP_LOSS_DISTANCE=0.0005
-//      QUANTITY=1000
-//      MOVE_DISTANCE=1000
-
+      tradeParameters.setParameterValue(RxTradeParameter.BREAKEVEN_PROFIT,
+              Double.valueOf(  prop.getProperty("BREAKEVEN_PROFIT")));
 
 
 

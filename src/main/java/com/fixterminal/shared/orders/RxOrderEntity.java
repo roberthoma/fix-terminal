@@ -35,6 +35,7 @@ public class RxOrderEntity implements Cloneable {
 
     public RxOrderEntity() {
         ID = generateID();
+        System.out.println("ROHO NEW ORD id=" + ID);
     }
 
     public RxOrderEntity(String ID) {
@@ -52,7 +53,7 @@ public class RxOrderEntity implements Cloneable {
     }
 
     public String generateID() {
-        return Long.toString(System.currentTimeMillis() + (nextID++));
+        return Long.toString(System.currentTimeMillis() + (nextID++)); // ??? to będzi enieładna suma
     }
 
 

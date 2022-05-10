@@ -1,7 +1,9 @@
 package com.fixterminal.market.business.parameters;
 
+import com.fixterminal.shared.dictionaries.instruments.RxDicInstruments;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -13,16 +15,14 @@ public class RxTradeParametersDesk {
 
    Map<RxInstrument, RxTradeParameters> parametersMap = new HashMap<>();
 
+    RxDicInstruments instruments;
 
-
-   public void initParameters(RxInstrument instrument){
-      if (!parametersMap.containsKey(instrument)){
-         RxTradeParameters parameters =  RxTradeParametersFactory.create (instrument);
-
-         parametersMap.put(instrument, parameters);
-
-         System.out.println("> RxTradeParametersDesk  "+instrument.getSymbol()+" \n params=" + parameters.toString());
-      }
+   @Autowired
+    RxTradeParametersDesk(RxDicInstruments instruments){
+      log.info("Init : RxTradeParametersDesk");
+      this.instruments = instruments;
+      instruments.toList().forEach(instrument ->
+                 parametersMap.put(instrument, RxTradeParametersFactory.create (instrument)));
    }
 
 

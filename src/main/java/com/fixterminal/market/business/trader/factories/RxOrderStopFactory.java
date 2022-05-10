@@ -36,13 +36,16 @@ public class RxOrderStopFactory {
 
 )  {
 
-  //TODO sprawdzenie minimum stanu rynku
-      if(position.getDirection().equals(RxPositionDirection.LONG)){
-         order.setPrice( position.getEntryPrice() + parameters.getBreakeventProfit());
-      }else {
-          order.setPrice( position.getEntryPrice() - parameters.getBreakeventProfit());
-      }
+//  //TODO sprawdzenie minimum stanu rynku
+//      if(position.getDirection().equals(RxPositionDirection.LONG)){
+//         order.setPrice( position.getEntryPrice() + parameters.getBreakeventProfit());
+//      }else {
+//          order.setPrice( position.getEntryPrice() - parameters.getBreakeventProfit());
+//      }
 
+       order.setPrice(RxOrderStopCalculatorService.breakEvenPriceCalc(position.getDirection(),
+                                                                      position.getEntryPrice(),
+                                                                      parameters));
    }
 
     private void setSide (RxOrderEntity order,RxPosition position){

@@ -8,6 +8,8 @@ import com.fixterminal.shared.enumerators.RxOrderType;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Map;
+
 //TODO klasa abstracyjan z parametrami i opcjami
 //up
 //down
@@ -23,63 +25,62 @@ import lombok.Setter;
 @Getter
 public class RxTradeParameters {
 
-    private RxParemetersMap parameterMap =  new RxParemetersMap();
+    private RxParemetersMap parameterMap = new RxParemetersMap();
 
     @Getter
     RxInstrument instrument;
 
 
-
-    public RxTradeParameters(RxInstrument instrument){
-    //    this.quantity   = Double.valueOf(QUANTITY);
-        //     this.type       = RxOrderType.MARKET;
-       // this.tif        = RxOrderTimeInForce.DAY;
+    public RxTradeParameters(RxInstrument instrument) {
+        // this.tif        = RxOrderTimeInForce.DAY;
         this.instrument = instrument;
         initParams(); // TYMCZASOWE
     }
 
 
-    private void initParams(){
+    private void initParams() {
 
-        parameterMap.put(RxTradeParameter.AUTO_TRADE,new RxParameterValue<RxOnOff>(RxOnOff.OFF));
-        parameterMap.put(RxTradeParameter.BREAKEVEN_ACTIVATE_DIST,new RxParameterValue<Double>(0.0));
-        parameterMap.put(RxTradeParameter.ORDER_TYPE,new RxParameterValue<RxOrderType>(RxOrderType.MARKET));
+        parameterMap.put(RxTradeParameter.AUTO_TRADE, new RxParameterValue<RxOnOff>(RxOnOff.OFF));
+        parameterMap.put(RxTradeParameter.AUTO_BREAKEVEN, new RxParameterValue<RxOnOff>(RxOnOff.OFF));
+        parameterMap.put(RxTradeParameter.BREAKEVEN_ACTIVATE_DIST, new RxParameterValue<Double>(0.0));
+        parameterMap.put(RxTradeParameter.ORDER_TYPE, new RxParameterValue<RxOrderType>(RxOrderType.MARKET));
+        parameterMap.put(RxTradeParameter.STOP_LOSS_DISTANCE, new RxParameterValue<Double>(0.0));
+        parameterMap.put(RxTradeParameter.QUANTITY, new RxParameterValue<Double>(0.0));
+        parameterMap.put(RxTradeParameter.BREAKEVEN_PROFIT, new RxParameterValue<Double>(0.0));
 
     }
 
     //TODO  zmienne poprawiać lub umożliwić ustawianie na poziomie sesji 
 
-   private void printValues(){
+    private void printValues() {
 
 
-   }
+    }
 
 
-
-    public void setParameterValue(RxTradeParameter tradeParameter, Object value ){
+    public void setParameterValue(RxTradeParameter tradeParameter, Object value) {
         parameterMap.get(tradeParameter).setValue(value);
     }
 
-   public void setParameterDefaultValue(){
+    public void setParameterDefaultValue() {
 
-   }
+    }
 
     String paramsStr = "";
 
-    private void setParamStr(String param){
-        paramsStr += param;
+    private void setParamStr(String param) {
+        paramsStr += param + "\n";
     }
 
     @Override
     public String toString() {
-        String paramsList = "";
 
 //        RxParameter<?> obPar =  parameterMap.get(RxTradeParameter.AUTO_TRADE);
 
         paramsStr = "";
-        parameterMap.forEach((parameter, rxParameterValue) -> setParamStr( parameter.getSymbol()
-        + rxParameterValue.getValue()
-         ));
+        parameterMap.forEach((parameter, rxParameterValue) -> setParamStr(parameter.getSymbol()
+                + rxParameterValue.getValue()
+        ));
 
 
 //       List<>  parameterMap.keySet()
@@ -88,25 +89,35 @@ public class RxTradeParameters {
     }
 
     public Double getQuantity() {
-      return 1000.0;
+        return   (Double) (parameterMap.get(RxTradeParameter.QUANTITY)).getValue();
     }
 
-    public RxOrderType getType(){
-        return  (RxOrderType) (parameterMap.get(RxTradeParameter.ORDER_TYPE)).getValue();
+    public RxOrderType getType() {
+        return (RxOrderType) (parameterMap.get(RxTradeParameter.ORDER_TYPE)).getValue();
     }
 
     public Double getStopLossDistance() {
-       return 0.0005;
+        return   (Double) (parameterMap.get(RxTradeParameter.STOP_LOSS_DISTANCE)).getValue();
     }
 
     public Double getBreakeventProfit() {
-        return 0.0001;
+        return   (Double) (parameterMap.get(RxTradeParameter.BREAKEVEN_PROFIT)).getValue();
+
+    }
+
+    public Double getBreakeventActivateDistance() {
+       return   (Double) (parameterMap.get(RxTradeParameter.BREAKEVEN_ACTIVATE_DIST)).getValue();
     }
 
     public void setAutoTradeOff() {
-         parameterMap.get(RxTradeParameter.AUTO_TRADE).setValue(RxOnOff.OFF);
+        parameterMap.get(RxTradeParameter.AUTO_TRADE).setValue(RxOnOff.OFF);
     }
+
     public void setAutoTradeOn() {
-         parameterMap.get(RxTradeParameter.AUTO_TRADE).setValue(RxOnOff.ON);
+        parameterMap.get(RxTradeParameter.AUTO_TRADE).setValue(RxOnOff.ON);
+    }
+
+    public Map<String, String> toStringMap() {
+        return parameterMap.toStringMap();
     }
 }

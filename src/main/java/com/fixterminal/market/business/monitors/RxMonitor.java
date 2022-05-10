@@ -35,8 +35,6 @@ public class RxMonitor extends Thread  {
      @Getter
      private RxMonitorDataVO data = new RxMonitorDataVO();
 
-//    @Getter
-//    private RxPosition position ;
 
     @Getter
     private RxInstrument instrument;
@@ -125,7 +123,7 @@ public class RxMonitor extends Thread  {
             data.position = rxPosition;
         }
 
-        consumers_accept();
+        positionConsumerList.forEach(c -> c.accept(data.position));
     }
 
     public void marketDataConsume(Boolean isFullRefresh,
@@ -161,10 +159,11 @@ public class RxMonitor extends Thread  {
             return;
         }
 
-        if (  RxExecType.ORDER_STATUS.compareTo(rxExecuteReport.getExecType()) == 0
-                || RxExecType.NEW.compareTo(rxExecuteReport.getExecType()) == 0
-                || RxExecType.REPLACED.compareTo(rxExecuteReport.getExecType()) == 0
+        if (    RxExecType.ORDER_STATUS.compareTo(rxExecuteReport.getExecType()) == 0
+             || RxExecType.NEW.compareTo(rxExecuteReport.getExecType()) == 0
+             || RxExecType.REPLACED.compareTo(rxExecuteReport.getExecType()) == 0
         ) {
+            System.out.println("ROHO EXE R1 >>>>>>");
             RxPendingOrder rxPendingOrder = RxExecuteReportService.castToPendingOrder(rxExecuteReport);
             data.pendingOrdersMap.put(rxPendingOrder.getId(),rxPendingOrder);
         }
@@ -172,13 +171,16 @@ public class RxMonitor extends Thread  {
                 ||RxExecType.TRADE.compareTo(rxExecuteReport.getExecType()) == 0
         )
         {
+            System.out.println("ROHO EXE R2 >>>>>>");
             data.pendingOrdersMap.remove(rxExecuteReport.getOrderId());
         }
         else {
             System.out.println(">> NOT IMPLEMENTED ExecType = >"+rxExecuteReport.getExecType()+"<");
         }
 
-        consumers_accept();
+//        consumers_accept();
+        pendingOrdersConsumerList.forEach(c -> c.accept(data.pendingOrdersMap));
+
     }
 
     //TODO >>>>>>>>  ustalenie nr zleceń zaczynaących się od np SL-123nr
@@ -211,7 +213,7 @@ public class RxMonitor extends Thread  {
 
     public void  addMarketDataCalcVoConsumer(Consumer<RxMarketDataCalcBaseVO> consumer){
         marketDataCalcVoConsumerList.add(consumer);
-    };
+    }
 
     public void addForEachMsgConsumer(Consumer<RxMonitorDataVO> consumer) {
         forEachMsgConsumerList.add(consumer);

@@ -12,11 +12,11 @@ public class RxExecuteReport {
     String        clOrdID;
     String        origClOrdID;  //Unique identifier for Order as assigned by the buy-side
     String        orderId;
-    RxExecType execType ;
+    RxExecType    execType ;
     RxOrderStatus orderStatus;
-    RxInstrument instrument;
-    RxOrderType orderType;
-    RxOrderSide orderSide;
+    RxInstrument  instrument;
+    RxOrderType   orderType;
+    RxOrderSide   orderSide;
     Double        price;
     Double        quantityOrdered;
 

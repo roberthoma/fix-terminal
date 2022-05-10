@@ -43,10 +43,9 @@ public class RxMarketServiceAdapter implements RxMarketServicePort {
 
         //TODO Monitorowanie tylko tych wskazanych które będą monitorowane :)
         //for (RxInstrument instrument : dicInstruments.getMonitoredList())
-        for (RxInstrument instrument : dicInstruments.toList()) {
-            tradeParametersDesk.initParameters(instrument);
-            //tradeParametersDesk.
-        }
+//        for (RxInstrument instrument : dicInstruments.toList()) {
+//            tradeParametersDesk.initParameters(instrument);
+//        }
 
 
     }

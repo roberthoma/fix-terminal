@@ -11,13 +11,16 @@ public class RxCalculatorPosition {
 
     private static void calcPosition(RxPosition position, RxMarketDataCalcBaseVO mdCalcVo ){
 
-        Double diffprice;
+        Double marketDistance;
+
+
+        //System.out.println("ROHO mdCalcVo > "+mdCalcVo.toString());
 
         if ( position.getDirection().compareTo(RxPositionDirection.SHORT)==0) {
-            diffprice = position.getEntryPrice() - mdCalcVo.offerBestPrice;
+            marketDistance      = position.getEntryPrice() - mdCalcVo.offerBestPrice;
         }
         else{
-            diffprice =   mdCalcVo.bidBestPrice - position.getEntryPrice();
+            marketDistance      = mdCalcVo.bidBestPrice - position.getEntryPrice();
         }
 
 //        int pipPos = RxDictionaries.getInstance()
@@ -27,9 +30,11 @@ public class RxCalculatorPosition {
         int pipPos = 4; //RxDictionaries.getInstance()  //TODO Tymczasowe
 
 
-        position.setPips(diffprice * Math.pow(10, pipPos ));
+        position.setMarketDistance(marketDistance);
 
-        position.setGross(diffprice*position.getQuantity());
+        position.setPips(marketDistance * Math.pow(10, pipPos ));
+
+        position.setGross(marketDistance*position.getQuantity());
 
 
         //TODO Net calculation

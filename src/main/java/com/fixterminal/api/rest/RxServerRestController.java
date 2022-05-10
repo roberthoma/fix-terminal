@@ -3,6 +3,7 @@ package com.fixterminal.api.rest;
 import com.fixterminal.app.commands.base.RxCommandDispatcher;
 import com.fixterminal.app.commands.base.RxCommandEnum;
 import com.fixterminal.app.services.RxMainServerService;
+import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -195,6 +196,29 @@ public class RxServerRestController {
     //------------------------------------------------
 
 
+    //-----------------------------------------------------
+    String paraStr = "";
+    private void setParaStr(String parSymbol , String parValue){
+        paraStr = paraStr + parSymbol + " = " + parValue + "\n";
+    };
+    @GetMapping(value="/trade-parameters")
+    public ResponseEntity<StreamingResponseBody> getTradeParams() {
+        StreamingResponseBody responseBody = response -> {
+            try {
+                RxInstrument instr = mainService.getDictionaries().getDicInstruments().getDefault();
+
+                mainService.getTradeParameters(instr).forEach(this::setParaStr);
+
+                response.write((paraStr +"\n").getBytes());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+        return ResponseEntity.ok()
+                .contentType(MediaType.TEXT_PLAIN)
+                .body(responseBody);
+    }
 
 
 }

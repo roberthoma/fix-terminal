@@ -62,8 +62,9 @@ public class RxMonitorSessionController extends Thread {
         for (RxInstrument instrument : dicInstruments.toList())
            {
             rxRequestMessageSender.sendMarketDataRequest(instrument);
-//            monitorsDesk.initMonitor(instrument);
         }
+
+        rxRequestMessageSender.sendRequestForPositions();
 
        // TODO For developing loop controlled connections etc
 

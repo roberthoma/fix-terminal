@@ -29,8 +29,6 @@ public final class RxMonitorsDesk
     RxQuickFixMessageDispatcherPort msgDispatcher;
     RxMessageSenderPort messageSender;
 
-
-    //@Getter
     private final Map<RxInstrument, RxMonitor>  monitorsMap;
 
 
@@ -84,6 +82,7 @@ public final class RxMonitorsDesk
         RxInstrument instrument = marketDataVOList.get(0).instrument;
 
         if(monitorsMap.containsKey(instrument)) {
+//            System.out.println("ROHO marketDataConsume isFullRefresh="+isFullRefresh+ " marketDataVOList="+marketDataVOList);
             monitorsMap.get(instrument)
                     .marketDataConsume(isFullRefresh, marketDataVOList);
         }
@@ -133,11 +132,11 @@ public final class RxMonitorsDesk
         monitorsMap.forEach((rxInstrument, rxMonitorThread) -> instruments.add(rxInstrument));
         return instruments;
     }
-public List<RxMonitor> getMonitorsList(){
-    List<RxMonitor> mlist = new ArrayList<>();
-    monitorsMap.forEach((instrument, rxMonitor) -> mlist.add(rxMonitor));
-    return mlist;
-}
+    public List<RxMonitor> getMonitorsList(){
+        List<RxMonitor> mlist = new ArrayList<>();
+        monitorsMap.forEach((instrument, rxMonitor) -> mlist.add(rxMonitor));
+        return mlist;
+    }
 
 }
 

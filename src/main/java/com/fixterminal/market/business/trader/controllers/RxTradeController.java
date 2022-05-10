@@ -2,6 +2,7 @@ package com.fixterminal.market.business.trader.controllers;
 
 
 import com.fixterminal.market.business.monitors.RxMonitor;
+import com.fixterminal.market.business.parameters.RxTradeParameters;
 import com.fixterminal.shared.pending_orders.RxPendingOrder;
 import com.fixterminal.shared.positions.RxPosition;
 import com.fixterminal.market.business.trader.actions.RxTradeActions;
@@ -18,18 +19,24 @@ public class RxTradeController extends Thread {
     private static final Logger log = LoggerFactory.getLogger(RxTradeController.class);
 
     RxMonitor monitor;
-
+    RxTradeParameters tradeParameters;
     @Autowired
     RxTradeActions actions;
+
+
+    RxTradeParameters parameters;
 
     public void setMonitor(RxMonitor monitor){
         this.monitor = monitor;
         monitor.addForEachMsgConsumer(m -> tradeControlByEachMsg());
+
     }
 
-    public void setTradeActions(RxTradeActions actions){
-     this.actions = actions;
+    public void setParameters(RxTradeParameters tradeParameters) {
+      this.tradeParameters =  tradeParameters;
+        System.out.println("ROHO getBreakeventActivateDistance()> "+ tradeParameters.getBreakeventActivateDistance());
     }
+
 
 
     public void run(){
@@ -72,8 +79,16 @@ public class RxTradeController extends Thread {
                       actions.updateStopLossQuantity(orderSL, position.getQuantity());
                    }
 
-                   if (position.getQuantity().compareTo(orderSL.getQuantity()) != 0) {
+                   //Breakeven
+                   System.out.println("Breakeven POSITION DIST = "+position.getMarketDistance());
+                   System.out.println("Breakeven POSITION  = "+tradeParameters.getBreakeventActivateDistance());
+                   //TODO kontrola oktulanej SL
+                   if (position.getMarketDistance() > tradeParameters.getBreakeventActivateDistance())
+                   {
+                      actions.updateStopLossToBreakevent(monitor, tradeParameters);
                    }
+
+                   //TRAILG STOP
 
 
                }
@@ -104,10 +119,6 @@ public class RxTradeController extends Thread {
 
   //      }
     }
-
-
-
-
 
 
 }
