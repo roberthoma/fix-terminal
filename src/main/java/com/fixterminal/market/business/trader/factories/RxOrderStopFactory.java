@@ -1,10 +1,10 @@
 package com.fixterminal.market.business.trader.factories;
 
-import com.fixterminal.market.business.monitors.RxMonitor;
 import com.fixterminal.shared.enumerators.RxAction;
 import com.fixterminal.shared.enumerators.RxOrderSide;
 import com.fixterminal.shared.enumerators.RxOrderType;
 import com.fixterminal.shared.enumerators.RxPositionDirection;
+import com.fixterminal.shared.market.RxMonitorDataVO;
 import com.fixterminal.shared.orders.RxOrderEntity;
 import com.fixterminal.shared.positions.RxPosition;
 import com.fixterminal.market.business.parameters.RxTradeParameters;
@@ -43,9 +43,10 @@ public class RxOrderStopFactory {
 //          order.setPrice( position.getEntryPrice() - parameters.getBreakeventProfit());
 //      }
 
-       order.setPrice(RxOrderStopCalculatorService.breakEvenPriceCalc(position.getDirection(),
+       order.setPrice(RxOrderStopCalculatorService.breakevenPriceCalc(position.getDirection(),
                                                                       position.getEntryPrice(),
-                                                                      parameters));
+                                                                      parameters.getBreakeventProfit())
+                                                                      );
    }
 
     private void setSide (RxOrderEntity order,RxPosition position){
@@ -61,7 +62,7 @@ public class RxOrderStopFactory {
 
     public  RxOrderEntity createStopOrder(RxAction marketAction,
                                                  RxTradeParameters parameters,
-                                                 RxMonitor monitor)
+                                                 RxMonitorDataVO monitorData)
    {
         RxOrderEntity rxOrder;
         RxPosition position;
@@ -73,11 +74,11 @@ public class RxOrderStopFactory {
         || marketAction.equals(RxAction.STOP_LOSS_SET)
            ) {
 
-            if (!monitor.isOpenPosition()) {
+            if (!monitorData.isOpenPosition()) {
                 System.out.println("NO position for action " + marketAction);
                 return null;
             }
-            position = monitor.getPosition();
+            position = monitorData.getPosition();
 
 
             switch (marketAction) {
@@ -97,7 +98,7 @@ public class RxOrderStopFactory {
             setSide(rxOrder, position);
 
             rxOrder.setQuantity(parameters.getQuantity());
-            rxOrder.setSymbol(monitor.getInstrument().getFixSymbol());
+            rxOrder.setSymbol(monitorData.instrument.getFixSymbol());
             rxOrder.setType(RxOrderType.STOP);
         }
 

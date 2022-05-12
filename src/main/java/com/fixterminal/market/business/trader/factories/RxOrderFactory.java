@@ -6,6 +6,7 @@ import com.fixterminal.shared.enumerators.RxAction;
 import com.fixterminal.shared.enumerators.RxOrderSide;
 import com.fixterminal.shared.enumerators.RxOrderType;
 import com.fixterminal.shared.enumerators.RxPositionDirection;
+import com.fixterminal.shared.market.RxMonitorDataVO;
 import com.fixterminal.shared.orders.RxOrderEntity;
 import com.fixterminal.shared.positions.RxPosition;
 import com.fixterminal.market.business.parameters.RxTradeParameters;
@@ -60,7 +61,7 @@ public class RxOrderFactory {
 
         public RxOrderEntity createMarketOrder(RxAction marketAction,
                                                RxTradeParameters parameters,
-                                               RxMonitor monitor) {
+                                               RxMonitorDataVO monitorData) {
             RxOrderEntity rxOrder = new RxOrderEntity();
             RxOrderSide side;
             Double quantity;
@@ -68,7 +69,7 @@ public class RxOrderFactory {
 
             if (marketAction == RxAction.CLOSE) {
 
-                RxPosition position = monitor.getPosition();
+                RxPosition position = monitorData.getPosition();
                 rxOrder.setID(position.getId());
 
                 if (position.getDirection()  == RxPositionDirection.SHORT) {
@@ -80,7 +81,7 @@ public class RxOrderFactory {
 
             }
             else if (marketAction == RxAction.REVERS) {
-                RxPosition position = monitor.getPosition();
+                RxPosition position = monitorData.getPosition();
 
                 if (position.getDirection()  == RxPositionDirection.SHORT) {
                     side = RxOrderSide.BUY;
@@ -106,7 +107,7 @@ public class RxOrderFactory {
 
             rxOrder.setQuantity(quantity);
             rxOrder.setSide(side);
-            rxOrder.setSymbol(monitor.getInstrument().getFixSymbol());
+            rxOrder.setSymbol(monitorData.getInstrument().getFixSymbol());
             rxOrder.setType(parameters.getType());
 
           return rxOrder;

@@ -165,7 +165,7 @@ public class RxServerRestController {
                 .body(responseBody);
     }
     //-----------------------------------------------------
-
+    //TODO Rozbudowa kontroli paramtrów
     @GetMapping(value="/command")
     public ResponseEntity<StreamingResponseBody> command  (@RequestParam String cmd ,
                                                            @RequestParam(required = false) Map<String, String> params) {

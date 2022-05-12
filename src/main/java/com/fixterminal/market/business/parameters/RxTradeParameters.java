@@ -11,6 +11,7 @@ import lombok.Setter;
 import java.util.Map;
 
 //TODO klasa abstracyjan z parametrami i opcjami
+//TODO Metoda copy kopiowanie paramerów do nowej instancji
 //up
 //down
 //set_value
@@ -42,11 +43,15 @@ public class RxTradeParameters {
 
         parameterMap.put(RxTradeParameter.AUTO_TRADE, new RxParameterValue<RxOnOff>(RxOnOff.OFF));
         parameterMap.put(RxTradeParameter.AUTO_BREAKEVEN, new RxParameterValue<RxOnOff>(RxOnOff.OFF));
+        parameterMap.put(RxTradeParameter.AUTO_TRAILING, new RxParameterValue<RxOnOff>(RxOnOff.OFF));
+
         parameterMap.put(RxTradeParameter.BREAKEVEN_ACTIVATE_DIST, new RxParameterValue<Double>(0.0));
         parameterMap.put(RxTradeParameter.ORDER_TYPE, new RxParameterValue<RxOrderType>(RxOrderType.MARKET));
         parameterMap.put(RxTradeParameter.STOP_LOSS_DISTANCE, new RxParameterValue<Double>(0.0));
         parameterMap.put(RxTradeParameter.QUANTITY, new RxParameterValue<Double>(0.0));
         parameterMap.put(RxTradeParameter.BREAKEVEN_PROFIT, new RxParameterValue<Double>(0.0));
+        parameterMap.put(RxTradeParameter.TRAILING_STOP_ACTIVATE_DIST, new RxParameterValue<Double>(0.0));
+        parameterMap.put(RxTradeParameter.TRAILING_STOP_FOLLOW_DIST, new RxParameterValue<Double>(0.0));
 
     }
 
@@ -120,4 +125,21 @@ public class RxTradeParameters {
     public Map<String, String> toStringMap() {
         return parameterMap.toStringMap();
     }
+
+    public boolean isBreakevenOn() {
+        return   RxOnOff.ON.equals((parameterMap.get(RxTradeParameter.AUTO_BREAKEVEN)).getValue());
+    }
+
+    public boolean isTrailingStopOn() {
+        return   RxOnOff.ON.equals((parameterMap.get(RxTradeParameter.AUTO_TRAILING)).getValue());
+    }
+
+
+    public Double getTrailingStopActivateDistance() {
+        return   (Double) (parameterMap.get(RxTradeParameter.TRAILING_STOP_ACTIVATE_DIST)).getValue();
+    }
+    public Double getTrailingStopFollowDistance() {
+        return   (Double) (parameterMap.get(RxTradeParameter.TRAILING_STOP_FOLLOW_DIST)).getValue();
+    }
+
 }

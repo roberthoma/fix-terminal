@@ -5,6 +5,7 @@ import com.fixterminal.shared.enumerators.RxMarketTrendCondition;
 import lombok.Getter;
 
 //TODO create dedicated model for instrument
+// TODO Model może modyfikować parametry tradingu lub mieć wpływ na ich modyfikację
 public class RxMarketModel {
 
     @Getter

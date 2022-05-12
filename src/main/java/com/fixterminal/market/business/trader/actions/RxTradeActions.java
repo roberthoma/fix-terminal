@@ -1,6 +1,5 @@
 package com.fixterminal.market.business.trader.actions;
 
-import com.fixterminal.market.business.monitors.RxMonitor;
 import com.fixterminal.market.business.monitors.RxMonitorsDesk;
 import com.fixterminal.market.business.parameters.RxTradeParametersDesk;
 import com.fixterminal.market.business.trader.factories.RxOrderStopCalculatorService;
@@ -9,6 +8,7 @@ import com.fixterminal.market.ports.RxMessageSenderPort;
 import com.fixterminal.shared.dictionaries.instruments.RxDicInstruments;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import com.fixterminal.shared.enumerators.RxAction;
+import com.fixterminal.shared.market.RxMonitorDataVO;
 import com.fixterminal.shared.orders.RxOrderEntity;
 import com.fixterminal.market.business.trader.factories.RxOrderFactory;
 import com.fixterminal.market.business.parameters.RxTradeParameters;
@@ -52,10 +52,11 @@ public class RxTradeActions {
 
     public String actionBuyMarket(RxTradeParameters parameters) {
       try {
-          RxMonitor monitor = rxMonitorsDesk.getMonitor(parameters.getInstrument());
+          RxMonitorDataVO monitorData = rxMonitorsDesk.getMonitor(parameters.getInstrument()).getData();
+
           RxOrderEntity order = orderFactory.createMarketOrder(RxAction.BUY_MARKET,
                                                               parameters,
-                                                              monitor
+                                                              monitorData
                                                               );
           return messageSender
                   .sendNewOrderSingle(order);
@@ -74,10 +75,10 @@ public class RxTradeActions {
 
     public String actionSellMarket(RxTradeParameters parameters) {
         try {
-            RxMonitor monitor = rxMonitorsDesk.getMonitor(parameters.getInstrument());
+            RxMonitorDataVO monitorData = rxMonitorsDesk.getMonitor(parameters.getInstrument()).getData();
             RxOrderEntity order = orderFactory.createMarketOrder(RxAction.SELL_MARKET,
                     parameters,
-                    monitor
+                    monitorData
             );
             return messageSender
                     .sendNewOrderSingle(order);
@@ -96,7 +97,7 @@ public class RxTradeActions {
         try {
             RxOrderEntity order = orderFactory.createMarketOrder(RxAction.CLOSE,
                                                                 parameterDesk.getTradeParameters(instrument),
-                                                                rxMonitorsDesk.getMonitor(instrument)
+                                                                rxMonitorsDesk.getMonitor(instrument).getData()
                                                                 );
             return messageSender.sendNewOrderSingle(order);
         }
@@ -116,7 +117,7 @@ public class RxTradeActions {
           RxOrderEntity order = orderStopFactory
                   .createStopOrder(RxAction.STOP_LOSS_SET,
                           parameterDesk.getTradeParameters(instrument),
-                          rxMonitorsDesk.getMonitor(instrument));
+                          rxMonitorsDesk.getMonitor(instrument).getData());
          return order != null ? messageSender.sendNewOrderSingle(order) : null;
       }
       catch (Exception e){
@@ -136,16 +137,42 @@ public class RxTradeActions {
     }
 
 
-    public void updateStopLossToBreakevent(RxMonitor monitor, RxTradeParameters tradeParameters) {
-        RxPendingOrder orderSL;
-        RxPosition position;
+    public void updateStopLossToBreakevent(RxMonitorDataVO data, RxTradeParameters parameters) {
+        RxPendingOrder orderSL = data.getStopLossOrder();
+        RxPosition position = data.getPosition();
 
-        position = monitor.getPosition();
-        orderSL  = monitor.getStopLossOrder();
-
-        orderSL.setPrice(RxOrderStopCalculatorService.breakEvenPriceCalc(position.getDirection(),position.getEntryPrice(),tradeParameters));
+        orderSL.setPrice(RxOrderStopCalculatorService.breakevenPriceCalc(position.getDirection(),
+                                                                         position.getEntryPrice(),
+                                                                         parameters.getBreakeventProfit() ));
+        log.info("SEND_ORDER : StopLoss To Breakevent ");
         messageSender.sendOrderReplaceRequest(orderSL);
 
+
+    }
+
+//    public void updateStopLossByTrailing(RxMonitorDataVO data, RxTradeParameters tradeParameters) {
+//
+//        RxPendingOrder orderSL = data.getStopLossOrder();
+//        RxPosition position = data.getPosition();
+//
+//        orderSL.setPrice(RxOrderStopCalculatorService.trailingStopLossPriceCalc(
+//
+//
+//                );
+//         position.getDirection(),
+//                position.getEntryPrice(),
+//                parameters.getBreakeventProfit() ));
+//        log.info("SEND_ORDER : StopLoss To Breakevent ");
+//        messageSender.sendOrderReplaceRequest(orderSL);
+//
+//    }
+
+    public void updateStopLossPrice(RxPendingOrder orderSL, double newTrailingSLPrice) {
+
+        orderSL.setPrice(newTrailingSLPrice);
+        log.info("SEND_ORDER : StopLoss To newTrailingSLPrice ");
+
+        messageSender.sendOrderReplaceRequest(orderSL);
 
     }
 }

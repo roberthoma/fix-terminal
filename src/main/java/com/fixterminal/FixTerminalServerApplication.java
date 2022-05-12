@@ -2,6 +2,9 @@ package com.fixterminal;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+//TODO Kontrolowanie połączenia sieciowego/
+//TODO Wznawianie połączenia iTP
+
 
 @SpringBootApplication
 public class FixTerminalServerApplication {

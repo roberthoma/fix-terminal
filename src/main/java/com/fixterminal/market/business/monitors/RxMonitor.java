@@ -7,7 +7,6 @@ import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import com.fixterminal.shared.enumerators.RxExecType;
 import com.fixterminal.shared.enumerators.RxMDUpdateActionEnum;
 import com.fixterminal.shared.enumerators.RxOrderType;
-import com.fixterminal.shared.orders.RxOrdersMap;
 import com.fixterminal.shared.pending_orders.RxPendingOrder;
 import com.fixterminal.market.business.calculators.RxCalculatorPosition;
 import com.fixterminal.shared.positions.RxPosition;
@@ -36,28 +35,10 @@ public class RxMonitor extends Thread  {
      private RxMonitorDataVO data = new RxMonitorDataVO();
 
 
-    @Getter
-    private RxInstrument instrument;
 
     @Getter
     RxIndicators indicators = new RxIndicators();
 
-
-    public boolean isOpenPosition(){
-        if (data.position != null) {
-            return true;
-        }
-        return false;
-    }
-
-  //  private RxOrdersMap ordersMap = new RxOrdersMap();
-
-    //private RxPendingOrdersMap pendingOrdersMap = new RxPendingOrdersMap();
-//    @Getter
-//    private Map<String, RxPendingOrder>  pendingOrdersMap = new HashMap<>();
-//    @Getter
-//    private RxMarketDataCalcBaseVO marketDataCalcBaseVO = new RxMarketDataCalcBaseVO();
-    //private RxMarketDataCalcStrategyVO mdStrategyVo = new RxMarketDataCalcStrategyVO();
 
 
     @Getter
@@ -68,7 +49,7 @@ public class RxMonitor extends Thread  {
     public RxMonitor(RxInstrument instrument){
         log.info("Init : Monitor of  : "+instrument.getSymbol());
 
-        this.instrument  = instrument;
+        data.instrument  = instrument;
 
         positionConsumerList = new ArrayList<>();
         marketDataCalcVoConsumerList = new ArrayList<>();
@@ -76,9 +57,13 @@ public class RxMonitor extends Thread  {
         forEachMsgConsumerList = new ArrayList<>();
     }
 
+    public RxInstrument getInstrument(){
+        return data.instrument;
+    }
+
     public void run(){
 
-        System.out.println("> Start MONITOR "+instrument.getSymbol());
+        System.out.println("> Start MONITOR "+data.instrument.getSymbol());
 
         //TODO Kalkulacja czasu otwartej pozycji jeżeli tego nie zrobił żaden nachodzący komunikat :)
 
@@ -185,31 +170,6 @@ public class RxMonitor extends Thread  {
 
     //TODO >>>>>>>>  ustalenie nr zleceń zaczynaących się od np SL-123nr
     //  lub TP-1234nr
-    public RxPendingOrder getStopLossOrder(){
-        if (data.pendingOrdersMap.size() > 0){
-            for (RxPendingOrder ord : data.pendingOrdersMap.values()){
-                if (ord.getType().equals(RxOrderType.STOP)){
-                    return ord;
-                }
-
-            }
-        }
-
-        return null;
-    }
-
-    public RxPendingOrder getTakeProfitOrder(){
-        if (data.pendingOrdersMap.size() > 0){
-            for (RxPendingOrder ord : data.pendingOrdersMap.values()){
-                if (ord.getType().equals(RxOrderType.LIMIT)){
-                    return ord;
-                }
-
-            }
-        }
-
-        return null;
-    }
 
     public void  addMarketDataCalcVoConsumer(Consumer<RxMarketDataCalcBaseVO> consumer){
         marketDataCalcVoConsumerList.add(consumer);
@@ -220,9 +180,9 @@ public class RxMonitor extends Thread  {
     }
 
 
-    public RxPosition getPosition() {
-      return data.position;
-    }
+//    public RxPosition getPosition() {
+//      return data.position;
+//    }
 
     public RxMarketDataCalcBaseVO getMarketDataCalcBaseVO() {
       return data.marketDataCalcBaseVO;

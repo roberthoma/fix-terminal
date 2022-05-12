@@ -3,14 +3,15 @@ package com.fixterminal.market.business.trader.controllers;
 
 import com.fixterminal.market.business.monitors.RxMonitor;
 import com.fixterminal.market.business.parameters.RxTradeParameters;
-import com.fixterminal.shared.pending_orders.RxPendingOrder;
-import com.fixterminal.shared.positions.RxPosition;
+import com.fixterminal.shared.market.RxMonitorDataVO;
 import com.fixterminal.market.business.trader.actions.RxTradeActions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.util.Random;
 
 @Component
 @Scope("prototype")
@@ -22,13 +23,16 @@ public class RxTradeController extends Thread {
     RxTradeParameters tradeParameters;
     @Autowired
     RxTradeActions actions;
+    @Autowired
+    RxStopLossController stopLossController;
+
 
 
     RxTradeParameters parameters;
 
     public void setMonitor(RxMonitor monitor){
         this.monitor = monitor;
-        monitor.addForEachMsgConsumer(m -> tradeControlByEachMsg());
+        monitor.addForEachMsgConsumer(this::tradeControlByEachMsg);
 
     }
 
@@ -41,6 +45,8 @@ public class RxTradeController extends Thread {
 
     public void run(){
         log.info("Start RxTradeController thread for : "+monitor.getInstrument().getSymbol());
+//TODO Kontrola czasowa ta sama procedura co w tradeControlByEachMsg  lecz wykonywana kiedy w damym czasie nie była wykonana na poziomie
+// labdy z monitora
 //        do {
 //            try {
 //                Thread.sleep(10000);
@@ -51,54 +57,27 @@ public class RxTradeController extends Thread {
 //        while (true);
     }
 
-    private void tradeControlByEachMsg()  {
-
-        RxPendingOrder orderSL;
-        RxPosition position;
- //       RxMarketModel marketModel = m.getMarketModel();
+    private void tradeControlByEachMsg(RxMonitorDataVO data)  {
+        stopLossController.controlAction(data,tradeParameters); //Pomimo braku pozycjy uruchamiam bo mooże sa SL do anulowania
+                                                               // (Temtat do rowinięcia)
 
 
-        if(monitor.isOpenPosition()) {
-           try {
-               position = monitor.getPosition();
-               orderSL  = monitor.getStopLossOrder();
+// ????????????  Nie działa random .. nie ma zwrotu
 
+//        if (!data.isOpenPosition()){
+//            Random rand = new Random();
+//           int n = rand.nextInt(3);
+//
+//           if (n==1) {
+//               actions.actionBuyMarket();
+//           }
+//           else if(n==2){
+//               actions.actionSellMarket();
+//           }
+//        }
 
-               if (orderSL == null) {
-                   System.out.println(" > Setting STOP_LOSS > ");
-                   actions.actionSetStopLoss();
-                   //TODO Czasami wyprzedzam raport i tworzą się dwa zlecenia. SL :(
+        //       RxMarketModel marketModel = m.getMarketModel();
 
-               } else {
-
-                  if(orderSL.getQuantity().compareTo(position.getQuantity()) != 0) {
-                      System.out.println(">>>       StopLoss other QUANTITY >>>> ");
-                      System.out.println(">>> position.getQuantity()=" + position.getQuantity());
-                      System.out.println(">>> orderSL.getQuantityOrdered()=" + orderSL.getQuantity());
-
-                      actions.updateStopLossQuantity(orderSL, position.getQuantity());
-                   }
-
-                   //Breakeven
-                   System.out.println("Breakeven POSITION DIST = "+position.getMarketDistance());
-                   System.out.println("Breakeven POSITION  = "+tradeParameters.getBreakeventActivateDistance());
-                   //TODO kontrola oktulanej SL
-                   if (position.getMarketDistance() > tradeParameters.getBreakeventActivateDistance())
-                   {
-                      actions.updateStopLossToBreakevent(monitor, tradeParameters);
-                   }
-
-                   //TRAILG STOP
-
-
-               }
-            }
-           catch (Exception e){
-               e.printStackTrace();
-           }
-
-        }
-//        else {
 
 // IT WORKS >> it is prototype
 //            if (marketModel.getMarketState() ==  RxMarketState.OVERSOLD
@@ -116,8 +95,8 @@ public class RxTradeController extends Thread {
 //              }
 //            }
 
-
   //      }
+
     }
 
 

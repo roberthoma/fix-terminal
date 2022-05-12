@@ -40,6 +40,13 @@ public class RxTradeParametersFactory {
       tradeParameters.setParameterValue(RxTradeParameter.AUTO_TRADE,
               RxOnOff.valueOf(prop.getProperty("AUTO_TRADE", RxOnOff.OFF.toString())));
 
+      tradeParameters.setParameterValue(RxTradeParameter.AUTO_BREAKEVEN,
+              RxOnOff.valueOf(prop.getProperty("AUTO_BREAKEVEN", RxOnOff.OFF.toString())));
+
+      tradeParameters.setParameterValue(RxTradeParameter.AUTO_TRAILING,
+              RxOnOff.valueOf(prop.getProperty("AUTO_TRAILING", RxOnOff.OFF.toString())));
+
+
       tradeParameters.setParameterValue(RxTradeParameter.BREAKEVEN_ACTIVATE_DIST,
               Double.valueOf(  prop.getProperty("BREAKEVEN_ACTIVATE_DIST")));
 
@@ -51,6 +58,12 @@ public class RxTradeParametersFactory {
 
       tradeParameters.setParameterValue(RxTradeParameter.BREAKEVEN_PROFIT,
               Double.valueOf(  prop.getProperty("BREAKEVEN_PROFIT")));
+
+      tradeParameters.setParameterValue(RxTradeParameter.TRAILING_STOP_ACTIVATE_DIST,
+              Double.valueOf(  prop.getProperty("TRAILING_STOP_ACTIVATE_DIST")));
+
+      tradeParameters.setParameterValue(RxTradeParameter.TRAILING_STOP_FOLLOW_DIST,
+              Double.valueOf(  prop.getProperty("TRAILING_STOP_FOLLOW_DIST")));
 
 
 

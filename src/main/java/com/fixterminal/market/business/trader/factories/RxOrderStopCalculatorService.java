@@ -1,23 +1,36 @@
 package com.fixterminal.market.business.trader.factories;
 
-import com.fixterminal.market.business.parameters.RxTradeParameters;
 import com.fixterminal.shared.enumerators.RxPositionDirection;
-//import org.springframework.stereotype.Service;
 
 public class RxOrderStopCalculatorService {
 
 
-     public static double breakEvenPriceCalc(RxPositionDirection direction,
-                               Double entryPrice,
-                               RxTradeParameters parameters)
+     public static double breakevenPriceCalc(RxPositionDirection direction,
+                                             Double entryPrice,
+                                             Double breakevenProfit)
      {
          double brePrice;
          if(direction.equals(RxPositionDirection.LONG)){
-             brePrice =  entryPrice + parameters.getBreakeventProfit();
+             brePrice =  entryPrice + breakevenProfit;
          }else {
-             brePrice =  entryPrice - parameters.getBreakeventProfit();
+             brePrice =  entryPrice - breakevenProfit;
          }
        return brePrice;
      }
+
+
+//    public static double trailingStopLossPriceCalc(RxPositionDirection direction,
+//                              Double marketPrice,
+//                              Double trailingFollowDist){
+//
+//       double slPrice;
+//
+//
+// ????
+//
+//
+//      return slPrice;
+//    }
+
 
 }
