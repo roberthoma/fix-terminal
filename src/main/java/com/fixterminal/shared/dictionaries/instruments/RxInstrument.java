@@ -11,7 +11,7 @@ public class RxInstrument {
     private String   fixSymbol;
     private RxBroker broker;
     private int      pipPosition;
-
+    private String   configFileName;
     public RxInstrument(){
 
     }

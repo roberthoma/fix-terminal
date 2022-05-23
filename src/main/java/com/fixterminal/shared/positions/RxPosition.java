@@ -23,8 +23,7 @@ public class RxPosition {
         RxPositionStatus status;
 
 
-        //live time : Czas życia pozycja / kalkulowany na bierząco
-
+        //TODO live time : Czas życia pozycja / kalkulowany na bierząco
         // status STOP_LOSS : - ustawione ok
         //  nie ustawione
         // usatwione ale nie powawnie inna wielkowść :(
@@ -34,4 +33,9 @@ public class RxPosition {
            this.status = RxPositionStatus.OPEN;
         }
 
+        @Override
+        public String toString(){
+          return instrument.getSymbol()+ " "+direction+ "  " + entryPrice + " " + gross;
+
+        }
 }

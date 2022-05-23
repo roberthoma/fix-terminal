@@ -15,8 +15,8 @@ public enum RxCommandEnum {
     ORD_BUY_LIMIT("buy_limit", RxCommandMenuGroupEnum.TRADE,"BUY by Limit"),
     ORD_SELL_LIMIT("sell_limit", RxCommandMenuGroupEnum.TRADE,"SELL by Limit"),
 
-    REQ_ORDER_CANCEL("order_cancel", RxCommandMenuGroupEnum.TRADE,"Cancel Pending Order"),
-    REQ_SET_BREAKEVEN("breakeven" , RxCommandMenuGroupEnum.TRADE, "Set Breakeven" ),
+    ORD_ORDER_CANCEL("order_cancel", RxCommandMenuGroupEnum.TRADE,"Cancel Pending Order"),
+    ORD_BREAKEVEN("breakeven" , RxCommandMenuGroupEnum.TRADE, "Set Breakeven" ),
 
 
     LOGON("logon", RxCommandMenuGroupEnum.FILE,"Logon to serv"),
@@ -42,17 +42,16 @@ public enum RxCommandEnum {
     COMMAND_ERROR("command_error", RxCommandMenuGroupEnum.NO_GROUP,"ERROR commnad");
 
 
-    String symbol;
-    String shortcutKey;
-    String description;
-    ArrayList<String> optionsList;
+    final String cmdSymbol;
+    final String description;
+    final ArrayList<String> optionsList;
     int helpOrder;
-    RxCommandMenuGroupEnum menuGroup;
+    final RxCommandMenuGroupEnum menuGroup;
 
-    private static Map<String, RxCommandEnum> mapBySymbol= new HashMap<>();
+//    private static Map<String, RxCommandEnum> mapBySymbol= new HashMap<>();
 
     RxCommandEnum(String cmdSymbol, RxCommandMenuGroupEnum menuGroup, String description){
-        this.symbol = cmdSymbol;
+        this.cmdSymbol = cmdSymbol;
         this.menuGroup = menuGroup;
         this.description = description;
         optionsList= new ArrayList<>();
@@ -65,8 +64,8 @@ public enum RxCommandEnum {
         optionsList.addAll(Arrays.asList(options.split(";")));
     }
 
-    public String getSymbol(){
-        return symbol;
+    public String getCmdSymbol(){
+        return cmdSymbol;
     };
 
     public RxCommandMenuGroupEnum getMenuGroup(){
@@ -83,16 +82,9 @@ public enum RxCommandEnum {
     }
     public ArrayList<String> getOptionsList(){return  this.optionsList;}
 
-
     public String getDescription() {
        return  description;
     }
 
-    public String getShortcutKey() {
-        if (shortcutKey == null){
-            return "";
-        }
-        return  shortcutKey;
-    }
 
 }

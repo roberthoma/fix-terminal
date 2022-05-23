@@ -34,8 +34,6 @@ public class RxMonitor extends Thread  {
      @Getter
      private RxMonitorDataVO data = new RxMonitorDataVO();
 
-
-
     @Getter
     RxIndicators indicators = new RxIndicators();
 
@@ -79,9 +77,8 @@ public class RxMonitor extends Thread  {
         }
     }
     public void clearPosition(){
-        //TODO send info to client
-        //positions.clear();
         data.position = null;
+        System.out.println(" Monitor " + data.instrument +" : clear tab position.");
     }
 
     public void clearPendingOrdersMap(){
@@ -138,6 +135,8 @@ public class RxMonitor extends Thread  {
 
 
 
+
+    //TODO Cała ta funkcja do przeanalizowania
     public void executeReportConsume(RxExecuteReport rxExecuteReport) {
 
         if (rxExecuteReport.getOrderType().equals(RxOrderType.MARKET)){

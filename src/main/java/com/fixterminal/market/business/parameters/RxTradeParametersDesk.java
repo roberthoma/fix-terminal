@@ -15,10 +15,10 @@ public class RxTradeParametersDesk {
 
    Map<RxInstrument, RxTradeParameters> parametersMap = new HashMap<>();
 
-    RxDicInstruments instruments;
+   RxDicInstruments instruments;
 
    @Autowired
-    RxTradeParametersDesk(RxDicInstruments instruments){
+   RxTradeParametersDesk(RxDicInstruments instruments){
       log.info("Init : RxTradeParametersDesk");
       this.instruments = instruments;
       instruments.toList().forEach(instrument ->

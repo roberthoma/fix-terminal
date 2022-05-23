@@ -1,4 +1,4 @@
-package com.fixterminal.market.business.trader.factories;
+package com.fixterminal.market.business.trade.factories;
 
 import com.fixterminal.shared.enumerators.RxPositionDirection;
 

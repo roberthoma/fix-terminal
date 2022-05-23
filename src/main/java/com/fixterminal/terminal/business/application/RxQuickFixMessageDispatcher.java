@@ -6,7 +6,7 @@ import com.fixterminal.terminal.business.prompters.RxFixTerminalPrompter;
 import com.fixterminal.shared.market.RxExecuteReport;
 import com.fixterminal.shared.market.RxMarketDataVO;
 import com.fixterminal.shared.positions.RxPosition;
-import com.fixterminal.terminal.business.senders.RxRequestMessageSender;
+import com.fixterminal.terminal.business.senders.RxOrderController;
 import com.fixterminal.terminal.business.services.RxMarketDataService;
 import com.fixterminal.terminal.business.services.RxMassageToExecutionReport;
 import com.fixterminal.terminal.business.services.RxMessageDecorator;
@@ -47,6 +47,8 @@ public class RxQuickFixMessageDispatcher {
     @Autowired
     RxFixHeartPrompter heartPrompter;
 
+    @Autowired
+    RxOrderController orderController;
 
     public RxQuickFixMessageDispatcher() {
         log.info("Init : RxQuickFixMessageDispatcher");
@@ -88,20 +90,20 @@ public class RxQuickFixMessageDispatcher {
             switch (msgType){
                 case MsgType.HEARTBEAT :
                     hertBB ++;
-                    heartPrompter.accept("HEARTBEAT> "+hertBB);
-                //    System.out.println("HEARTBEAT>"+RxMessageDecorator.decorate(message));
+                    //heartPrompter.accept("HEARTBEAT> "+hertBB);
+                    System.out.print(".");
                     break;
 
 
                 case MsgType.MARKET_DATA_SNAPSHOT_FULL_REFRESH:
-                    logPrompter.accept("MARKET_DATA_SNAPSHOT_FULL_REFRESH>"+ RxMessageDecorator.decorate(message));
+                   // logPrompter.accept("MARKET_DATA_SNAPSHOT_FULL_REFRESH>"+ RxMessageDecorator.decorate(message));
                     if (marketDataConsumer != null) {
                         marketDataConsumer.accept(true, rxMarketDataService.messageToList(message, null));
                     }
                     break;
 
                 case MsgType.MARKET_DATA_INCREMENTAL_REFRESH:
-                    logPrompter.accept("MARKET_DATA_INCREMENTAL_REFRESH>"+RxMessageDecorator.decorate(message));
+                  //  logPrompter.accept("MARKET_DATA_INCREMENTAL_REFRESH>"+RxMessageDecorator.decorate(message));
                     if (marketDataConsumer != null) {
                         marketDataConsumer.accept(false, rxMarketDataService.messageToList(message, null));
                     }
@@ -123,18 +125,19 @@ public class RxQuickFixMessageDispatcher {
                     break;
 
                 case MsgType.EXECUTION_REPORT:
-                    logPrompter.accept("EXECUTION_REPORT>"+RxMessageDecorator.decorate(message));
+                    //logPrompter.accept("EXECUTION_REPORT>"+RxMessageDecorator.decorate(message));
+                    System.out.println("EXECUTION_REPORT>"+RxMessageDecorator.decorate(message));
+                    RxExecuteReport report =  massageToExecutionReport.toExecuteReport(message);
+                    orderController.setStatus(report);
                       if(executionReportConsumer != null) {
-                          executionReportConsumer.accept(
-                                  massageToExecutionReport.toExecuteReport(message)
-                          );
+                          executionReportConsumer.accept(report);
                       }
-               //     requestMessageSender.sendRequestForPositions();
                     break;
 
                 case MsgType.POSITION_REPORT:
 //
-                    logPrompter.accept(("POSITION_REPORT>"+RxMessageDecorator.decorate(message)));
+                    //logPrompter.accept(("POSITION_REPORT>"+RxMessageDecorator.decorate(message)));
+                    System.out.println(("POSITION_REPORT>"+RxMessageDecorator.decorate(message)));
 
                     if(  positionReportConsumer != null){
                         positionReportConsumer.accept(messageToPositionService.toPosition(message));

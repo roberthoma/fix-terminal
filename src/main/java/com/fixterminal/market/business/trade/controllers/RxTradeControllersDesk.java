@@ -1,8 +1,7 @@
-package com.fixterminal.market.business.trader.controllers;
+package com.fixterminal.market.business.trade.controllers;
 
 import com.fixterminal.market.business.monitors.RxMonitorsDesk;
 import com.fixterminal.market.business.parameters.RxTradeParametersDesk;
-import com.fixterminal.market.business.trader.actions.RxTradeActions;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

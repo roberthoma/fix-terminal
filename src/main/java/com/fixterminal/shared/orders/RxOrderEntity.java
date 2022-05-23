@@ -2,6 +2,7 @@ package com.fixterminal.shared.orders;
 
 
 import com.fixterminal.shared.enumerators.RxOrderSide;
+import com.fixterminal.shared.enumerators.RxOrderStatus;
 import com.fixterminal.shared.enumerators.RxOrderTimeInForce;
 import com.fixterminal.shared.enumerators.RxOrderType;
 import lombok.Getter;
@@ -12,6 +13,9 @@ import org.apache.commons.math3.util.Precision;
 @Setter
 public class RxOrderEntity implements Cloneable {
   //  private SessionID sessionID = null;
+    private String ID = null;    // ClOrdID <11>
+    private String originalID = null;
+
     private String symbol = null;  //TODO Instrument symbol
     private Double quantity;
     private int open = 0;
@@ -19,27 +23,20 @@ public class RxOrderEntity implements Cloneable {
     private RxOrderSide side ;
     private RxOrderType type ;
     private RxOrderTimeInForce tif;
+    private RxOrderStatus orderStatus;
     private Double price = null;
 //    private Double stop = null;
     private double avgPx = 0.0;
 
-//    private boolean rejected = false;
-//    private boolean canceled = false;
-//    private boolean isNew = true;
 
 
     private String message = null;
-    private String ID = null;
-    private String originalID = null;
     private static int nextID = 1;
 
     public RxOrderEntity() {
         ID = generateID();
-        System.out.println("ROHO NEW ORD id=" + ID);
-    }
-
-    public RxOrderEntity(String ID) {
-        this.ID = ID;
+        orderStatus = RxOrderStatus.CREATED;
+        System.out.println("CREATING ORDER id=" + ID);
     }
 
     public Object clone() {

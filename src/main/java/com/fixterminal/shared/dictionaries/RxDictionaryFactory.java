@@ -77,13 +77,8 @@ public static RxDicBrokers initDicBrokers() throws ParserConfigurationException,
               instrument.setSymbol(element.getElementsByTagName("symbol").item(0).getTextContent());
               instrument.setFixSymbol(element.getElementsByTagName("fixsymbol").item(0).getTextContent());
               instrument.setPipPosition(Integer.parseInt(element.getElementsByTagName("pip_position").item(0).getTextContent()));
-              //instrument.setBroker( (Integer.parseInt(element.getElementsByTagName("pip_position").item(0).getTextContent())));
-
-
-
+              instrument.setConfigFileName(element.getElementsByTagName("config_file").item(0).getTextContent());
               instruments.add(instrument);
-
-
           }
       }
 

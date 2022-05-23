@@ -28,30 +28,28 @@ public class RxTradeParameters {
 
     private RxParemetersMap parameterMap = new RxParemetersMap();
 
-    @Getter
-    RxInstrument instrument;
 
 
     public RxTradeParameters(RxInstrument instrument) {
         // this.tif        = RxOrderTimeInForce.DAY;
-        this.instrument = instrument;
-        initParams(); // TYMCZASOWE
+        initParams(instrument); // TYMCZASOWE
     }
 
 
-    private void initParams() {
+    private void initParams(RxInstrument instrument) {
 
-        parameterMap.put(RxTradeParameter.AUTO_TRADE, new RxParameterValue<RxOnOff>(RxOnOff.OFF));
-        parameterMap.put(RxTradeParameter.AUTO_BREAKEVEN, new RxParameterValue<RxOnOff>(RxOnOff.OFF));
-        parameterMap.put(RxTradeParameter.AUTO_TRAILING, new RxParameterValue<RxOnOff>(RxOnOff.OFF));
+        parameterMap.put(RxTradeParameterType.INSTRUMENT, new RxParameterValue<RxInstrument>(instrument));
+        parameterMap.put(RxTradeParameterType.AUTO_TRADE, new RxParameterValue<RxOnOff>(RxOnOff.OFF));
+        parameterMap.put(RxTradeParameterType.AUTO_BREAKEVEN, new RxParameterValue<RxOnOff>(RxOnOff.OFF));
+        parameterMap.put(RxTradeParameterType.AUTO_TRAILING, new RxParameterValue<RxOnOff>(RxOnOff.OFF));
 
-        parameterMap.put(RxTradeParameter.BREAKEVEN_ACTIVATE_DIST, new RxParameterValue<Double>(0.0));
-        parameterMap.put(RxTradeParameter.ORDER_TYPE, new RxParameterValue<RxOrderType>(RxOrderType.MARKET));
-        parameterMap.put(RxTradeParameter.STOP_LOSS_DISTANCE, new RxParameterValue<Double>(0.0));
-        parameterMap.put(RxTradeParameter.QUANTITY, new RxParameterValue<Double>(0.0));
-        parameterMap.put(RxTradeParameter.BREAKEVEN_PROFIT, new RxParameterValue<Double>(0.0));
-        parameterMap.put(RxTradeParameter.TRAILING_STOP_ACTIVATE_DIST, new RxParameterValue<Double>(0.0));
-        parameterMap.put(RxTradeParameter.TRAILING_STOP_FOLLOW_DIST, new RxParameterValue<Double>(0.0));
+        parameterMap.put(RxTradeParameterType.BREAKEVEN_ACTIVATE_DIST, new RxParameterValue<Double>(0.0));
+        parameterMap.put(RxTradeParameterType.ORDER_TYPE, new RxParameterValue<RxOrderType>(RxOrderType.MARKET));
+        parameterMap.put(RxTradeParameterType.STOP_LOSS_DISTANCE, new RxParameterValue<Double>(0.0));
+        parameterMap.put(RxTradeParameterType.QUANTITY, new RxParameterValue<Double>(0.0));
+        parameterMap.put(RxTradeParameterType.BREAKEVEN_PROFIT, new RxParameterValue<Double>(0.0));
+        parameterMap.put(RxTradeParameterType.TRAILING_STOP_ACTIVATE_DIST, new RxParameterValue<Double>(0.0));
+        parameterMap.put(RxTradeParameterType.TRAILING_STOP_FOLLOW_DIST, new RxParameterValue<Double>(0.0));
 
     }
 
@@ -62,8 +60,12 @@ public class RxTradeParameters {
 
     }
 
+    public RxInstrument getInstrument(){
+        return   (RxInstrument) (parameterMap.get(RxTradeParameterType.INSTRUMENT)).getValue();
+    }
 
-    public void setParameterValue(RxTradeParameter tradeParameter, Object value) {
+
+    public void setParameterValue(RxTradeParameterType tradeParameter, Object value) {
         parameterMap.get(tradeParameter).setValue(value);
     }
 
@@ -77,69 +79,69 @@ public class RxTradeParameters {
         paramsStr += param + "\n";
     }
 
-    @Override
-    public String toString() {
-
-//        RxParameter<?> obPar =  parameterMap.get(RxTradeParameter.AUTO_TRADE);
-
-        paramsStr = "";
-        parameterMap.forEach((parameter, rxParameterValue) -> setParamStr(parameter.getSymbol()
-                + rxParameterValue.getValue()
-        ));
-
-
-//       List<>  parameterMap.keySet()
-
-        return paramsStr;
-    }
 
     public Double getQuantity() {
-        return   (Double) (parameterMap.get(RxTradeParameter.QUANTITY)).getValue();
+        return   (Double) (parameterMap.get(RxTradeParameterType.QUANTITY)).getValue();
     }
 
     public RxOrderType getType() {
-        return (RxOrderType) (parameterMap.get(RxTradeParameter.ORDER_TYPE)).getValue();
+        return (RxOrderType) (parameterMap.get(RxTradeParameterType.ORDER_TYPE)).getValue();
     }
 
     public Double getStopLossDistance() {
-        return   (Double) (parameterMap.get(RxTradeParameter.STOP_LOSS_DISTANCE)).getValue();
+        return   (Double) (parameterMap.get(RxTradeParameterType.STOP_LOSS_DISTANCE)).getValue();
     }
 
     public Double getBreakeventProfit() {
-        return   (Double) (parameterMap.get(RxTradeParameter.BREAKEVEN_PROFIT)).getValue();
+        return   (Double) (parameterMap.get(RxTradeParameterType.BREAKEVEN_PROFIT)).getValue();
 
     }
 
     public Double getBreakeventActivateDistance() {
-       return   (Double) (parameterMap.get(RxTradeParameter.BREAKEVEN_ACTIVATE_DIST)).getValue();
+       return   (Double) (parameterMap.get(RxTradeParameterType.BREAKEVEN_ACTIVATE_DIST)).getValue();
     }
 
     public void setAutoTradeOff() {
-        parameterMap.get(RxTradeParameter.AUTO_TRADE).setValue(RxOnOff.OFF);
+        parameterMap.get(RxTradeParameterType.AUTO_TRADE).setValue(RxOnOff.OFF);
     }
 
     public void setAutoTradeOn() {
-        parameterMap.get(RxTradeParameter.AUTO_TRADE).setValue(RxOnOff.ON);
+        parameterMap.get(RxTradeParameterType.AUTO_TRADE).setValue(RxOnOff.ON);
     }
+
+    public boolean isAutoTradeOn() {
+        return   RxOnOff.ON.equals((parameterMap.get(RxTradeParameterType.AUTO_TRADE)).getValue());
+    }
+
+
 
     public Map<String, String> toStringMap() {
         return parameterMap.toStringMap();
     }
 
     public boolean isBreakevenOn() {
-        return   RxOnOff.ON.equals((parameterMap.get(RxTradeParameter.AUTO_BREAKEVEN)).getValue());
+        return   RxOnOff.ON.equals((parameterMap.get(RxTradeParameterType.AUTO_BREAKEVEN)).getValue());
     }
 
     public boolean isTrailingStopOn() {
-        return   RxOnOff.ON.equals((parameterMap.get(RxTradeParameter.AUTO_TRAILING)).getValue());
+        return   RxOnOff.ON.equals((parameterMap.get(RxTradeParameterType.AUTO_TRAILING)).getValue());
     }
-
 
     public Double getTrailingStopActivateDistance() {
-        return   (Double) (parameterMap.get(RxTradeParameter.TRAILING_STOP_ACTIVATE_DIST)).getValue();
+        return   (Double) (parameterMap.get(RxTradeParameterType.TRAILING_STOP_ACTIVATE_DIST)).getValue();
     }
     public Double getTrailingStopFollowDistance() {
-        return   (Double) (parameterMap.get(RxTradeParameter.TRAILING_STOP_FOLLOW_DIST)).getValue();
+        return   (Double) (parameterMap.get(RxTradeParameterType.TRAILING_STOP_FOLLOW_DIST)).getValue();
+    }
+
+
+    @Override
+    public String toString() {
+        paramsStr = "";
+        parameterMap.forEach((parameter, rxParameterValue) -> setParamStr(parameter.getSymbol()
+                + rxParameterValue.getValue()
+        ));
+        return paramsStr;
     }
 
 }

@@ -1,7 +1,7 @@
-package com.fixterminal.market.business.trader.controllers;
+package com.fixterminal.market.business.trade.controllers;
 
 import com.fixterminal.market.business.parameters.RxTradeParameters;
-import com.fixterminal.market.business.trader.actions.RxTradeActions;
+import com.fixterminal.market.business.trade.actions.RxTradeActions;
 import com.fixterminal.shared.enumerators.RxPositionDirection;
 import com.fixterminal.shared.market.RxMonitorDataVO;
 import com.fixterminal.shared.pending_orders.RxPendingOrder;
@@ -47,7 +47,7 @@ public class RxStopLossController {
                 position = data.position;
 
                 if (orderSL == null) {
-                    actions.actionSetStopLoss();  //TODO Czasami wyprzedzam raport i tworzą się dwa zlecenia. SL :(
+                    actions.actionSetStopLoss(tradeParameters.getInstrument());  //TODO Czasami wyprzedzam raport i tworzą się dwa zlecenia. SL :(
                 } else {
                     checkStopLossQuantity();
                     checkBreakeven();

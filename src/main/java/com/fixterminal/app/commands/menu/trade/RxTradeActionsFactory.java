@@ -5,6 +5,8 @@ import com.fixterminal.app.ports.RxMarketTraderPort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 @Service
 public class RxTradeActionsFactory {
 
@@ -18,8 +20,8 @@ public class RxTradeActionsFactory {
     public RxCmdAbstract createBuyMarketAction() {
         return new RxCmdAbstract() {
             @Override
-            public void execute() throws Exception {
-                trader.actionBuyMarket();
+            public void execute(Map<String, String> params) throws Exception {
+                trader.actionBuyMarket(params);
             }
         };
     }
@@ -27,8 +29,8 @@ public class RxTradeActionsFactory {
     public RxCmdAbstract createSellMarketAction() {
         return new RxCmdAbstract() {
             @Override
-            public void execute() throws Exception {
-                trader.actionSellMarket();
+            public void execute(Map<String, String> params) throws Exception {
+                trader.actionSellMarket(params);
             }
         };
     }
@@ -36,9 +38,19 @@ public class RxTradeActionsFactory {
     public RxCmdAbstract createCloseAction() {
         return new RxCmdAbstract() {
             @Override
-            public void execute() throws Exception {
-                trader.actionClosePosition();
+            public void execute(Map<String, String> params) throws Exception {
+                trader.actionClosePosition(params);
             }
         };
     }
+
+//    public RxCmdAbstract createBreakevenAction() {
+//        return new RxCmdAbstract() {
+//            @Override
+//            public void execute(Map<String, String> params) throws Exception {
+//                trader.actionBreakeven(params);
+//            }
+//        };
+//    }
+
 }

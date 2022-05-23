@@ -2,7 +2,7 @@ package com.fixterminal.shared.market;
 
 
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
-import com.fixterminal.shared.enumerators.RxEntryTypeEnum;
+import com.fixterminal.shared.enumerators.RxEntryType;
 import com.fixterminal.shared.enumerators.RxMDUpdateActionEnum;
 
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ public class RxMarketDataVO {
 
     public RxMDUpdateActionEnum action;
     public String               entryID ;   //        278=421395471
-    public RxEntryTypeEnum entryType;          // 269=1
+    public RxEntryType entryType;          // 269=1
     public double               entryPx;     //       270=1.21739
     public double               entrySize;   //      271=3000000
     public LocalDateTime        entryDateTime;

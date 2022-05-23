@@ -1,10 +1,12 @@
-package com.fixterminal.market.business.trader.controllers;
+package com.fixterminal.market.business.trade.controllers;
 
 
 import com.fixterminal.market.business.monitors.RxMonitor;
 import com.fixterminal.market.business.parameters.RxTradeParameters;
+import com.fixterminal.market.business.trade.actions.RxTradeActionsController;
+import com.fixterminal.shared.enumerators.RxRequestStatus;
 import com.fixterminal.shared.market.RxMonitorDataVO;
-import com.fixterminal.market.business.trader.actions.RxTradeActions;
+import com.fixterminal.market.business.trade.actions.RxTradeActions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +28,11 @@ public class RxTradeController extends Thread {
     @Autowired
     RxStopLossController stopLossController;
 
+    @Autowired
+    RxTradeActionsController actionsController;
 
 
-    RxTradeParameters parameters;
+    int n_trade = 0; // rodo do usunięcia
 
     public void setMonitor(RxMonitor monitor){
         this.monitor = monitor;
@@ -63,19 +67,26 @@ public class RxTradeController extends Thread {
 
 
 // ????????????  Nie działa random .. nie ma zwrotu
+      if( tradeParameters.isAutoTradeOn()) {
+          if (actionsController.getPositionReportStatus(tradeParameters.getInstrument()).compareTo(RxRequestStatus.RECEIVED) == 0) {
+              if (!data.isOpenPosition()) {
+                      n_trade++;
+                      Random rand = new Random();
+                      int n = rand.nextInt(3);
 
-//        if (!data.isOpenPosition()){
-//            Random rand = new Random();
-//           int n = rand.nextInt(3);
-//
-//           if (n==1) {
-//               actions.actionBuyMarket();
-//           }
-//           else if(n==2){
-//               actions.actionSellMarket();
-//           }
-//        }
+                      if (n == 1) {
+                          actions.actionBuyMarket(tradeParameters);
+                      } else if (n == 2) {
+                          actions.actionSellMarket(tradeParameters);
+                      }
 
+              }
+              else{
+                  System.out.println(data.position);
+              }
+          }
+    //      System.out.println("BRAK HANDLU");
+      }
         //       RxMarketModel marketModel = m.getMarketModel();
 
 

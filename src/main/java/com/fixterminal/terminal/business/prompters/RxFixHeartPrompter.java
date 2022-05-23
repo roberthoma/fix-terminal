@@ -11,7 +11,7 @@ public class RxFixHeartPrompter implements Consumer<String> {
     private static final Logger log = LoggerFactory.getLogger(RxFixHeartPrompter.class);
     String heartBB;
     public RxFixHeartPrompter(){
-        log.info("Init : RxFixHeartPrompter");
+       log.info("Init : RxFixHeartPrompter");
     }
 
     @Override

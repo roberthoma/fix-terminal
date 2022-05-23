@@ -2,13 +2,9 @@ package com.fixterminal.shared.enumerators;
 
 public enum RxOrderStatus {
 
+    CREATED,
+    SENT,
     NEW,
     CANCELED,
-    SENT,
-    EXECUTED,
-    REJECTED
-
-
-
-
+    FILLED
 }

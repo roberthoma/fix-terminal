@@ -2,12 +2,12 @@ package com.fixterminal.market.adapters;
 
 import com.fixterminal.market.business.monitors.RxMonitorSessionController;
 import com.fixterminal.market.business.monitors.RxMonitorsDesk;
-import com.fixterminal.shared.enumerators.RxAction;
+import com.fixterminal.shared.enumerators.RxActionType;
 import com.fixterminal.app.ports.RxMarketServicePort;
 import com.fixterminal.shared.dictionaries.instruments.RxDicInstruments;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import com.fixterminal.market.business.parameters.RxTradeParametersDesk;
-import com.fixterminal.market.business.trader.controllers.RxTradeControllersDesk;
+import com.fixterminal.market.business.trade.controllers.RxTradeControllersDesk;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -63,7 +63,7 @@ public class RxMarketServiceAdapter implements RxMarketServicePort {
     }
 
     @Override
-    public RxAction commandDecode(String cmd) {
+    public RxActionType commandDecode(String cmd) {
         //   ????
 
         return null;

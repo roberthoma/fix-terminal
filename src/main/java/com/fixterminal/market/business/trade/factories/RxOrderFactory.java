@@ -1,8 +1,8 @@
-package com.fixterminal.market.business.trader.factories;
+package com.fixterminal.market.business.trade.factories;
 
 
 import com.fixterminal.market.business.monitors.RxMonitor;
-import com.fixterminal.shared.enumerators.RxAction;
+import com.fixterminal.shared.enumerators.RxActionType;
 import com.fixterminal.shared.enumerators.RxOrderSide;
 import com.fixterminal.shared.enumerators.RxOrderType;
 import com.fixterminal.shared.enumerators.RxPositionDirection;
@@ -18,7 +18,7 @@ public class RxOrderFactory {
 
 
 
-    public RxOrderEntity cancelLimitOrder(RxAction marketAction,
+    public RxOrderEntity cancelLimitOrder(RxActionType marketAction,
                                           RxTradeParameters parameters,
                                           RxMonitor monitor) {
         RxOrderEntity rxOrder = new RxOrderEntity();
@@ -31,25 +31,25 @@ public class RxOrderFactory {
     }
 
 
-    public RxOrderEntity createLimitOrder(RxAction marketAction,
+    public RxOrderEntity createLimitOrder(RxActionType marketAction,
                                           RxTradeParameters parameters,
-                                          RxMonitor monitor) {
+                                          RxMonitorDataVO monitorData) {
         RxOrderEntity rxOrder = new RxOrderEntity();
         double limitPrice;
 
-        if (marketAction == RxAction.SELL_LIMIT) {
+        if (marketAction == RxActionType.SELL_LIMIT) {
             rxOrder.setSide(RxOrderSide.SELL);
-            limitPrice = monitor.getMarketDataCalcBaseVO().bidBestPrice + 0.0010;  //TODO from parameters
+            limitPrice = monitorData.marketDataCalcBaseVO.bidBestPrice  + 0.0010;  //TODO PARAMETERS from parameters
         }
         else {
             rxOrder.setSide(RxOrderSide.BUY);
-            limitPrice = monitor.getMarketDataCalcBaseVO().offerBestPrice - 0.0010;
+            limitPrice = monitorData.marketDataCalcBaseVO.offerBestPrice - 0.0010;
 
         }
         rxOrder.setPrice(limitPrice);
          rxOrder.setQuantity(parameters.getQuantity());
 
-        rxOrder.setSymbol(monitor.getInstrument().getFixSymbol());
+        rxOrder.setSymbol(monitorData.getInstrument().getFixSymbol());
         rxOrder.setType(RxOrderType.LIMIT);
 
 
@@ -59,7 +59,7 @@ public class RxOrderFactory {
 
 
 
-        public RxOrderEntity createMarketOrder(RxAction marketAction,
+        public RxOrderEntity createMarketOrder(RxActionType marketAction,
                                                RxTradeParameters parameters,
                                                RxMonitorDataVO monitorData) {
             RxOrderEntity rxOrder = new RxOrderEntity();
@@ -67,7 +67,7 @@ public class RxOrderFactory {
             Double quantity;
             String ticketID;
 
-            if (marketAction == RxAction.CLOSE) {
+            if (marketAction == RxActionType.CLOSE) {
 
                 RxPosition position = monitorData.getPosition();
                 rxOrder.setID(position.getId());
@@ -80,7 +80,7 @@ public class RxOrderFactory {
                 quantity = position.getQuantity();
 
             }
-            else if (marketAction == RxAction.REVERS) {
+            else if (marketAction == RxActionType.REVERS) {
                 RxPosition position = monitorData.getPosition();
 
                 if (position.getDirection()  == RxPositionDirection.SHORT) {
@@ -93,10 +93,10 @@ public class RxOrderFactory {
             else {
                 quantity = Double.valueOf(parameters.getQuantity());
 
-                if (marketAction == RxAction.SELL_MARKET) {
+                if (marketAction == RxActionType.SELL_MARKET) {
                       side = RxOrderSide.SELL;
                 }
-                else if (marketAction == RxAction.BUY_MARKET) {
+                else if (marketAction == RxActionType.BUY_MARKET) {
                     side = RxOrderSide.BUY;
                 }
                 else {
@@ -113,7 +113,7 @@ public class RxOrderFactory {
           return rxOrder;
         }
 
-    public RxOrderEntity createCancelPendingOrder(RxAction cancelPendingOrder,
+    public RxOrderEntity createCancelPendingOrder(RxActionType cancelPendingOrder,
                                                   RxTradeParameters tradeParameters,
                                                   RxMonitor monitor)
     {

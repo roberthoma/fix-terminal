@@ -32,9 +32,9 @@ public class RxDicInstruments {
     }
 
 
-    public RxInstrument getDefault() {
-        return instrumentMap.get("1");  //TODO tymczasowa lista .. narazie EURUSD
-    }
+//    public RxInstrument getDefault() {
+//        return instrumentMap.get("1");  //TODO tymczasowa lista .. narazie EURUSD
+//    }
 
 
     public List<RxInstrument> toMonitoringList() {

@@ -1,9 +1,11 @@
 package com.fixterminal.market.business.monitors;
 
+import com.fixterminal.market.business.trade.actions.RxTradeActionsController;
 import com.fixterminal.shared.dictionaries.instruments.RxDicInstruments;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import com.fixterminal.gui.ports.RxFixTerminalMainGuiPort;
 import com.fixterminal.market.ports.RxMessageSenderPort;
+import com.fixterminal.shared.enumerators.RxRequestStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,16 +22,19 @@ public class RxMonitorSessionController extends Thread {
     RxMonitorsDesk monitorsDesk;
     @Autowired
     RxDicInstruments dicInstruments;
+    RxTradeActionsController actionsController;
 
     @Autowired
     public RxMonitorSessionController(RxFixTerminalMainGuiPort terminal,
                                       RxMessageSenderPort rxRequestMessageSender,
-                                      RxMonitorsDesk monitorsDesk
+                                      RxMonitorsDesk monitorsDesk,
+                                      RxTradeActionsController actionsController
     ){
         log.info("Init : RxConnectionControler");
         this.terminal = terminal;
         this.monitorsDesk = monitorsDesk;
         this.rxRequestMessageSender = rxRequestMessageSender;
+        this.actionsController = actionsController;
     }
 
 
@@ -65,6 +70,9 @@ public class RxMonitorSessionController extends Thread {
         }
 
         rxRequestMessageSender.sendRequestForPositions();
+        actionsController.setRxPositionReportStatus(RxRequestStatus.SENT);
+
+        rxRequestMessageSender.sendOrderStatusRequest();
 
        // TODO For developing loop controlled connections etc
 

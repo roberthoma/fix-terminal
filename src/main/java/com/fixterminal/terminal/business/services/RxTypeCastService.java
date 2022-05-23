@@ -38,8 +38,8 @@ public class RxTypeCastService {
     }
 
 
-    public static RxEntryTypeEnum fixEntryTypeToRxEntryType(MDEntryType mdEntryType) {
-        return (RxEntryTypeEnum) entryTypeMap.getSecond(mdEntryType);
+    public static RxEntryType fixEntryTypeToRxEntryType(MDEntryType mdEntryType) {
+        return (RxEntryType) entryTypeMap.getSecond(mdEntryType);
     }
 
     public static RxExecType   fixExecTypeToRxExecType(ExecType execType){
@@ -71,8 +71,8 @@ public class RxTypeCastService {
         tifMap.put(RxOrderTimeInForce.GTC, new TimeInForce(TimeInForce.GOOD_TILL_CANCEL));
         tifMap.put(RxOrderTimeInForce.GTX, new TimeInForce(TimeInForce.GOOD_TILL_CROSSING));
 
-        entryTypeMap.put(RxEntryTypeEnum.BID, new MDEntryType(MDEntryType.BID));
-        entryTypeMap.put(RxEntryTypeEnum.OFFER, new MDEntryType(MDEntryType.OFFER));
+        entryTypeMap.put(RxEntryType.BID, new MDEntryType(MDEntryType.BID));
+        entryTypeMap.put(RxEntryType.OFFER, new MDEntryType(MDEntryType.OFFER));
 
         marketDataUpdateAction.put(RxMDUpdateActionEnum.NEW, new MDUpdateAction(MDUpdateAction.NEW));
         marketDataUpdateAction.put(RxMDUpdateActionEnum.CHANGE, new MDUpdateAction(MDUpdateAction.CHANGE));
@@ -86,6 +86,7 @@ public class RxTypeCastService {
 
         ordStatusMap.put(RxOrderStatus.NEW, new OrdStatus(OrdStatus.NEW));
         ordStatusMap.put(RxOrderStatus.CANCELED, new OrdStatus(OrdStatus.CANCELED));
+        ordStatusMap.put(RxOrderStatus.FILLED, new OrdStatus(OrdStatus.FILLED));
 
     }
 

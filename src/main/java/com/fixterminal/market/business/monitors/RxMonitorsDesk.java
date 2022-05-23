@@ -1,12 +1,13 @@
 package com.fixterminal.market.business.monitors;
 
+import com.fixterminal.market.business.trade.actions.RxTradeActionsController;
 import com.fixterminal.market.ports.RxMessageSenderPort;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
+import com.fixterminal.shared.enumerators.RxRequestStatus;
 import com.fixterminal.shared.market.RxExecuteReport;
 import com.fixterminal.shared.market.RxMarketDataVO;
 import com.fixterminal.shared.positions.RxPosition;
 import com.fixterminal.market.ports.RxQuickFixMessageDispatcherPort;
-import com.fixterminal.terminal.business.senders.RxRequestMessageSender;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,19 +29,22 @@ public final class RxMonitorsDesk
 
     RxQuickFixMessageDispatcherPort msgDispatcher;
     RxMessageSenderPort messageSender;
+    RxTradeActionsController actionsController;
 
     private final Map<RxInstrument, RxMonitor>  monitorsMap;
 
 
     @Autowired
     public RxMonitorsDesk(RxQuickFixMessageDispatcherPort msgDispatcher,
-                          RxMessageSenderPort messageSender
+                          RxMessageSenderPort messageSender,
+                          RxTradeActionsController actionsController
                           )
     {
 
         log.info("Init : RxMonitorsDesk ");
        this.msgDispatcher = msgDispatcher;
        this.messageSender = messageSender;
+       this.actionsController = actionsController;
 
        if (msgDispatcher == null){
            log.info("EXCEPTION >>>  RxMonitorsDesk :( msgDispatcher IS NULL");
@@ -52,7 +56,7 @@ public final class RxMonitorsDesk
         msgDispatcher.setMarketDataConsumer(this::marketDataDispatcher);
 
 
-        msgDispatcher.setPositionReportConsumer(this::positionDispatcher);
+        msgDispatcher.setPositionReportConsumer(this::positionReportDispatcher);
 
 
         msgDispatcher.setExecutionReportConsumer(this::executionReportDispatcher);
@@ -95,20 +99,29 @@ public final class RxMonitorsDesk
 
     }
 
-    private void positionDispatcher(RxPosition position) {
-        System.out.println("ROHO positionDispatcher >"+position);
-        if (position== null) {
+    private void positionReportDispatcher(RxPosition position) {
+        System.out.println("POSITION DISPATCHER :"+position);
+        if (position == null) {
+            monitorsMap.forEach((instrument, rxMonitor) -> rxMonitor.clearPosition());
+            actionsController.setRxPositionReportStatus(RxRequestStatus.RECEIVED);
             return;
         }
-        monitorsMap.get(position.getInstrument())
-                .positionReportConsume (position);
+        monitorsMap.get(position.getInstrument()).positionReportConsume(position);
+
+        actionsController.setRxPositionReportStatus(position.getInstrument(), RxRequestStatus.RECEIVED);
     }
 
     //TODO Utrzożyć dedytkowaną klase dispatchera i wyeliminować encje RxExecuteReport
     private void executionReportDispatcher(RxExecuteReport rxExecuteReport) {
 
-        monitorsMap.get(rxExecuteReport
-                .getInstrument()).clearPosition();
+//        monitorsMap.get(rxExecuteReport
+//                .getInstrument()).clearPosition();
+        messageSender.sendRequestForPositions();
+
+        actionsController.setRxPositionReportStatus(rxExecuteReport.getInstrument(),
+                RxRequestStatus.SENT);
+
+
 
 //            monitorsMap.get(rxExecuteReport
 //                        .getInstrument()).clearPendingOrdersMap();
@@ -116,7 +129,9 @@ public final class RxMonitorsDesk
         monitorsMap.get(rxExecuteReport
                 .getInstrument()).executeReportConsume(rxExecuteReport);
 
-        messageSender.sendRequestForPositions();
+
+
+
     }
 
 

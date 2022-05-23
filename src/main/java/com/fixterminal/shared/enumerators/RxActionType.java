@@ -1,6 +1,6 @@
 package com.fixterminal.shared.enumerators;
 
-public enum RxAction {
+public enum RxActionType {
     BUY_MARKET,
     SELL_MARKET,
     CLOSE,

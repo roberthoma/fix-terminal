@@ -1,7 +1,7 @@
 package com.fixterminal.market.business.calculators;
 
 
-import com.fixterminal.shared.enumerators.RxEntryTypeEnum;
+import com.fixterminal.shared.enumerators.RxEntryType;
 import com.fixterminal.shared.enumerators.RxMDUpdateActionEnum;
 import com.fixterminal.shared.market.RxMarketDataCalcBaseVO;
 import com.fixterminal.shared.market.RxMarketDataVO;
@@ -24,7 +24,7 @@ public class RxCalculatorMarketDataBase {
                             || md.action == RxMDUpdateActionEnum.CHANGE
                        )
                     {
-                        if (md.entryType == RxEntryTypeEnum.BID) {
+                        if (md.entryType == RxEntryType.BID) {
                             if (mdCalcVo.bidBestPrice == 0L || mdCalcVo.bidBestPrice < md.entryPx)
                             {
                                 mdCalcVo.bidBestPrice = md.entryPx;
@@ -34,7 +34,7 @@ public class RxCalculatorMarketDataBase {
                         }
 
 
-                        if (md.entryType == RxEntryTypeEnum.OFFER){
+                        if (md.entryType == RxEntryType.OFFER){
                             if(mdCalcVo.offerBestPrice == 0L || mdCalcVo.offerBestPrice > md.entryPx)
                             {
                                 mdCalcVo.offerBestPrice = md.entryPx;

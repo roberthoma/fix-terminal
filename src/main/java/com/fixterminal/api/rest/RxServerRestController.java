@@ -3,6 +3,7 @@ package com.fixterminal.api.rest;
 import com.fixterminal.app.commands.base.RxCommandDispatcher;
 import com.fixterminal.app.commands.base.RxCommandEnum;
 import com.fixterminal.app.services.RxMainServerService;
+import com.fixterminal.shared.dictionaries.instruments.RxDicInstruments;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,9 @@ public class RxServerRestController {
 
     @Autowired
     RxCommandDispatcher cmdDispatcher;
+
+    @Autowired
+    RxDicInstruments instruments;
 
     private RxServerRestController(){
         log.info("Init : RxServerRestController");
@@ -179,7 +183,7 @@ public class RxServerRestController {
                 }
 
                 RxCommandEnum rxCmd =  cmdDispatcher.decodeCommand(cmd);
-                cmdDispatcher.dispose(rxCmd);
+                cmdDispatcher.dispose(rxCmd,params);
 
 
                 response.write(("WYNIK comendy cmd="+cmd +"\n").getBytes());
@@ -205,9 +209,10 @@ public class RxServerRestController {
     public ResponseEntity<StreamingResponseBody> getTradeParams() {
         StreamingResponseBody responseBody = response -> {
             try {
-                RxInstrument instr = mainService.getDictionaries().getDicInstruments().getDefault();
-
-                mainService.getTradeParameters(instr).forEach(this::setParaStr);
+               // RxInstrument instr = mainService.getDictionaries().getDicInstruments().getDefault();
+                for(RxInstrument instr : instruments.toList()){
+                    mainService.getTradeParameters(instr).forEach(this::setParaStr);
+                }
 
                 response.write((paraStr +"\n").getBytes());
 

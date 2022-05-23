@@ -7,6 +7,7 @@
 		<precision>5</precision>
 		<pip_position>4</pip_position>
 		<description>EUR vs US Dolar</description>
+		<config_file>eurusd.properties</config_file>
 	</instrument>
 	<instrument>
 		<symbol>USD/JPG</symbol>
@@ -15,6 +16,7 @@
 		<precision>3</precision>
 		<pip_position>2</pip_position>
 		<description>US Dolar vs Japanese Yen</description>
+		<config_file>usdjpy.properties</config_file>
 	</instrument>
 </instruments>
 

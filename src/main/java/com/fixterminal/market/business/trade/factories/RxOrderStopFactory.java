@@ -1,6 +1,6 @@
-package com.fixterminal.market.business.trader.factories;
+package com.fixterminal.market.business.trade.factories;
 
-import com.fixterminal.shared.enumerators.RxAction;
+import com.fixterminal.shared.enumerators.RxActionType;
 import com.fixterminal.shared.enumerators.RxOrderSide;
 import com.fixterminal.shared.enumerators.RxOrderType;
 import com.fixterminal.shared.enumerators.RxPositionDirection;
@@ -60,9 +60,9 @@ public class RxOrderStopFactory {
     }
 
 
-    public  RxOrderEntity createStopOrder(RxAction marketAction,
-                                                 RxTradeParameters parameters,
-                                                 RxMonitorDataVO monitorData)
+    public  RxOrderEntity createStopOrder(RxActionType marketAction,
+                                          RxTradeParameters parameters,
+                                          RxMonitorDataVO monitorData)
    {
         RxOrderEntity rxOrder;
         RxPosition position;
@@ -70,8 +70,8 @@ public class RxOrderStopFactory {
         rxOrder = new RxOrderEntity();
 
 
-        if (marketAction.equals(RxAction.BREAK_EVENT_SET)
-        || marketAction.equals(RxAction.STOP_LOSS_SET)
+        if (marketAction.equals(RxActionType.BREAK_EVENT_SET)
+        || marketAction.equals(RxActionType.STOP_LOSS_SET)
            ) {
 
             if (!monitorData.isOpenPosition()) {
