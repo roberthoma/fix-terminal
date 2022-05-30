@@ -7,7 +7,7 @@ import com.fixterminal.app.ports.RxMarketServicePort;
 import com.fixterminal.shared.dictionaries.instruments.RxDicInstruments;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import com.fixterminal.market.business.parameters.RxTradeParametersDesk;
-import com.fixterminal.market.business.trade.controllers.RxTradeControllersDesk;
+import com.fixterminal.market.business.trade.actions.RxActionsControllersDesk;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,13 +18,13 @@ public class RxMarketServiceAdapter implements RxMarketServicePort {
 
     RxMonitorsDesk rxMonitorsDesk;
     RxMonitorSessionController connectionController;
-    RxTradeControllersDesk tradeControllersDesk;
+    RxActionsControllersDesk tradeControllersDesk;
     RxTradeParametersDesk tradeParametersDesk;
     RxDicInstruments dicInstruments;
 
     @Autowired
     public RxMarketServiceAdapter(RxDicInstruments dicInstruments,
-                                  RxTradeControllersDesk tradeControllersDesk,
+                                  RxActionsControllersDesk tradeControllersDesk,
                                   RxTradeParametersDesk tradeParametersDesk,
                                   RxMonitorSessionController connectionController,
                                   RxMonitorsDesk rxMonitorsDesk

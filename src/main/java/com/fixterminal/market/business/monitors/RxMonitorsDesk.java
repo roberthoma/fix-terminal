@@ -1,6 +1,6 @@
 package com.fixterminal.market.business.monitors;
 
-import com.fixterminal.market.business.trade.actions.RxTradeActionsController;
+import com.fixterminal.market.business.trade.actions.RxActionsManager;
 import com.fixterminal.market.ports.RxMessageSenderPort;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import com.fixterminal.shared.enumerators.RxRequestStatus;
@@ -29,7 +29,7 @@ public final class RxMonitorsDesk
 
     RxQuickFixMessageDispatcherPort msgDispatcher;
     RxMessageSenderPort messageSender;
-    RxTradeActionsController actionsController;
+    RxActionsManager actionsController;
 
     private final Map<RxInstrument, RxMonitor>  monitorsMap;
 
@@ -37,7 +37,7 @@ public final class RxMonitorsDesk
     @Autowired
     public RxMonitorsDesk(RxQuickFixMessageDispatcherPort msgDispatcher,
                           RxMessageSenderPort messageSender,
-                          RxTradeActionsController actionsController
+                          RxActionsManager actionsController
                           )
     {
 
@@ -59,7 +59,7 @@ public final class RxMonitorsDesk
         msgDispatcher.setPositionReportConsumer(this::positionReportDispatcher);
 
 
-        msgDispatcher.setExecutionReportConsumer(this::executionReportDispatcher);
+    //    msgDispatcher.setExecutionReportConsumer(this::executionReportDispatcher);
 
 
     }
@@ -100,39 +100,38 @@ public final class RxMonitorsDesk
     }
 
     private void positionReportDispatcher(RxPosition position) {
-        System.out.println("POSITION DISPATCHER :"+position);
+        System.out.println("MONITOR_DESK>POSITION_DISPATCHER>"+position);
         if (position == null) {
             monitorsMap.forEach((instrument, rxMonitor) -> rxMonitor.clearPosition());
-            actionsController.setRxPositionReportStatus(RxRequestStatus.RECEIVED);
+        //    actionsController.setPositionReportStatus(RxRequestStatus.RECEIVED);
             return;
         }
         monitorsMap.get(position.getInstrument()).positionReportConsume(position);
 
-        actionsController.setRxPositionReportStatus(position.getInstrument(), RxRequestStatus.RECEIVED);
+     //   actionsController.setPositionReportStatus(position.getInstrument(), RxRequestStatus.RECEIVED);
     }
 
     //TODO Utrzożyć dedytkowaną klase dispatchera i wyeliminować encje RxExecuteReport
-    private void executionReportDispatcher(RxExecuteReport rxExecuteReport) {
-
-//        monitorsMap.get(rxExecuteReport
-//                .getInstrument()).clearPosition();
-        messageSender.sendRequestForPositions();
-
-        actionsController.setRxPositionReportStatus(rxExecuteReport.getInstrument(),
-                RxRequestStatus.SENT);
-
-
-
-//            monitorsMap.get(rxExecuteReport
-//                        .getInstrument()).clearPendingOrdersMap();
-
-        monitorsMap.get(rxExecuteReport
-                .getInstrument()).executeReportConsume(rxExecuteReport);
-
-
-
-
-    }
+//    private void executionReportDispatcher(RxExecuteReport rxExecuteReport) {
+//
+////        monitorsMap.get(rxExecuteReport
+////                .getInstrument()).clearPosition();
+//
+//        messageSender.sendRequestForPositions(); //TODO napewnoe nie tutaj
+//
+// //       actionsController.setPositionReportStatus(rxExecuteReport.getInstrument(),RxRequestStatus.SENT);
+//
+//
+//
+////            monitorsMap.get(rxExecuteReport
+////                        .getInstrument()).clearPendingOrdersMap();
+//        actionsController.executeReportConsume(rxExecuteReport);
+//       // monitorsMap.get(rxExecuteReport.getInstrument()).executeReportConsume(rxExecuteReport);
+//
+//
+//
+//
+//    }
 
 
     public RxMonitor getMonitor(RxInstrument intrument){

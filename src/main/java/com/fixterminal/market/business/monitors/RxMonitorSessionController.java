@@ -1,6 +1,6 @@
 package com.fixterminal.market.business.monitors;
 
-import com.fixterminal.market.business.trade.actions.RxTradeActionsController;
+import com.fixterminal.market.business.trade.actions.RxActionsManager;
 import com.fixterminal.shared.dictionaries.instruments.RxDicInstruments;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import com.fixterminal.gui.ports.RxFixTerminalMainGuiPort;
@@ -22,13 +22,13 @@ public class RxMonitorSessionController extends Thread {
     RxMonitorsDesk monitorsDesk;
     @Autowired
     RxDicInstruments dicInstruments;
-    RxTradeActionsController actionsController;
+    RxActionsManager actionsController;
 
     @Autowired
     public RxMonitorSessionController(RxFixTerminalMainGuiPort terminal,
                                       RxMessageSenderPort rxRequestMessageSender,
                                       RxMonitorsDesk monitorsDesk,
-                                      RxTradeActionsController actionsController
+                                      RxActionsManager actionsController
     ){
         log.info("Init : RxConnectionControler");
         this.terminal = terminal;
@@ -70,9 +70,8 @@ public class RxMonitorSessionController extends Thread {
         }
 
         rxRequestMessageSender.sendRequestForPositions();
-        actionsController.setRxPositionReportStatus(RxRequestStatus.SENT);
-
         rxRequestMessageSender.sendOrderStatusRequest();
+        rxRequestMessageSender.sendOrderMassStatusRequest();
 
        // TODO For developing loop controlled connections etc
 

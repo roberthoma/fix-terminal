@@ -33,19 +33,19 @@ public class RxQFixNewOrderSingleFactory {
 //
 
     public static quickfix.fix44.NewOrderSingle create(RxOrderEntity rxOrder) throws Exception{
-        System.out.println("rxOrder.getType()="+rxOrder.getType());
+        System.out.println("QFIX_ORDER_SINGLE_FACTORY>"+ rxOrder);
 
 
         quickfix.fix44.NewOrderSingle newOrderSingle = new quickfix.fix44.NewOrderSingle();
 
 
-        newOrderSingle.set(new ClOrdID(rxOrder.getID()));
+        newOrderSingle.set(new ClOrdID(rxOrder.getClOrdID()));
         newOrderSingle.set(RxTypeCastService.rxOrderSideToFixSide(rxOrder.getSide()));
         newOrderSingle.set(new TransactTime());
         newOrderSingle.set(RxTypeCastService.rxOrderTypeToFixOrdType(rxOrder.getType()));
 
         newOrderSingle.set(new OrderQty(rxOrder.getQuantity()));
-        newOrderSingle.set(new Symbol(rxOrder.getSymbol()));
+        newOrderSingle.set(new Symbol(rxOrder.getFixSymbol()));
 
         if (rxOrder.getType().equals(RxOrderType.LIMIT)) {
 

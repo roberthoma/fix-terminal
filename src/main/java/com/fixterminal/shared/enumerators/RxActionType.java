@@ -7,7 +7,7 @@ public enum RxActionType {
     REVERS,
     BUY_LIMIT,
     SELL_LIMIT,
-    STOP_LOSS_SET,
+    STOP_LOSS,
     STOP_LOSS_UP,
     STOP_LOSS_DOWN,
     TAKE_PROFIT_SET,

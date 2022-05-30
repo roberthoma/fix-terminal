@@ -9,6 +9,7 @@ import lombok.Data;
 
 @Data
 public class RxExecuteReport {
+    //IDs
     String        clOrdID;
     String        origClOrdID;  //Unique identifier for Order as assigned by the buy-side
     String        orderId;
@@ -20,5 +21,18 @@ public class RxExecuteReport {
     Double        price;
     Double        quantityOrdered;
 
+
+    @Override
+    public String toString(){
+
+      return    "clOrdID="+clOrdID+ " ; "+
+                "origClOrdID="+origClOrdID+ " ; "+
+                "orderId="+orderId + " ; "+
+                "symbol="+instrument.getSymbol() + " ; " +
+                 "orderSide="+orderSide+ " ; " +
+                "orderType="+orderType + " ; " +
+                "execType="+execType + " ; " +
+                "orderStatus="+orderStatus + " ; " ;
+    }
 
 }

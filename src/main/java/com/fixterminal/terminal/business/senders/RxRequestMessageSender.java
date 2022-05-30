@@ -1,7 +1,7 @@
 package com.fixterminal.terminal.business.senders;
 
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
-import com.fixterminal.shared.pending_orders.RxPendingOrder;
+import com.fixterminal.shared.orders.RxOrderEntity;
 import com.fixterminal.terminal.business.application.RxQuickFixTerminal;
 import com.fixterminal.terminal.business.services.RxMessageDecorator;
 import lombok.extern.slf4j.Slf4j;
@@ -110,11 +110,10 @@ public class RxRequestMessageSender {
         try {
             quickfix.fix44.OrderStatusRequest  message = new quickfix.fix44.OrderStatusRequest();
 
-            String randomUUIDString = "12z1as";// TODO unikalny sktring
-            System.out.println("REQUEST_ORDER_STATUS>"+RxMessageDecorator.decorate( message));
+            String randomUUIDString = "ord12z1axs";// TODO unikalny sktring
 
 
-                    message.getHeader().setField(new PosReqID(randomUUIDString));
+            message.getHeader().setField(new PosReqID(randomUUIDString));
             // message.getHeader().setField(new PosReqType(PosReqType.POSITIONS));
             // message.setField(new TotalNumPosReports(3));
 
@@ -227,7 +226,7 @@ public class RxRequestMessageSender {
 
             quickfix.fix44.RequestForPositions  message = new  quickfix.fix44.RequestForPositions();
 
-            String randomUUIDString = "12z1as";// TODO unikalny sktring
+            String randomUUIDString = "pos12zssX";// TODO unikalny sktring
 
             message.getHeader().setField(new PosReqID(randomUUIDString));
            // message.getHeader().setField(new PosReqType(PosReqType.POSITIONS));
@@ -273,7 +272,7 @@ public class RxRequestMessageSender {
     }
 
 
-    public void  sendOrderReplaceRequest(RxPendingOrder pendingOrder){
+    public void  sendOrderReplaceRequest(RxOrderEntity order){
         try{
 
             quickfix.fix44.OrderCancelReplaceRequest message = new quickfix.fix44.OrderCancelReplaceRequest();
@@ -283,7 +282,7 @@ public class RxRequestMessageSender {
             ClOrdID clOrdID = new ClOrdID(randomUUIDString); //"381298068"); //randomUUIDString);
             message.set(clOrdID);
 
-            OrigClOrdID origClOrdID = new OrigClOrdID(pendingOrder.getUniqueID());
+            OrigClOrdID origClOrdID = new OrigClOrdID(order.getClOrdID());
             message.set(origClOrdID);
 
 //TODO do poprawki dla zleceń typu TakeProfit
@@ -293,14 +292,14 @@ public class RxRequestMessageSender {
 
             // tylko dla stop loss
             StopPx  price = new StopPx();
-            price.setValue( pendingOrder.getPrice());
+            price.setValue( order.getPrice());
             message.set(price);
 
 
 
 
             OrderQty  orderQty = new OrderQty();
-            orderQty.setValue(pendingOrder.getQuantity());
+            orderQty.setValue(order.getQuantity());
             message.set(orderQty);
 
             System.out.println("ORDER_CANCEL_REPLACE_REQUEST>"+

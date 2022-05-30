@@ -33,7 +33,11 @@ public class RxMessageSenderAdapter implements RxMessageSenderPort {
         return rxOrderMessageSender.sendNewOrderSingle(rxOrder);
     }
     catch (Exception e){
-        System.out.println(e.getMessage());
+        System.out.println("======================================================");
+        System.out.println(">");
+        System.out.println("> " + e.getMessage());
+        System.out.println(">");
+        System.out.println("======================================================");
      }
      return null;
     }
@@ -44,12 +48,17 @@ public class RxMessageSenderAdapter implements RxMessageSenderPort {
     }
 
     @Override
-    public void sendOrderReplaceRequest(RxPendingOrder orderSL) {
+    public void sendOrderReplaceRequest(RxOrderEntity orderSL) {
         rxRequestMessageSender.sendOrderReplaceRequest(orderSL);
     }
 
     @Override
     public void sendOrderStatusRequest(){
         rxRequestMessageSender.sendOrderStatusRequest();
+    }
+
+    @Override
+    public void sendOrderMassStatusRequest(){
+        rxRequestMessageSender.sendOrderMassStatusRequest();
     }
 }

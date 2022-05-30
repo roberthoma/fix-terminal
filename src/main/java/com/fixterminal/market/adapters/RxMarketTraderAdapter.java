@@ -2,7 +2,7 @@ package com.fixterminal.market.adapters;
 
 import com.fixterminal.app.ports.RxMarketTraderPort;
 import com.fixterminal.market.business.parameters.RxTradeParametersDesk;
-import com.fixterminal.market.business.trade.actions.RxTradeActions;
+import com.fixterminal.market.business.trade.actions.RxActions;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import com.fixterminal.shared.parameters.RxParemetersMap;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +13,11 @@ import java.util.Map;
 @Component
 public class RxMarketTraderAdapter implements RxMarketTraderPort {
 
-    RxTradeActions actions;
+    RxActions actions;
     RxTradeParametersDesk parametersDesk;
 
     @Autowired
-    RxMarketTraderAdapter(RxTradeActions actions, RxTradeParametersDesk parametersDesk){
+    RxMarketTraderAdapter(RxActions actions, RxTradeParametersDesk parametersDesk){
         this.actions = actions;
         this.parametersDesk = parametersDesk;
     }

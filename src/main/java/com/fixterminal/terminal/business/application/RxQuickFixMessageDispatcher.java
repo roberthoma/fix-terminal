@@ -6,7 +6,7 @@ import com.fixterminal.terminal.business.prompters.RxFixTerminalPrompter;
 import com.fixterminal.shared.market.RxExecuteReport;
 import com.fixterminal.shared.market.RxMarketDataVO;
 import com.fixterminal.shared.positions.RxPosition;
-import com.fixterminal.terminal.business.senders.RxOrderController;
+import com.fixterminal.terminal.business.senders.RxTerminalOrderController;
 import com.fixterminal.terminal.business.services.RxMarketDataService;
 import com.fixterminal.terminal.business.services.RxMassageToExecutionReport;
 import com.fixterminal.terminal.business.services.RxMessageDecorator;
@@ -48,7 +48,7 @@ public class RxQuickFixMessageDispatcher {
     RxFixHeartPrompter heartPrompter;
 
     @Autowired
-    RxOrderController orderController;
+    RxTerminalOrderController orderController;
 
     public RxQuickFixMessageDispatcher() {
         log.info("Init : RxQuickFixMessageDispatcher");
@@ -111,7 +111,7 @@ public class RxQuickFixMessageDispatcher {
 
                 case MsgType.LOGON:
                     //TODO MOVE to decorate function
-                    System.out.println(" LOGON "+ message.getHeader().getString(SenderSubID.FIELD)
+                    System.out.println("QFIX_MSG_DISPATCHER>LOGON>"+ message.getHeader().getString(SenderSubID.FIELD)
                             + " "+message.getHeader().getString(TargetCompID.FIELD));
 
 //                    RxFixTerminal.getInstance().sendOrderMassStatusRequest(); //TODO Tymczasowe
@@ -119,16 +119,16 @@ public class RxQuickFixMessageDispatcher {
                     break;
 
                 case MsgType.LOGOUT:
-                     System.out.println(" LOGOUT "+ message.getHeader().getString(SenderSubID.FIELD));
+                     System.out.println("QFIX_MSG_DISPATCHER>LOGOUT>"+ message.getHeader().getString(SenderSubID.FIELD));
                     //           + " "+message.getHeader().getString(TargetCompID.FIELD));
                     //System.out.println("LOGON >> "+message);
                     break;
 
                 case MsgType.EXECUTION_REPORT:
                     //logPrompter.accept("EXECUTION_REPORT>"+RxMessageDecorator.decorate(message));
-                    System.out.println("EXECUTION_REPORT>"+RxMessageDecorator.decorate(message));
+                    System.out.println("QFIX_MSG_DISPATCHER>EXECUTION_REPORT>"+RxMessageDecorator.decorate(message));
                     RxExecuteReport report =  massageToExecutionReport.toExecuteReport(message);
-                    orderController.setStatus(report);
+                    orderController.executeReportCheck(report);
                       if(executionReportConsumer != null) {
                           executionReportConsumer.accept(report);
                       }
@@ -137,7 +137,7 @@ public class RxQuickFixMessageDispatcher {
                 case MsgType.POSITION_REPORT:
 //
                     //logPrompter.accept(("POSITION_REPORT>"+RxMessageDecorator.decorate(message)));
-                    System.out.println(("POSITION_REPORT>"+RxMessageDecorator.decorate(message)));
+                    System.out.println(("QFIX_MSG_DISPATCHER>POSITION_REPORT>"+RxMessageDecorator.decorate(message)));
 
                     if(  positionReportConsumer != null){
                         positionReportConsumer.accept(messageToPositionService.toPosition(message));

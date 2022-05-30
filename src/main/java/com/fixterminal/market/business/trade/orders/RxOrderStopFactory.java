@@ -1,5 +1,6 @@
-package com.fixterminal.market.business.trade.factories;
+package com.fixterminal.market.business.trade.orders;
 
+import com.fixterminal.market.business.calculators.RxOrderStopCalculatorService;
 import com.fixterminal.shared.enumerators.RxActionType;
 import com.fixterminal.shared.enumerators.RxOrderSide;
 import com.fixterminal.shared.enumerators.RxOrderType;
@@ -67,11 +68,11 @@ public class RxOrderStopFactory {
         RxOrderEntity rxOrder;
         RxPosition position;
 
-        rxOrder = new RxOrderEntity();
+        rxOrder = new RxOrderEntity(marketAction);
 
 
         if (marketAction.equals(RxActionType.BREAK_EVENT_SET)
-        || marketAction.equals(RxActionType.STOP_LOSS_SET)
+        || marketAction.equals(RxActionType.STOP_LOSS)
            ) {
 
             if (!monitorData.isOpenPosition()) {
@@ -82,7 +83,7 @@ public class RxOrderStopFactory {
 
 
             switch (marketAction) {
-                case STOP_LOSS_SET:
+                case STOP_LOSS:
                     setStopLossOrder(rxOrder, position,parameters );
                     break;
                 case BREAK_EVENT_SET:
@@ -98,7 +99,7 @@ public class RxOrderStopFactory {
             setSide(rxOrder, position);
 
             rxOrder.setQuantity(parameters.getQuantity());
-            rxOrder.setSymbol(monitorData.instrument.getFixSymbol());
+            rxOrder.setFixSymbol(monitorData.instrument.getFixSymbol());
             rxOrder.setType(RxOrderType.STOP);
         }
 

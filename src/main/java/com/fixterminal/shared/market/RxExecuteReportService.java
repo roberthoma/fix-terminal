@@ -2,6 +2,7 @@ package com.fixterminal.shared.market;
 
 
 import com.fixterminal.shared.market.RxExecuteReport;
+import com.fixterminal.shared.orders.RxOrderEntity;
 import com.fixterminal.shared.pending_orders.RxPendingOrder;
 
 public class RxExecuteReportService {
@@ -22,4 +23,14 @@ public class RxExecuteReportService {
 
     return rxPendingOrder;
 }
+    public static RxOrderEntity castToOrderEntity (RxExecuteReport rxExecuteReport){
+
+        RxOrderEntity order  = new RxOrderEntity();
+        // TODO do zmiany na fabryke
+
+        return order;
+
+    }
+
+
 }

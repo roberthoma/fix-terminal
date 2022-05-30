@@ -15,35 +15,33 @@ import quickfix.SessionNotFound;
 public class RxOrderMessageSender {
 
     RxQuickFixTerminal quickFixTerminal;
-    RxOrderController  rxOrderController;
+    RxTerminalOrderController rxTerminalOrderController;
 
     @Autowired
     public RxOrderMessageSender(RxQuickFixTerminal quickFixTerminal,
-                                RxOrderController rxOrderController){
+                                RxTerminalOrderController rxTerminalOrderController){
         log.info("Init : "+this.getClass().getSimpleName());
         this.quickFixTerminal = quickFixTerminal;
-        this.rxOrderController = rxOrderController;
+        this.rxTerminalOrderController = rxTerminalOrderController;
     }
 
 
     public String sendNewOrderSingle(RxOrderEntity rxOrder) throws Exception {
 
-        rxOrderController.check(rxOrder);
-
+        rxTerminalOrderController.orderCheck(rxOrder);
 
         quickfix.Message message =
                 RxQFixNewOrderSingleFactory.create(rxOrder);
 
         //TODO debug order
-        System.out.println("NEW_ORDER_SINGLE>"+
-                        RxMessageDecorator.decorate(message));
+        System.out.println("ORDER_MESSAGE_SENDER>NEW_ORDER_SINGLE>"+ RxMessageDecorator.decorate(message));
 
 
        //TODO OrderMenager.  kontrola otwierania zlecenń jeżeli nie zwroyu exex raport.
 
         try {
             Session.sendToTarget(message,quickFixTerminal.getTradeSessionsId());
-            return rxOrder.getID();
+            return rxOrder.getClOrdID();
         } catch (SessionNotFound e) {
             e.printStackTrace();
             return null;

@@ -1,9 +1,11 @@
-package com.fixterminal.market.business.trade.controllers;
+package com.fixterminal.market.business.trade.actions;
 
 import com.fixterminal.market.business.parameters.RxTradeParameters;
-import com.fixterminal.market.business.trade.actions.RxTradeActions;
+import com.fixterminal.market.business.trade.actions.RxActions;
+import com.fixterminal.market.business.trade.orders.RxOrdersManager;
 import com.fixterminal.shared.enumerators.RxPositionDirection;
 import com.fixterminal.shared.market.RxMonitorDataVO;
+import com.fixterminal.shared.orders.RxOrderEntity;
 import com.fixterminal.shared.pending_orders.RxPendingOrder;
 import com.fixterminal.shared.positions.RxPosition;
 import lombok.extern.slf4j.Slf4j;
@@ -17,34 +19,34 @@ import org.springframework.stereotype.Component;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Slf4j
-public class RxStopLossController {
+public class RxActionStopLossController {
 
-    @Autowired
-    RxTradeActions actions;
+
+    RxActions actions;
+
+    RxOrdersManager ordersManager;
 
     RxPosition position;
-    RxPendingOrder orderSL;
+    RxOrderEntity orderSL;
     RxTradeParameters tradeParameters;
     RxMonitorDataVO data;
 
-    RxStopLossController(){
-       log.info("Init : RxStopLossController");
+    @Autowired
+    RxActionStopLossController(RxActions actions, RxOrdersManager ordersManager){
+       log.info("Init : RxActionStopLossController");
+       this.actions = actions;
+       this.ordersManager = ordersManager;
     }
 
-    private void clear(){
-         position = null;
-         orderSL = null;
-    }
 
     public void controlAction(RxMonitorDataVO data, RxTradeParameters tradeParameters) {
-        clear();
+        this.position = data.position;
+        this.orderSL  = ordersManager.getStopLossOrder(tradeParameters.getInstrument());
         this.tradeParameters = tradeParameters;
         this.data = data;
-        orderSL  = data.getStopLossOrder();
 
         if (data.isOpenPosition()) {
             try {
-                position = data.position;
 
                 if (orderSL == null) {
                     actions.actionSetStopLoss(tradeParameters.getInstrument());  //TODO Czasami wyprzedzam raport i tworzą się dwa zlecenia. SL :(

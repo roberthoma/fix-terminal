@@ -19,7 +19,7 @@ public class RxMonitorDataVO {
 
     public RxMarketDataCalcBaseVO marketDataCalcBaseVO = new RxMarketDataCalcBaseVO();
 
-    public Map<String, RxPendingOrder> pendingOrdersMap = new HashMap<>();
+//    public Map<String, RxPendingOrder> pendingOrdersMap = new HashMap<>();
 
     public RxMarketDataCalcStrategyVO mdStrategyVo = new RxMarketDataCalcStrategyVO();
 
@@ -28,32 +28,32 @@ public class RxMonitorDataVO {
 
     }
 
-
-    public RxPendingOrder getStopLossOrder(){
-        if (pendingOrdersMap.size() > 0){
-            for (RxPendingOrder ord : pendingOrdersMap.values()){
-                if (ord.getType().equals(RxOrderType.STOP)){
-                    return ord;
-                }
-
-            }
-        }
-
-        return null;
-    }
-
-    public RxPendingOrder getTakeProfitOrder(){
-        if (pendingOrdersMap.size() > 0){
-            for (RxPendingOrder ord : pendingOrdersMap.values()){
-                if (ord.getType().equals(RxOrderType.LIMIT)){
-                    return ord;
-                }
-
-            }
-        }
-
-        return null;
-    }
+//
+//    public RxPendingOrder getStopLossOrder(){
+//        if (pendingOrdersMap.size() > 0){
+//            for (RxPendingOrder ord : pendingOrdersMap.values()){
+//                if (ord.getType().equals(RxOrderType.STOP)){
+//                    return ord;
+//                }
+//
+//            }
+//        }
+//
+//        return null;
+//    }
+//
+//    public RxPendingOrder getTakeProfitOrder(){
+//        if (pendingOrdersMap.size() > 0){
+//            for (RxPendingOrder ord : pendingOrdersMap.values()){
+//                if (ord.getType().equals(RxOrderType.LIMIT)){
+//                    return ord;
+//                }
+//
+//            }
+//        }
+//
+//        return null;
+//    }
 
 
     public RxPosition getPosition() {

@@ -1,4 +1,4 @@
-package com.fixterminal.market.business.trade.factories;
+package com.fixterminal.market.business.trade.orders;
 
 
 import com.fixterminal.market.business.monitors.RxMonitor;
@@ -49,7 +49,7 @@ public class RxOrderFactory {
         rxOrder.setPrice(limitPrice);
          rxOrder.setQuantity(parameters.getQuantity());
 
-        rxOrder.setSymbol(monitorData.getInstrument().getFixSymbol());
+        rxOrder.setFixSymbol(monitorData.getInstrument().getFixSymbol());
         rxOrder.setType(RxOrderType.LIMIT);
 
 
@@ -62,6 +62,8 @@ public class RxOrderFactory {
         public RxOrderEntity createMarketOrder(RxActionType marketAction,
                                                RxTradeParameters parameters,
                                                RxMonitorDataVO monitorData) {
+
+            System.out.println("ORDER_FACTORY>createMarketOrder : "+parameters.getInstrument().getSymbol()+ " " +marketAction);
             RxOrderEntity rxOrder = new RxOrderEntity();
             RxOrderSide side;
             Double quantity;
@@ -70,7 +72,7 @@ public class RxOrderFactory {
             if (marketAction == RxActionType.CLOSE) {
 
                 RxPosition position = monitorData.getPosition();
-                rxOrder.setID(position.getId());
+                rxOrder.setClOrdID(position.getId());
 
                 if (position.getDirection()  == RxPositionDirection.SHORT) {
                     side = RxOrderSide.BUY;
@@ -91,7 +93,7 @@ public class RxOrderFactory {
                 quantity = 2 * position.getQuantity();
             }
             else {
-                quantity = Double.valueOf(parameters.getQuantity());
+                quantity = parameters.getQuantity();
 
                 if (marketAction == RxActionType.SELL_MARKET) {
                       side = RxOrderSide.SELL;
@@ -100,14 +102,14 @@ public class RxOrderFactory {
                     side = RxOrderSide.BUY;
                 }
                 else {
-                    System.out.println( " ERROR order side");
+                    System.out.println( "!!!!!!!! ERROR order side............");
                     return null; //TODO Do przerobienia
                 }
             }
 
             rxOrder.setQuantity(quantity);
             rxOrder.setSide(side);
-            rxOrder.setSymbol(monitorData.getInstrument().getFixSymbol());
+            rxOrder.setFixSymbol(monitorData.getInstrument().getFixSymbol());
             rxOrder.setType(parameters.getType());
 
           return rxOrder;

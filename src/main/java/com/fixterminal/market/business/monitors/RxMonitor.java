@@ -24,8 +24,10 @@ import java.util.function.Consumer;
 public class RxMonitor extends Thread  {
 
      List<Consumer<RxPosition>> positionConsumerList;
+     //List<Consumer<Map<String, RxPendingOrder>>> pendingOrdersConsumerList;
+
+
      List<Consumer<RxMarketDataCalcBaseVO>> marketDataCalcVoConsumerList;
-     List<Consumer<Map<String, RxPendingOrder>>> pendingOrdersConsumerList;
 
      List<Consumer<RxIndicators>> indicatorsConsumersList;
 
@@ -51,7 +53,7 @@ public class RxMonitor extends Thread  {
 
         positionConsumerList = new ArrayList<>();
         marketDataCalcVoConsumerList = new ArrayList<>();
-        pendingOrdersConsumerList = new ArrayList<>();
+       // pendingOrdersConsumerList = new ArrayList<>();
         forEachMsgConsumerList = new ArrayList<>();
     }
 
@@ -78,13 +80,12 @@ public class RxMonitor extends Thread  {
     }
     public void clearPosition(){
         data.position = null;
-        System.out.println(" Monitor " + data.instrument +" : clear tab position.");
+        System.out.println("MONITOR> " + data.instrument.getSymbol() +" : clear tab position.");
     }
 
-    public void clearPendingOrdersMap(){
-        //TODO send info to client
-        data.pendingOrdersMap.clear();
-    }
+//    public void clearPendingOrdersMap(){
+//        data.pendingOrdersMap.clear();
+//    }
 
     private void consumers_accept(){
 
@@ -92,7 +93,7 @@ public class RxMonitor extends Thread  {
 
        positionConsumerList.forEach(c -> c.accept(data.position));
 
-       pendingOrdersConsumerList.forEach(c -> c.accept(data.pendingOrdersMap));
+//       pendingOrdersConsumerList.forEach(c -> c.accept(data.pendingOrdersMap));
 
        forEachMsgConsumerList.forEach(c -> c.accept(data));
 
@@ -137,35 +138,6 @@ public class RxMonitor extends Thread  {
 
 
     //TODO Cała ta funkcja do przeanalizowania
-    public void executeReportConsume(RxExecuteReport rxExecuteReport) {
-
-        if (rxExecuteReport.getOrderType().equals(RxOrderType.MARKET)){
-            return;
-        }
-
-        if (    RxExecType.ORDER_STATUS.compareTo(rxExecuteReport.getExecType()) == 0
-             || RxExecType.NEW.compareTo(rxExecuteReport.getExecType()) == 0
-             || RxExecType.REPLACED.compareTo(rxExecuteReport.getExecType()) == 0
-        ) {
-            System.out.println("ROHO EXE R1 >>>>>>");
-            RxPendingOrder rxPendingOrder = RxExecuteReportService.castToPendingOrder(rxExecuteReport);
-            data.pendingOrdersMap.put(rxPendingOrder.getId(),rxPendingOrder);
-        }
-        else if(RxExecType.CANCEL.compareTo(rxExecuteReport.getExecType()) == 0
-                ||RxExecType.TRADE.compareTo(rxExecuteReport.getExecType()) == 0
-        )
-        {
-            System.out.println("ROHO EXE R2 >>>>>>");
-            data.pendingOrdersMap.remove(rxExecuteReport.getOrderId());
-        }
-        else {
-            System.out.println(">> NOT IMPLEMENTED ExecType = >"+rxExecuteReport.getExecType()+"<");
-        }
-
-//        consumers_accept();
-        pendingOrdersConsumerList.forEach(c -> c.accept(data.pendingOrdersMap));
-
-    }
 
     //TODO >>>>>>>>  ustalenie nr zleceń zaczynaących się od np SL-123nr
     //  lub TP-1234nr

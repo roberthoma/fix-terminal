@@ -1,22 +1,19 @@
 package com.fixterminal.shared.orders;
 
 
-import com.fixterminal.shared.enumerators.RxOrderSide;
-import com.fixterminal.shared.enumerators.RxOrderStatus;
-import com.fixterminal.shared.enumerators.RxOrderTimeInForce;
-import com.fixterminal.shared.enumerators.RxOrderType;
+import com.fixterminal.shared.enumerators.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.math3.util.Precision;
 
 @Getter
 @Setter
-public class RxOrderEntity implements Cloneable {
+public class RxOrderEntity {  //implements Cloneable {
   //  private SessionID sessionID = null;
-    private String ID = null;    // ClOrdID <11>
-    private String originalID = null;
+    private String clOrdID = null;    // ClOrdID <11>
+   // private String originalID = null;
 
-    private String symbol = null;  //TODO Instrument symbol
+    private String fixSymbol = null;  //TODO Instrument symbol
     private Double quantity;
     private int open = 0;
     private double executed = 0;
@@ -34,23 +31,39 @@ public class RxOrderEntity implements Cloneable {
     private static int nextID = 1;
 
     public RxOrderEntity() {
-        ID = generateID();
+        clOrdID = generateID();
         orderStatus = RxOrderStatus.CREATED;
-        System.out.println("CREATING ORDER id=" + ID);
+    }
+    public RxOrderEntity(RxActionType actionType) {
+        clOrdID = generateID(actionType);
+        orderStatus = RxOrderStatus.CREATED;
     }
 
-    public Object clone() {
-        try {
-            RxOrderEntity rxOrderEntity = (RxOrderEntity) super.clone();
-  //          order.setOriginalID(getID());
-  //          order.setID(order.generateID());
-            return rxOrderEntity;
-        } catch (CloneNotSupportedException e) {}
-        return null;
+//    public Object clone() {
+//        try {
+//            RxOrderEntity rxOrderEntity = (RxOrderEntity) super.clone();
+//  //          order.setOriginalID(getID());
+//  //          order.setID(order.generateID());
+//            return rxOrderEntity;
+//        } catch (CloneNotSupportedException e) {}
+//        return null;
+//    }
+
+    @Override
+    public String toString(){
+      return "ID="+ clOrdID +" ; fixSymbol="+fixSymbol+" ; type="+type+ " ; quantity="+quantity+" ; Status="+orderStatus;
     }
 
     public String generateID() {
         return Long.toString(System.currentTimeMillis() + (nextID++)); // ??? to będzi enieładna suma
+    }
+
+    public String generateID(RxActionType actionType) {
+        if( actionType.equals(RxActionType.STOP_LOSS)) {
+            return "#SL#"+Long.toString(System.currentTimeMillis() + (nextID++)); // ??? to będzi enieładna suma
+        }
+        return Long.toString(System.currentTimeMillis() + (nextID++)); // ??? to będzi enieładna suma
+
     }
 
 

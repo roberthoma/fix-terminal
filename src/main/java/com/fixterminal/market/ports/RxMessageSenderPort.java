@@ -11,7 +11,9 @@ public interface RxMessageSenderPort {
 
     void sendRequestForPositions();
 
-    void sendOrderReplaceRequest(RxPendingOrder orderSL);
+    void sendOrderReplaceRequest(RxOrderEntity orderSL);
 
     void sendOrderStatusRequest();
+
+    void sendOrderMassStatusRequest();
 }

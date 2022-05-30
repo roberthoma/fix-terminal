@@ -3,18 +3,17 @@ package com.fixterminal.market.business.trade.actions;
 import com.fixterminal.market.business.monitors.RxMonitorsDesk;
 import com.fixterminal.market.business.parameters.RxTradeParameterType;
 import com.fixterminal.market.business.parameters.RxTradeParametersDesk;
-import com.fixterminal.market.business.trade.factories.RxOrderStopCalculatorService;
-import com.fixterminal.market.business.trade.factories.RxOrderStopFactory;
+import com.fixterminal.market.business.calculators.RxOrderStopCalculatorService;
+import com.fixterminal.market.business.trade.orders.RxOrderStopFactory;
+import com.fixterminal.market.business.trade.orders.RxOrdersManager;
 import com.fixterminal.market.ports.RxMessageSenderPort;
 import com.fixterminal.shared.dictionaries.instruments.RxDicInstruments;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import com.fixterminal.shared.enumerators.RxActionType;
-import com.fixterminal.shared.enumerators.RxRequestStatus;
 import com.fixterminal.shared.market.RxMonitorDataVO;
 import com.fixterminal.shared.orders.RxOrderEntity;
-import com.fixterminal.market.business.trade.factories.RxOrderFactory;
+import com.fixterminal.market.business.trade.orders.RxOrderFactory;
 import com.fixterminal.market.business.parameters.RxTradeParameters;
-import com.fixterminal.shared.pending_orders.RxPendingOrder;
 import com.fixterminal.shared.positions.RxPosition;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,25 +21,28 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
+
+//TODO obsługa CHANNEL
 @Slf4j
 @Component
-public class RxTradeActions {
+public class RxActions {
     RxOrderFactory orderFactory;
     RxOrderStopFactory orderStopFactory;
     RxMonitorsDesk rxMonitorsDesk;
     RxMessageSenderPort messageSender;
     RxTradeParametersDesk  parameterDesk;
     RxDicInstruments instruments;
-
-    RxTradeActionsController controller;
+    RxActionsManager actionController;
+    RxOrdersManager ordersManager;
     @Autowired
-    public RxTradeActions(RxOrderFactory orderFactory ,
-                          RxOrderStopFactory orderStopFactory,
-                          RxMessageSenderPort messageSender,
-                          RxMonitorsDesk rxMonitorsDesk,
-                          RxTradeParametersDesk  parameterDesk,
-                          RxDicInstruments instruments,
-                          RxTradeActionsController controller
+    public RxActions(RxOrderFactory orderFactory ,
+                     RxOrderStopFactory orderStopFactory,
+                     RxMessageSenderPort messageSender,
+                     RxMonitorsDesk rxMonitorsDesk,
+                     RxTradeParametersDesk  parameterDesk,
+                     RxDicInstruments instruments,
+                     RxActionsManager actionController,
+                     RxOrdersManager ordersManager
                            )
    {
       log.info("Init : RxTradeCommands");
@@ -50,32 +52,33 @@ public class RxTradeActions {
       this.rxMonitorsDesk = rxMonitorsDesk;
       this.parameterDesk = parameterDesk;
       this.instruments = instruments;
-      this.controller = controller;
+      this.actionController = actionController;
+      this.ordersManager = ordersManager;
 
     }
 
 
     private void tradeByMarket(RxActionType action, RxTradeParameters parameters)  {
-
+        System.out.println("------------->>> tradeByMarket <<< ------------------------------");
         try {
-            if (controller.getPositionReportStatus(parameters.getInstrument()).compareTo(RxRequestStatus.RECEIVED) != 0){
-                throw new Exception("Position report doesn't received !!!!");  //TODO do poprawy
+//            if (actionController.getPositionReportStatus(parameters.getInstrument()).compareTo(RxRequestStatus.RECEIVED) != 0){
+//                throw new Exception("Position report doesn't received !!!!");  //TODO do poprawy
+//            }
 
-            }
+            actionController.check(action,parameters.getInstrument());
 
             RxMonitorDataVO monitorData = rxMonitorsDesk.getMonitor(parameters.getInstrument()).getData();
 
             RxOrderEntity order = orderFactory.createMarketOrder(action,parameters,monitorData);
-            messageSender.sendNewOrderSingle(order);
 
-            controller.setRxPositionReportStatus(parameters.getInstrument(),RxRequestStatus.SENT);
-            System.out.println(" MARKET TRADE SEND > "+action);
-            System.out.println("========================================================================");
+            messageSender.sendNewOrderSingle(order);
+            actionController.startAction(action,order);
 
         }
         catch (Exception e){
             System.out.println(e.getMessage()); // TODO obsługa błędów PROMPTER ????????
         }
+        System.out.println("------------->>>END OF tradeByMarket <<< ------------------------------");
     }
 
 
@@ -149,7 +152,7 @@ public class RxTradeActions {
     }
 
 
-    public String actionSetStopLoss(RxInstrument instrument) {
+    public void actionSetStopLoss(RxInstrument instrument) {
       try {
 
 //          if (controller.getPositionReportStatus(instrument).compareTo(RxRequestStatus.RECEIVED) != 0){
@@ -157,14 +160,16 @@ public class RxTradeActions {
 //          }
 
           RxOrderEntity order = orderStopFactory
-                  .createStopOrder(RxActionType.STOP_LOSS_SET,
+                  .createStopOrder(RxActionType.STOP_LOSS,
                           parameterDesk.getTradeParameters(instrument),
                           rxMonitorsDesk.getMonitor(instrument).getData());
-         return order != null ? messageSender.sendNewOrderSingle(order) : null;
+
+          messageSender.sendNewOrderSingle(order);
+          actionController.startAction(RxActionType.STOP_LOSS,order);
+
       }
       catch (Exception e){
           e.printStackTrace(); // TODO obsługa błędów
-          return e.toString();
       }
 
     }
@@ -172,7 +177,7 @@ public class RxTradeActions {
 //        return  actionSetStopLoss(instruments.getDefault());
 //    }
 
-    public void updateStopLossQuantity(RxPendingOrder orderSL, Double quantity) {
+    public void updateStopLossQuantity(RxOrderEntity orderSL, Double quantity) {
         orderSL.setQuantity(quantity);
         messageSender.sendOrderReplaceRequest(orderSL);
 
@@ -180,7 +185,7 @@ public class RxTradeActions {
 
 
     public void updateStopLossToBreakevent(RxMonitorDataVO data, RxTradeParameters parameters) {
-        RxPendingOrder orderSL = data.getStopLossOrder();
+        RxOrderEntity orderSL = ordersManager.getStopLossOrder(parameters.getInstrument());
         RxPosition position = data.getPosition();
 
         orderSL.setPrice(RxOrderStopCalculatorService.breakevenPriceCalc(position.getDirection(),
@@ -209,7 +214,7 @@ public class RxTradeActions {
 //
 //    }
 
-    public void updateStopLossPrice(RxPendingOrder orderSL, double newTrailingSLPrice) {
+    public void updateStopLossPrice(RxOrderEntity orderSL, double newTrailingSLPrice) {
 
         orderSL.setPrice(newTrailingSLPrice);
         log.info("SEND_ORDER : StopLoss To newTrailingSLPrice ");

@@ -1,7 +1,8 @@
-package com.fixterminal.market.business.trade.controllers;
+package com.fixterminal.market.business.trade.actions;
 
 import com.fixterminal.market.business.monitors.RxMonitorsDesk;
 import com.fixterminal.market.business.parameters.RxTradeParametersDesk;
+import com.fixterminal.market.business.trade.actions.RxActionsController;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,30 +14,30 @@ import java.util.Map;
 
 @Component
 @Slf4j
-public class RxTradeControllersDesk {
+public class RxActionsControllersDesk {
     @Autowired
     private ApplicationContext context;
     RxMonitorsDesk  rxMonitorsDesk;
 
     RxTradeParametersDesk parametersDesk;
-    private final Map<RxInstrument, RxTradeController> tradeControllersMap;
+    private final Map<RxInstrument, RxActionsController> actionsControllersMap;
 
     @Autowired
-    public RxTradeControllersDesk(RxMonitorsDesk  rxMonitorsDesk,
-                                  RxTradeParametersDesk parametersDesk){
+    public RxActionsControllersDesk(RxMonitorsDesk  rxMonitorsDesk,
+                                    RxTradeParametersDesk parametersDesk){
       log.info("Init : " + this.getClass().getSimpleName());
       this.rxMonitorsDesk = rxMonitorsDesk;
       this.parametersDesk = parametersDesk;
-      tradeControllersMap = new HashMap<>();
+      actionsControllersMap = new HashMap<>();
     }
 
     public void start() {
         rxMonitorsDesk.getMonitorsList().forEach(rxMonitor -> {
-                    RxTradeController tradeController =  context.getBean(RxTradeController.class);
-                    tradeController.setMonitor(rxMonitor);
-                    tradeController.setParameters(parametersDesk.getTradeParameters(rxMonitor.getInstrument()));
-                    tradeController.start();
-                    tradeControllersMap.put(rxMonitor.getInstrument(), tradeController);
+                    RxActionsController actionsController =  context.getBean(RxActionsController.class);
+                    actionsController.setMonitor(rxMonitor);
+                    actionsController.setParameters(parametersDesk.getTradeParameters(rxMonitor.getInstrument()));
+                    actionsController.start();
+                    actionsControllersMap.put(rxMonitor.getInstrument(), actionsController);
                 }
         );
     }
