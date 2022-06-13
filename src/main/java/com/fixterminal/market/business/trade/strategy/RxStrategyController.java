@@ -1,8 +1,11 @@
-package com.fixterminal.market.business.trade.actions;
+package com.fixterminal.market.business.trade.strategy;
 
 
 import com.fixterminal.market.business.monitors.RxMonitor;
 import com.fixterminal.market.business.parameters.RxTradeParameters;
+import com.fixterminal.market.business.trade.actions.RxActionStopLossController;
+import com.fixterminal.market.business.trade.actions.RxActions;
+import com.fixterminal.market.business.trade.actions.RxActionsManager;
 import com.fixterminal.shared.market.RxMonitorDataVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +17,9 @@ import java.util.Random;
 
 @Component
 @Scope("prototype")
-public class RxActionsController extends Thread {
+public class RxStrategyController extends Thread {
 
-    private static final Logger log = LoggerFactory.getLogger(RxActionsController.class);
+    private static final Logger log = LoggerFactory.getLogger(RxStrategyController.class);
 
     RxMonitor monitor;
     RxTradeParameters tradeParameters;
@@ -31,7 +34,7 @@ public class RxActionsController extends Thread {
 
     public void setMonitor(RxMonitor monitor){
         this.monitor = monitor;
-        monitor.addForEachMsgConsumer(this::tradeControlByEachMsg);
+        monitor.addMarketDataConsumer(this::tradeController);
 
     }
 
@@ -56,12 +59,15 @@ public class RxActionsController extends Thread {
 //        while (true);
     }
 
-    private void tradeControlByEachMsg(RxMonitorDataVO data)  {
+    private void tradeController(RxMonitorDataVO data)  {
       actionManager.printActionStatusMap();
 
       stopLossController.controlAction(data,tradeParameters); //Pomimo braku pozycjy uruchamiam bo mooże sa SL do anulowania
                                                                // (Temtat do rowinięcia)
 
+      //strategy.trade();
+
+      //To jest strategia typu Random :)
       if( tradeParameters.isAutoTradeOn()) {
            System.out.println("isOpenPosition = "+data.isOpenPosition());
            if(actionManager.isTradeActionPossibility(tradeParameters.getInstrument())){

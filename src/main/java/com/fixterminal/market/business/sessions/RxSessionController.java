@@ -1,11 +1,12 @@
-package com.fixterminal.market.business.monitors;
+package com.fixterminal.market.business.sessions;
 
+import com.fixterminal.market.business.monitors.RxMonitorsDesk;
+import com.fixterminal.market.business.parameters.RxTradeParametersDesk;
 import com.fixterminal.market.business.trade.actions.RxActionsManager;
 import com.fixterminal.shared.dictionaries.instruments.RxDicInstruments;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import com.fixterminal.gui.ports.RxFixTerminalMainGuiPort;
 import com.fixterminal.market.ports.RxMessageSenderPort;
-import com.fixterminal.shared.enumerators.RxRequestStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,27 +15,32 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
-public class RxMonitorSessionController extends Thread {
+public class RxSessionController extends Thread {
 
     RxFixTerminalMainGuiPort terminal;
     RxMessageSenderPort rxRequestMessageSender;
 
     RxMonitorsDesk monitorsDesk;
-    @Autowired
+
     RxDicInstruments dicInstruments;
     RxActionsManager actionsController;
+    RxTradeParametersDesk parametersDesk;
 
     @Autowired
-    public RxMonitorSessionController(RxFixTerminalMainGuiPort terminal,
-                                      RxMessageSenderPort rxRequestMessageSender,
-                                      RxMonitorsDesk monitorsDesk,
-                                      RxActionsManager actionsController
+    public RxSessionController(RxFixTerminalMainGuiPort terminal,
+                               RxMessageSenderPort rxRequestMessageSender,
+                               RxMonitorsDesk monitorsDesk,
+                               RxActionsManager actionsController,
+                               RxTradeParametersDesk parametersDesk,
+                               RxDicInstruments dicInstruments
     ){
         log.info("Init : RxConnectionControler");
         this.terminal = terminal;
         this.monitorsDesk = monitorsDesk;
         this.rxRequestMessageSender = rxRequestMessageSender;
         this.actionsController = actionsController;
+        this.parametersDesk = parametersDesk;
+        this.dicInstruments = dicInstruments;
     }
 
 
@@ -62,11 +68,11 @@ public class RxMonitorSessionController extends Thread {
           log.info("SESSION_CTRL : USER LOGGED");
         }
 
-        //TODO Monitorowanie tylko tych wskazanych które będą tradowane.
-        //for (RxInstrument instrument : dicInstruments.getDefaultList())
         for (RxInstrument instrument : dicInstruments.toList())
            {
-            rxRequestMessageSender.sendMarketDataRequest(instrument);
+             if(parametersDesk.getTradeParameters(instrument).isMarketDataRequest()) {
+                 rxRequestMessageSender.sendMarketDataRequest(instrument);
+             }
         }
 
         rxRequestMessageSender.sendRequestForPositions();

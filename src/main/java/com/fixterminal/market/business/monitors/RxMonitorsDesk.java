@@ -107,31 +107,10 @@ public final class RxMonitorsDesk
             return;
         }
         monitorsMap.get(position.getInstrument()).positionReportConsume(position);
-
+        System.out.println(position);
      //   actionsController.setPositionReportStatus(position.getInstrument(), RxRequestStatus.RECEIVED);
     }
 
-    //TODO Utrzożyć dedytkowaną klase dispatchera i wyeliminować encje RxExecuteReport
-//    private void executionReportDispatcher(RxExecuteReport rxExecuteReport) {
-//
-////        monitorsMap.get(rxExecuteReport
-////                .getInstrument()).clearPosition();
-//
-//        messageSender.sendRequestForPositions(); //TODO napewnoe nie tutaj
-//
-// //       actionsController.setPositionReportStatus(rxExecuteReport.getInstrument(),RxRequestStatus.SENT);
-//
-//
-//
-////            monitorsMap.get(rxExecuteReport
-////                        .getInstrument()).clearPendingOrdersMap();
-//        actionsController.executeReportConsume(rxExecuteReport);
-//       // monitorsMap.get(rxExecuteReport.getInstrument()).executeReportConsume(rxExecuteReport);
-//
-//
-//
-//
-//    }
 
 
     public RxMonitor getMonitor(RxInstrument intrument){

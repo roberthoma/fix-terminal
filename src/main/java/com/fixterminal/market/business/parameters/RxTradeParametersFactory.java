@@ -38,6 +38,9 @@ public class RxTradeParametersFactory {
       tradeParameters.setParameterValue(RxTradeParameterType.AUTO_TRADE,
               RxOnOff.valueOf(prop.getProperty("AUTO_TRADE", RxOnOff.OFF.toString())));
 
+      tradeParameters.setParameterValue(RxTradeParameterType.MARKET_DATA_REQUEST,
+              RxOnOff.valueOf(prop.getProperty("MARKET_DATA_REQUEST", RxOnOff.OFF.toString())));
+
       tradeParameters.setParameterValue(RxTradeParameterType.AUTO_BREAKEVEN,
               RxOnOff.valueOf(prop.getProperty("AUTO_BREAKEVEN", RxOnOff.OFF.toString())));
 

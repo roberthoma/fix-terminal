@@ -8,7 +8,7 @@ import com.fixterminal.shared.market.RxMarketDataVO;
 
 import java.util.Map;
 
-public class RxCalculatorMarketDataBase {
+public class RxCalculatorMarketBaseData {
 
     public static void calculatePrices(RxMarketDataCalcBaseVO mdCalcVo ,
                                        Map<String, RxMarketDataVO> mdOfferMap)

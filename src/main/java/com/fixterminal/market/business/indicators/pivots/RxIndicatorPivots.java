@@ -18,17 +18,16 @@ public class RxIndicatorPivots {
     @Getter
     private RxIndicatorPivotsStatistic pivotsStatistic  = new RxIndicatorPivotsStatistic();
 
-    @Getter
-    private List<RxPivot> pivots = new ArrayList<>();
+    private final List<RxPivot> pivots = new ArrayList<>();
 
     private double minPriceDiff =  0.0001; //TODO parametryzacja w pliku
 
     private void addPivot(RxPivot pivot){
         pivot.id = pivots.size() + 1;
         pivots.add(pivot);
-//TODO log        System.out.println("Adding new "+ pivot.type +" pivot  : "+pivot.price+"  "+ pivot.dateTime+ "  "+
-//                " all is = "+pivots.size()
-//        );
+        System.out.println("Adding new "+ pivot.type +" pivot  : "+pivot.price+"  "+ pivot.dateTime+ "  "+
+                " all is = "+pivots.size()
+        );
 
     }
 
@@ -44,7 +43,7 @@ public class RxIndicatorPivots {
         else {
             pivots.get(lastIdx).price = mdBaseVO.bidBestPrice;
         }
- //TODO log       System.out.println("Replacing "+pivots.get(lastIdx).type + " pivot : price="+pivots.get(lastIdx).price);
+       System.out.println("Replacing "+pivots.get(lastIdx).type + " pivot : price="+pivots.get(lastIdx).price);
 
 
     }
@@ -112,6 +111,14 @@ public class RxIndicatorPivots {
 
     public void calculate(RxMarketDataCalcBaseVO mdBaseVO) {
         pivotsCalculate(mdBaseVO);
-        pivotsStatistic.calculate(pivots);
+        pivotsStatistic.calculate(pivots); //TODO wykonać tylko gdy jest ustalony już  pivot
+
+
+        System.out.println("PIVOTS TREND : "+ pivotsStatistic.getTrendCondition());
+    }
+
+
+    public int getSize() {
+    return  pivots.size();
     }
 }

@@ -1,11 +1,13 @@
 package com.fixterminal.market.business.indicators.pivots;
 
+import com.fixterminal.shared.enumerators.RxMarketTrendCondition;
 import com.fixterminal.shared.enumerators.RxPivotType;
 import com.fixterminal.shared.indicators.RxPivot;
 import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RxIndicatorPivotsStatistic {
 
@@ -21,6 +23,9 @@ public class RxIndicatorPivotsStatistic {
        @Getter
        Double avgDistance;
 
+       @Getter
+       RxMarketTrendCondition trendCondition = RxMarketTrendCondition.UNDETERMINED;
+
        List<Double> distanceList = new ArrayList<>();
 
        @Getter
@@ -31,8 +36,8 @@ public class RxIndicatorPivotsStatistic {
 
        private void setMaxMin(RxPivot pivot){
            if (pivot.type == RxPivotType.DOWN){
-               if(minPrice == null
-                       || minPrice > pivot.price)
+               if(   minPrice == null
+                  || minPrice > pivot.price)
                {
                    minPrice = pivot.price;
                }
@@ -40,8 +45,8 @@ public class RxIndicatorPivotsStatistic {
            }
 
            if (pivot.type == RxPivotType.UP){
-               if(maxPrice == null
-                       || maxPrice < pivot.price)
+               if(   maxPrice == null
+                  || maxPrice < pivot.price)
                {
                    maxPrice = pivot.price;
                }
@@ -89,10 +94,47 @@ public class RxIndicatorPivotsStatistic {
               prevPivot = pivot;
           }
 
+           determinateTrendCondition(pivots);
+
        }
 
 
+       private void determinateTrendCondition(List<RxPivot> pivots){
 
+           int  pSize = pivots.size();
+
+           if (pSize < 6){
+              return;
+           }
+
+//           List<RxPivot> upPivotsList   = pivots.stream()
+//                                                .filter(rxPivot -> rxPivot.type.equals(RxPivotType.UP))
+//                                                .collect(Collectors.toList());
+//
+//           List<RxPivot> downPivotsList   = pivots.stream()
+//                   .filter(rxPivot -> rxPivot.type.equals(RxPivotType.DOWN))
+//                   .collect(Collectors.toList());
+
+
+
+           if (   pivots.get(pSize -2).price > pivots.get(pSize -4).price
+               && pivots.get(pSize -3).price > pivots.get(pSize -5).price
+               )
+           {
+               trendCondition = RxMarketTrendCondition.UPTREND;
+               return;
+           }
+
+           if (   pivots.get(pSize -2).price < pivots.get(pSize -4).price
+                   && pivots.get(pSize -3).price < pivots.get(pSize -5).price
+           )
+           {
+               trendCondition = RxMarketTrendCondition.DOWNTREND;
+               return;
+           }
+
+           trendCondition = RxMarketTrendCondition.UNDETERMINED;
+       }
 
 
 }

@@ -97,6 +97,7 @@ public class RxQuickFixMessageDispatcher {
 
                 case MsgType.MARKET_DATA_SNAPSHOT_FULL_REFRESH:
                    // logPrompter.accept("MARKET_DATA_SNAPSHOT_FULL_REFRESH>"+ RxMessageDecorator.decorate(message));
+                    System.out.println("MARKET_DATA_SNAPSHOT_FULL_REFRESH>"+ RxMessageDecorator.decorate(message));
                     if (marketDataConsumer != null) {
                         marketDataConsumer.accept(true, rxMarketDataService.messageToList(message, null));
                     }
@@ -104,6 +105,7 @@ public class RxQuickFixMessageDispatcher {
 
                 case MsgType.MARKET_DATA_INCREMENTAL_REFRESH:
                   //  logPrompter.accept("MARKET_DATA_INCREMENTAL_REFRESH>"+RxMessageDecorator.decorate(message));
+                    System.out.println("MARKET_DATA_INCREMENTAL_REFRESH>"+RxMessageDecorator.decorate(message));
                     if (marketDataConsumer != null) {
                         marketDataConsumer.accept(false, rxMarketDataService.messageToList(message, null));
                     }

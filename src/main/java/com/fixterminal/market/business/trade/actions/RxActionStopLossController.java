@@ -1,12 +1,10 @@
 package com.fixterminal.market.business.trade.actions;
 
 import com.fixterminal.market.business.parameters.RxTradeParameters;
-import com.fixterminal.market.business.trade.actions.RxActions;
 import com.fixterminal.market.business.trade.orders.RxOrdersManager;
 import com.fixterminal.shared.enumerators.RxPositionDirection;
 import com.fixterminal.shared.market.RxMonitorDataVO;
 import com.fixterminal.shared.orders.RxOrderEntity;
-import com.fixterminal.shared.pending_orders.RxPendingOrder;
 import com.fixterminal.shared.positions.RxPosition;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

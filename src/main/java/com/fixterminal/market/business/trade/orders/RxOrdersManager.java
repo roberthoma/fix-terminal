@@ -74,7 +74,15 @@ public class RxOrdersManager {
         if (rxExecuteReport.getExecType().equals(RxExecType.CANCEL)){
             ordersMap.remove(rxExecuteReport.getOrigClOrdID());
         }
-        System.out.println("????Przed accept(rxExecuteReport) ");
+
+
+        if (rxExecuteReport.getOrderStatus().equals(RxOrderStatus.FILLED)
+                && rxExecuteReport.getOrderType().equals(RxOrderType.STOP)) {
+            ordersMap.remove(rxExecuteReport.getClOrdID());
+        }
+
+
+            System.out.println("????Przed accept(rxExecuteReport) ");
         executeReportConsumer.accept(rxExecuteReport);
 
 

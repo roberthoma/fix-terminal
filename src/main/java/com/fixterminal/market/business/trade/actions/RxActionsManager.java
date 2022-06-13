@@ -9,6 +9,7 @@ import com.fixterminal.shared.enumerators.*;
 import com.fixterminal.shared.market.RxExecuteReport;
 import com.fixterminal.shared.orders.RxOrderEntity;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tools.ant.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -75,7 +76,7 @@ public class RxActionsManager {
 
         actionStatusMap.put(new RxActionKey(order.getFixSymbol(),action),RxActionStatus.STARTED);
         printActionStatusMap();
-        order.setOrderStatus(RxOrderStatus.SENT);  //Czy w tym miejscu
+        order.setOrderStatus(RxOrderStatus.SENT);  //TODO Czy w tym miejscu
         ordersManager.put(order);
         ordersManager.ordersMapPrint();
     }
@@ -110,7 +111,6 @@ public class RxActionsManager {
         }
 
     }
-
 
     public void check(RxActionType action, RxInstrument instrument) throws Exception{ //TODO zdefiniować wyjątek
         RxActionKey actionKey = new RxActionKey(instrument.getFixSymbol(),action);

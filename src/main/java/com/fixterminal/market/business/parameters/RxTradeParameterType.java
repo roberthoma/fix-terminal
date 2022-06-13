@@ -9,14 +9,15 @@ public enum RxTradeParameterType implements RxParameterDesc {
     AUTO_BREAKEVEN("auto_bre","Is Auto breakevent on off"),
     BREAKEVEN_ACTIVATE_DIST("bre_act_dist","Distance of activating Breakevent"),
     BREAKEVEN_PROFIT("bre_profit","Breakeven profit "),
-    STOP_LOSS_DISTANCE("sl_distane","Stop loss distance on open position"),
+    STOP_LOSS_DISTANCE("sl_dist","Stop loss distance on open position"),
     QUANTITY("quantity","Trade Quantity"),
     ORDER_TYPE("ord_type","Order type : MARKET LIMIT etc"),
 
 
     AUTO_TRAILING("auto_trls","Is auto trailing stop loss On OFF"),
     TRAILING_STOP_ACTIVATE_DIST("trls_act_dist","Trailing stop loss activate distance "),
-    TRAILING_STOP_FOLLOW_DIST("trls_follow_dist","Trailing stop loss follow distance");
+    TRAILING_STOP_FOLLOW_DIST("trls_follow_dist","Trailing stop loss follow distance"),
+    MARKET_DATA_REQUEST("m_data_req", " Send market data request" );
 
 
     final String description;

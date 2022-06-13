@@ -2,7 +2,7 @@ package com.fixterminal.market.business.trade.actions;
 
 import com.fixterminal.market.business.monitors.RxMonitorsDesk;
 import com.fixterminal.market.business.parameters.RxTradeParametersDesk;
-import com.fixterminal.market.business.trade.actions.RxActionsController;
+import com.fixterminal.market.business.trade.strategy.RxStrategyController;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ public class RxActionsControllersDesk {
     RxMonitorsDesk  rxMonitorsDesk;
 
     RxTradeParametersDesk parametersDesk;
-    private final Map<RxInstrument, RxActionsController> actionsControllersMap;
+    private final Map<RxInstrument, RxStrategyController> actionsControllersMap;
 
     @Autowired
     public RxActionsControllersDesk(RxMonitorsDesk  rxMonitorsDesk,
@@ -33,7 +33,7 @@ public class RxActionsControllersDesk {
 
     public void start() {
         rxMonitorsDesk.getMonitorsList().forEach(rxMonitor -> {
-                    RxActionsController actionsController =  context.getBean(RxActionsController.class);
+                    RxStrategyController actionsController =  context.getBean(RxStrategyController.class);
                     actionsController.setMonitor(rxMonitor);
                     actionsController.setParameters(parametersDesk.getTradeParameters(rxMonitor.getInstrument()));
                     actionsController.start();

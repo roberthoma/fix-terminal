@@ -1,5 +1,7 @@
 package com.fixterminal.shared.market;
 
+import com.fixterminal.market.business.indicators.RxIndicators;
+import com.fixterminal.market.business.models.RxMarketModel;
 import com.fixterminal.shared.dictionaries.instruments.RxInstrument;
 import com.fixterminal.shared.enumerators.RxOrderType;
 import com.fixterminal.shared.pending_orders.RxPendingOrder;
@@ -14,6 +16,9 @@ public class RxMonitorDataVO {
 
     public RxInstrument instrument;
 
+    @Getter
+    RxIndicators indicators = new RxIndicators();
+
 
     public RxPosition position ;
 
@@ -23,37 +28,12 @@ public class RxMonitorDataVO {
 
     public RxMarketDataCalcStrategyVO mdStrategyVo = new RxMarketDataCalcStrategyVO();
 
+    public RxMarketModel marketModel = new RxMarketModel();
+
     public RxMonitorDataVO(){
 
 
     }
-
-//
-//    public RxPendingOrder getStopLossOrder(){
-//        if (pendingOrdersMap.size() > 0){
-//            for (RxPendingOrder ord : pendingOrdersMap.values()){
-//                if (ord.getType().equals(RxOrderType.STOP)){
-//                    return ord;
-//                }
-//
-//            }
-//        }
-//
-//        return null;
-//    }
-//
-//    public RxPendingOrder getTakeProfitOrder(){
-//        if (pendingOrdersMap.size() > 0){
-//            for (RxPendingOrder ord : pendingOrdersMap.values()){
-//                if (ord.getType().equals(RxOrderType.LIMIT)){
-//                    return ord;
-//                }
-//
-//            }
-//        }
-//
-//        return null;
-//    }
 
 
     public RxPosition getPosition() {

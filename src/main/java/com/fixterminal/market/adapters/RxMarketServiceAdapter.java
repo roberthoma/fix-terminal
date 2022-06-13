@@ -1,6 +1,6 @@
 package com.fixterminal.market.adapters;
 
-import com.fixterminal.market.business.monitors.RxMonitorSessionController;
+import com.fixterminal.market.business.sessions.RxSessionController;
 import com.fixterminal.market.business.monitors.RxMonitorsDesk;
 import com.fixterminal.shared.enumerators.RxActionType;
 import com.fixterminal.app.ports.RxMarketServicePort;
@@ -17,7 +17,7 @@ import java.util.List;
 public class RxMarketServiceAdapter implements RxMarketServicePort {
 
     RxMonitorsDesk rxMonitorsDesk;
-    RxMonitorSessionController connectionController;
+    RxSessionController connectionController;
     RxActionsControllersDesk tradeControllersDesk;
     RxTradeParametersDesk tradeParametersDesk;
     RxDicInstruments dicInstruments;
@@ -26,7 +26,7 @@ public class RxMarketServiceAdapter implements RxMarketServicePort {
     public RxMarketServiceAdapter(RxDicInstruments dicInstruments,
                                   RxActionsControllersDesk tradeControllersDesk,
                                   RxTradeParametersDesk tradeParametersDesk,
-                                  RxMonitorSessionController connectionController,
+                                  RxSessionController connectionController,
                                   RxMonitorsDesk rxMonitorsDesk
     ) {
         this.dicInstruments = dicInstruments;

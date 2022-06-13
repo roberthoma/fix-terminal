@@ -69,10 +69,17 @@ public class RxTerminalOrderController {
 
             System.out.println("TERMINAL>ORDER_CONTROLLER>EXECUTION_REPORT_CHECK> "+exeReport);
 
-            //exeReport.getOrderStatus()
-            orderMap.get(exeReport.getClOrdID()).setOrderStatus(exeReport.getOrderStatus());
             RxTypeOrderKey key  = new RxTypeOrderKey(exeReport.getInstrument(), exeReport.getOrderType());
             prevOrderStatusMap.put(key,exeReport.getOrderStatus());
+
+            if (exeReport.getOrderStatus().equals(RxOrderStatus.FILLED)
+            && exeReport.getOrderType().equals(RxOrderType.STOP)) {
+                orderMap.remove(exeReport.getClOrdID());
+            }
+            else {
+                orderMap.get(exeReport.getClOrdID()).setOrderStatus(exeReport.getOrderStatus());
+            }
+
 
         }
         else {
@@ -91,7 +98,7 @@ public class RxTerminalOrderController {
        System.out.println("-----TERMINAL_ORDER_CTR prevOrderStatusMap ----");
        prevOrderStatusMap.forEach((rxTypeOrderKey, xOrd) -> System.out.println(rxTypeOrderKey+" : "+xOrd));
        System.out.println("--- orderMap ---");
-       orderMap.forEach((s, rxOrd) -> System.out.println(s+"="+rxOrd+"\n"));
+       orderMap.forEach((s, rxOrd) -> System.out.println(s+"="+rxOrd));
        System.out.println("---------------------------------------");
 
    }

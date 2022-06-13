@@ -39,6 +39,7 @@ public class RxTradeParameters {
     private void initParams(RxInstrument instrument) {
 
         parameterMap.put(RxTradeParameterType.INSTRUMENT, new RxParameterValue<RxInstrument>(instrument));
+        parameterMap.put(RxTradeParameterType.MARKET_DATA_REQUEST, new RxParameterValue<RxOnOff>(RxOnOff.OFF));
         parameterMap.put(RxTradeParameterType.AUTO_TRADE, new RxParameterValue<RxOnOff>(RxOnOff.OFF));
         parameterMap.put(RxTradeParameterType.AUTO_BREAKEVEN, new RxParameterValue<RxOnOff>(RxOnOff.OFF));
         parameterMap.put(RxTradeParameterType.AUTO_TRAILING, new RxParameterValue<RxOnOff>(RxOnOff.OFF));
@@ -60,10 +61,14 @@ public class RxTradeParameters {
 
     }
 
+
     public RxInstrument getInstrument(){
         return   (RxInstrument) (parameterMap.get(RxTradeParameterType.INSTRUMENT)).getValue();
     }
 
+    public boolean isMarketDataRequest(){
+        return   RxOnOff.ON.equals((parameterMap.get(RxTradeParameterType.MARKET_DATA_REQUEST)).getValue());
+    }
 
     public void setParameterValue(RxTradeParameterType tradeParameter, Object value) {
         parameterMap.get(tradeParameter).setValue(value);

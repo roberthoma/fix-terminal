@@ -54,15 +54,32 @@ public class RxOrderEntity {  //implements Cloneable {
       return "ID="+ clOrdID +" ; fixSymbol="+fixSymbol+" ; type="+type+ " ; quantity="+quantity+" ; Status="+orderStatus;
     }
 
+    private String generateID(String prefix) {
+        return prefix + Long.toString (System.currentTimeMillis() + (nextID++)); // ??? to będzi enieładna suma
+    }
     public String generateID() {
-        return Long.toString(System.currentTimeMillis() + (nextID++)); // ??? to będzi enieładna suma
+        return generateID("");
     }
 
+
+
     public String generateID(RxActionType actionType) {
+       String prefix="";
+
         if( actionType.equals(RxActionType.STOP_LOSS)) {
-            return "#SL#"+Long.toString(System.currentTimeMillis() + (nextID++)); // ??? to będzi enieładna suma
+            prefix = "SL";
         }
-        return Long.toString(System.currentTimeMillis() + (nextID++)); // ??? to będzi enieładna suma
+
+        if(  actionType.equals(RxActionType.SELL_MARKET)
+           ||actionType.equals(RxActionType.BUY_MARKET )) {
+            prefix = "OP";
+        }
+
+        if(  actionType.equals(RxActionType.TAKE_PROFIT_SET)) {
+            prefix = "TP";
+        }
+
+        return generateID(prefix);
 
     }
 
